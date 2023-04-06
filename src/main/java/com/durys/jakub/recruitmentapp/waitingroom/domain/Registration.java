@@ -6,5 +6,7 @@ import lombok.RequiredArgsConstructor;
 public class Registration {
 
     private final RegistrationId id;
+    private final ApplicantInformation applicantInformation;
+    private final byte[] cv;
 
 }
