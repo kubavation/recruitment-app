@@ -1,6 +1,6 @@
 spring:
   application:
-    name: RECRUTATION-APP
+    name: RECRUITMENT-APP
 eureka:
   client:
     serviceUrl:
