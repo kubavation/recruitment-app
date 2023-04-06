@@ -1,10 +1,9 @@
 package com.durys.jakub.recruitmentapp.waitingroom.application;
 
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
+import com.durys.jakub.recruitmentapp.waitingroom.domain.RegistrationId;
 import com.durys.jakub.recruitmentapp.waitingroom.domain.RegistrationRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.UUID;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -17,11 +16,11 @@ public class RegistrationApplicationService {
 
     }
 
-    public void decline(UUID registrationId) {
+    public void decline(RegistrationId registrationId) {
 
     }
 
-    public void accept(UUID registrationId) {
+    public void accept(RegistrationId registrationId) {
 
     }
 
