@@ -20,7 +20,6 @@ public class RegistrationApplicationService {
                 new ApplicantInformation(firstName, lastName, email, phoneNumber), new Cv(cv));
 
         registrationRepository.save(registration);
-
     }
 
     public void decline(RegistrationId registrationId) {

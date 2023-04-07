@@ -8,6 +8,7 @@ public class Registration {
     private final RegistrationId id;
     private final OfferId offerId;
     private final ApplicantInformation applicantInformation;
+    private RegistrationStatus status;
     private final Cv cv;
 
 }
