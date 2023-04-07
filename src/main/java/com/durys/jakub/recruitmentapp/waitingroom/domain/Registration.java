@@ -1,5 +1,7 @@
 package com.durys.jakub.recruitmentapp.waitingroom.domain;
 
+import com.durys.jakub.recruitmentapp.ddd.annotations.events.DomainEventRegistry;
+import com.durys.jakub.recruitmentapp.waitingroom.domain.events.RegistrationAccepted;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -18,6 +20,8 @@ public class Registration {
 
     public void markAsAccepted() {
         this.status = RegistrationStatus.ACCEPTED;
+        DomainEventRegistry.instance()
+                .emit(new RegistrationAccepted(id, offerId, cv));
     }
 
 }
