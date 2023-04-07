@@ -23,11 +23,19 @@ public class RegistrationApplicationService {
     }
 
     public void decline(RegistrationId registrationId) {
+        Registration registration = registrationRepository.load(registrationId);
 
+        registration.markAsDeclined();
+
+        registrationRepository.save(registration);
     }
 
     public void accept(RegistrationId registrationId) {
+        Registration registration = registrationRepository.load(registrationId);
 
+        registration.markAsAccepted();
+
+        registrationRepository.save(registration);
     }
 
 
