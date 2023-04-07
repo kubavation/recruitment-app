@@ -8,7 +8,16 @@ public class Registration {
     private final RegistrationId id;
     private final OfferId offerId;
     private final ApplicantInformation applicantInformation;
-    private RegistrationStatus status;
     private final Cv cv;
+
+    private RegistrationStatus status;
+
+    public void markAsDeclined() {
+        this.status = RegistrationStatus.DECLINED;
+    }
+
+    public void markAsAccepted() {
+        this.status = RegistrationStatus.ACCEPTED;
+    }
 
 }
