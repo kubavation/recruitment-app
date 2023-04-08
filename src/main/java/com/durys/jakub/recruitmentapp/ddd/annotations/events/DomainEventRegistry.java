@@ -7,7 +7,7 @@ public class DomainEventRegistry {
         return new DomainEventRegistry();
     }
 
-    public void emit(DomainEvent event) {
+    public void publish(DomainEvent event) {
         //todo emit
     }
 
