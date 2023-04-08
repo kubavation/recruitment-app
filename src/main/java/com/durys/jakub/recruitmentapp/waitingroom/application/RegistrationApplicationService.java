@@ -22,10 +22,10 @@ public class RegistrationApplicationService {
         registrationRepository.save(registration);
     }
 
-    public void decline(RegistrationId registrationId) {
+    public void decline(RegistrationId registrationId, String reason) {
         Registration registration = registrationRepository.load(registrationId);
 
-        registration.markAsDeclined();
+        registration.markAsDeclined(reason);
 
         registrationRepository.save(registration);
     }
