@@ -1,9 +1,18 @@
 package com.durys.jakub.recruitmentapp.cv.domain;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
+import java.util.Collections;
+import java.util.Set;
+
+@AllArgsConstructor
 public class Cv {
-    private final CvId id;
 
+    private final CvId id;
+    private Set<Opinion> opinions;
+
+    public Cv(CvId id) {
+        this.id = id;
+        this.opinions = Collections.emptySet();
+    }
 }
