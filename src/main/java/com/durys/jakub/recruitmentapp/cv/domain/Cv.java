@@ -15,4 +15,9 @@ public class Cv {
         this.id = id;
         this.opinions = Collections.emptySet();
     }
+
+    public void addOpinion(ReviewerId reviewerId, String opinion) {
+        opinions.add(new Opinion(reviewerId, opinion));
+    }
+
 }
