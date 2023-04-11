@@ -17,13 +17,17 @@ public class Registration {
 
     public void markAsDeclined(String reason) {
         this.status = RegistrationStatus.DECLINED;
-        DomainEventRegistry.instance()
+
+        DomainEventRegistry
+                .instance()
                 .publish(new RegistrationDeclined(id, offerId, applicantInformation, reason));
     }
 
     public void markAsAccepted() {
         this.status = RegistrationStatus.ACCEPTED;
-        DomainEventRegistry.instance()
+
+        DomainEventRegistry
+                .instance()
                 .publish(new RegistrationAccepted(id, offerId, cv));
     }
 
