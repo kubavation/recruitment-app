@@ -1,8 +1,8 @@
-package com.durys.jakub.recruitmentapp.waitingroom.infrastructure;
+package com.durys.jakub.recruitmentapp.registration.infrastructure;
 
-import com.durys.jakub.recruitmentapp.waitingroom.domain.Registration;
-import com.durys.jakub.recruitmentapp.waitingroom.domain.RegistrationId;
-import com.durys.jakub.recruitmentapp.waitingroom.domain.RegistrationRepository;
+import com.durys.jakub.recruitmentapp.registration.domain.Registration;
+import com.durys.jakub.recruitmentapp.registration.domain.RegistrationId;
+import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 

@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.waitingroom.domain;
+package com.durys.jakub.recruitmentapp.registration.domain;
 
 import java.util.UUID;
 

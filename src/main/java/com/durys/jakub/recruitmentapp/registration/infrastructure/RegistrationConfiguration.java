@@ -1,6 +1,6 @@
-package com.durys.jakub.recruitmentapp.waitingroom.infrastructure;
+package com.durys.jakub.recruitmentapp.registration.infrastructure;
 
-import com.durys.jakub.recruitmentapp.waitingroom.domain.RegistrationRepository;
+import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
