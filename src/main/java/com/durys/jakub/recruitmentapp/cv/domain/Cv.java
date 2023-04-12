@@ -19,8 +19,12 @@ public class Cv {
         this.opinions = Collections.emptySet();
     }
 
-    public void addOpinion(ReviewerId reviewerId, String opinion) {
-        opinions.add(new Opinion(reviewerId, opinion));
+    public void approveWith(ReviewerId reviewerId, String opinion) {
+        opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.APPROVED));
+    }
+
+    public void declineWith(ReviewerId reviewerId, String opinion) {
+        opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.DECLINED));
     }
 
 }

@@ -11,4 +11,5 @@ class Opinion {
 
     private final ReviewerId reviewerId;
     private final String text;
+    private final Status status;
 }
