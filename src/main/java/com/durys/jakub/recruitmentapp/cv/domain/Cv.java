@@ -12,14 +12,20 @@ import java.util.Set;
 @AllArgsConstructor
 public class Cv {
 
+    public enum Status {
+        ACTIVE, INACTIVE
+    }
+
     private final CvId id;
     private final RegistrationId registrationId;
     private Set<Opinion> opinions;
+    private Status status;
 
     public Cv(CvId id, RegistrationId registrationId) {
         this.id = id;
         this.registrationId = registrationId;
         this.opinions = Collections.emptySet();
+        this.status = Status.ACTIVE;
     }
 
     public void approveWith(ReviewerId reviewerId, String opinion) {
@@ -29,6 +35,7 @@ public class Cv {
             DomainEventRegistry
                     .instance()
                     .publish(new CvAccepted(id, registrationId));
+            this.status = Status.INACTIVE;
         }
 
     }
@@ -40,6 +47,7 @@ public class Cv {
             DomainEventRegistry
                     .instance()
                     .publish(new CvDeclined(id, registrationId));
+            this.status = Status.INACTIVE;
         }
     }
 
