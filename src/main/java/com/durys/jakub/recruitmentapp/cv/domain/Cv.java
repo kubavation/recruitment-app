@@ -35,7 +35,7 @@ public class Cv {
             DomainEventRegistry
                     .instance()
                     .publish(new CvAccepted(id, registrationId));
-            this.status = Status.INACTIVE;
+            deactivate();
         }
 
     }
@@ -47,7 +47,7 @@ public class Cv {
             DomainEventRegistry
                     .instance()
                     .publish(new CvDeclined(id, registrationId));
-            this.status = Status.INACTIVE;
+            deactivate();
         }
     }
 
@@ -55,6 +55,10 @@ public class Cv {
         return opinions.stream()
                 .filter(o -> status.equals(o.status()))
                 .count();
+    }
+
+    private void deactivate() {
+        this.status = Status.INACTIVE;
     }
 
 }
