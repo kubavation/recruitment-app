@@ -1,15 +1,9 @@
 package com.durys.jakub.recruitmentapp.cv.domain;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
-class Opinion {
+record Opinion(ReviewerId reviewerId, String text, com.durys.jakub.recruitmentapp.cv.domain.Opinion.Status status) {
 
     public enum Status {
         APPROVED, DECLINED
     }
 
-    private final ReviewerId reviewerId;
-    private final String text;
-    private final Status status;
 }
