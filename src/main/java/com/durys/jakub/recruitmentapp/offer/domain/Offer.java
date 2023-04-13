@@ -1,5 +1,8 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
+import lombok.Getter;
+
+@Getter
 public class Offer {
 
     public enum Status {
