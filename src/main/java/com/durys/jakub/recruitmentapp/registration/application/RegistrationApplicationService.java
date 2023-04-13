@@ -2,8 +2,6 @@ package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
-import com.durys.jakub.recruitmentapp.registration.domain.exceptions.RegistrationExceptionType;
-import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
