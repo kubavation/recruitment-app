@@ -6,5 +6,7 @@ import lombok.RequiredArgsConstructor;
 public class Offer {
 
     private final OfferId offerId;
+    private final Position position;
+    private final Description description;
 
 }
