@@ -2,7 +2,7 @@ package com.durys.jakub.recruitmentapp.sharedkernel.identity;
 
 import java.util.UUID;
 
-public class UUIDIdentityProvider implements IdentityProvider<UUID> {
+public class UUIDDomainIdentityProvider implements DomainIdentityProvider<UUID> {
 
     @Override
     public UUID identity() {
