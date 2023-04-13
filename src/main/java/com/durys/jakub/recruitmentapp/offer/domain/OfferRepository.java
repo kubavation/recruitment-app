@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
 public interface OfferRepository {
-    OfferId load(OfferId offerId);
+    Offer load(OfferId offerId);
     void save(Offer offer);
 }
