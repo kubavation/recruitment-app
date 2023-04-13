@@ -1,4 +1,6 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
-public record Position(String name) {
+import lombok.NonNull;
+
+public record Position(@NonNull String name) {
 }
