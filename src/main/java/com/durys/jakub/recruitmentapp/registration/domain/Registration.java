@@ -21,13 +21,13 @@ public class Registration {
         this.status = RegistrationStatus.NEW;
     }
 
-    public void markAsDeclined(String reason) {
+    public void markAsRejected(String reason) {
 
         if (status != RegistrationStatus.NEW) {
             throw new RuntimeException("Invalid operation");
         }
 
-        this.status = RegistrationStatus.DECLINED;
+        this.status = RegistrationStatus.REJECTED;
 
         DomainEventRegistry
                 .instance()
@@ -45,6 +45,7 @@ public class Registration {
         DomainEventRegistry
                 .instance()
                 .publish(new RegistrationAccepted(id, offerId, cv));
+
     }
 
 }

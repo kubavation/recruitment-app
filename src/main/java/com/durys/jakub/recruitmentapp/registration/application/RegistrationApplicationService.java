@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
+import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class RegistrationApplicationService {
     public void decline(RegistrationId registrationId, String reason) {
         Registration registration = registrationRepository.load(registrationId);
 
-        registration.markAsDeclined(reason);
+        registration.markAsRejected(reason);
 
         registrationRepository.save(registration);
     }
