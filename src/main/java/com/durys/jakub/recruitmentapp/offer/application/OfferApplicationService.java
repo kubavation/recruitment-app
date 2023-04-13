@@ -34,5 +34,11 @@ public class OfferApplicationService {
         offerRepository.save(offer);
     }
 
+    public void deactivateOffer(UUID offerId) {
+        Offer offer = offerRepository.load(new OfferId(offerId));
+        offer.deactivate();
+        offerRepository.save(offer);
+    }
+
 
 }
