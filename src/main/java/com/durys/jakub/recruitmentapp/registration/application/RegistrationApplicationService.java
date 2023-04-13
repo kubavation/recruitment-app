@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
+import com.durys.jakub.recruitmentapp.registration.domain.exceptions.RegistrationExceptionType;
 import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,8 @@ public class RegistrationApplicationService {
         registrationRepository.save(registration);
     }
 
-    public void decline(RegistrationId registrationId, String reason) {
+    public void reject(RegistrationId registrationId, String reason) {
+
         Registration registration = registrationRepository.load(registrationId);
 
         registration.markAsRejected(reason);
