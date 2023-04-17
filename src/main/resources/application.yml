@@ -1,8 +1,12 @@
 spring:
   application:
     name: RECRUITMENT-APP
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    config:
+      label: master
 eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8777/eureka/
-
