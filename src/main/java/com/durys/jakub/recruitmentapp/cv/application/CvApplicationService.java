@@ -4,7 +4,8 @@ import com.durys.jakub.recruitmentapp.cv.domain.Cv;
 import com.durys.jakub.recruitmentapp.cv.domain.CvId;
 import com.durys.jakub.recruitmentapp.cv.domain.CvRepository;
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
-import com.durys.jakub.recruitmentapp.mail.MailClient;
+import com.durys.jakub.recruitmentapp.external.mail.MailClient;
+import com.durys.jakub.recruitmentapp.external.mail.MailFactory;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationAccepted;
 import com.durys.jakub.recruitmentapp.reviewer.domain.Reviewer;
 import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerRepository;
@@ -29,6 +30,7 @@ public class CvApplicationService {
 
         reviewerRepository.load()
                 .map(Reviewer::email)
-                .subscribe(email -> System.out.printf("todo"));
+                .map(MailFactory::instance)
+                .subscribe(mailClient::send);
     }
 }
