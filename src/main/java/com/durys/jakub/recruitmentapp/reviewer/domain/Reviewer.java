@@ -6,4 +6,5 @@ import lombok.RequiredArgsConstructor;
 public class Reviewer {
 
     private final ReviewerId reviewerId;
+    private final String name;
 }
