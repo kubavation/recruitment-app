@@ -4,7 +4,10 @@ import com.durys.jakub.recruitmentapp.cv.domain.Cv;
 import com.durys.jakub.recruitmentapp.cv.domain.CvId;
 import com.durys.jakub.recruitmentapp.cv.domain.CvRepository;
 import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
+import com.durys.jakub.recruitmentapp.mail.MailClient;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationAccepted;
+import com.durys.jakub.recruitmentapp.reviewer.domain.Reviewer;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 
@@ -15,6 +18,8 @@ import java.util.UUID;
 public class CvApplicationService {
 
     private final CvRepository cvRepository;
+    private final ReviewerRepository reviewerRepository;
+    private final MailClient mailClient;
 
     @EventListener
     public void onAcceptedRegistration(RegistrationAccepted event) {
@@ -22,6 +27,8 @@ public class CvApplicationService {
         Cv cv = new Cv(new CvId(UUID.randomUUID()), event.registrationId());
         cvRepository.save(cv);
 
-        //todo notification for reviewers
+        reviewerRepository.load()
+                .map(Reviewer::email)
+                .subscribe(email -> System.out.printf("todo"));
     }
 }
