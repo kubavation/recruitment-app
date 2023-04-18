@@ -7,4 +7,5 @@ public class Reviewer {
 
     private final ReviewerId reviewerId;
     private final String name;
+    private final String email;
 }
