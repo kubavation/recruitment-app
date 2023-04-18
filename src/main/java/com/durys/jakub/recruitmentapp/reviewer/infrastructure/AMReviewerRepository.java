@@ -15,11 +15,19 @@ public class AMReviewerRepository implements ReviewerRepository {
 
     @Override
     public Flux<Reviewer> load() {
-        return Flux.just();
+       return client
+            .get()
+            .uri("/roles/REVIEWER/users")
+            .retrieve()
+            .bodyToFlux(Reviewer.class);
     }
 
     @Override
     public Mono<Reviewer> load(ReviewerId reviewerId) {
-        return Mono.empty();
+        return client
+                .get()
+                .uri("/users/%s".formatted(String.valueOf(reviewerId.tenantId())))
+                .retrieve()
+                .bodyToMono(Reviewer.class);
     }
 }
