@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.mail;
+package com.durys.jakub.recruitmentapp.external.mail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

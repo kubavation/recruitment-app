@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.notification;
+package com.durys.jakub.recruitmentapp.external.notification;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
