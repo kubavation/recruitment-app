@@ -48,4 +48,9 @@ public class Registration {
 
     }
 
+    public String applicantEmail() {
+        return applicantInformation.email();
+    }
+
+
 }
