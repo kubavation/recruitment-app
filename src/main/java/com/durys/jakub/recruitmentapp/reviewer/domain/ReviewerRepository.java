@@ -1,9 +1,10 @@
 package com.durys.jakub.recruitmentapp.reviewer.domain;
 
-import java.util.Collection;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 public interface ReviewerRepository {
-    Collection<Reviewer> load();
-    Optional<Reviewer> load(ReviewerId reviewerId);
+    Flux<Reviewer> load();
+    Mono<Reviewer> load(ReviewerId reviewerId);
 }
