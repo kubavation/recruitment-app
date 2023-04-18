@@ -12,18 +12,18 @@ public class ReviewerConfiguration {
 
     @Bean
     @LoadBalanced
-    public WebClient.Builder loadBalancedWebClientBuilder() {
+    WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
     }
 
     @Bean
-    WebClient webClient(WebClient.Builder builder, @Value("${am-service-url}") String amServiceUrl) {
+    WebClient accessManagementWebClient(WebClient.Builder builder, @Value("${am-service-url}") String amServiceUrl) {
         return builder
                 .baseUrl(amServiceUrl).build();
     }
 
     @Bean
-    public ReviewerRepository reviewerRepository() {
-        return new AMReviewerRepository(WebClient.builder().build());
+    public ReviewerRepository reviewerRepository(WebClient accessManagementWebClient) {
+        return new AMReviewerRepository(accessManagementWebClient);
     }
 }
