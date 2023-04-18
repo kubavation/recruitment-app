@@ -6,6 +6,12 @@ spring:
   cloud:
     config:
       label: master
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/company-management
+    username: postgres
+    password: root
 eureka:
   client:
     serviceUrl:
