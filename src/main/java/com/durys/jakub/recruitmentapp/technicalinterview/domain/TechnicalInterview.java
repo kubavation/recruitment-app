@@ -15,17 +15,20 @@ public class TechnicalInterview {
     private final InterviewAcceptanceLevel acceptanceLevel;
     private final Set<Opinion> opinions = new HashSet<>();
 
-    public void accept(ReviewerId reviewerId, String opinion) {
+    public TechnicalInterview accept(ReviewerId reviewerId, String opinion) {
         opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.ACCEPTED));
 
         if (opinions.size() >= acceptanceLevel.val()) {
             //todo markAsAccepted
         }
+
+        return this;
     }
 
-    public void decline(ReviewerId reviewerId, String opinion) {
+    public TechnicalInterview decline(ReviewerId reviewerId, String opinion) {
         opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.DECLINED));
         //todo markAsDeclined
+        return this;
     }
 
 }
