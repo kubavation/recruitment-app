@@ -27,4 +27,14 @@ public class TechnicalInterviewApplicationService {
 
     }
 
+    public void addNegativeOpinion(UUID interviewId, UUID reviewerId, String opinion) {
+
+        TechnicalInterview technicalInterview = interviewRepository.load(new TechnicalInterviewId(interviewId))
+                .orElseThrow(RuntimeException::new); //todo
+
+        reviewerRepository.load(new ReviewerId(reviewerId))
+                .subscribe(reviewer -> reviewer.leaveNegativeOpinion(technicalInterview, opinion));
+
+    }
+
 }
