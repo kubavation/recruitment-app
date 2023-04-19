@@ -1,12 +1,12 @@
-package com.durys.jakub.recruitmentapp.interview.domain;
+package com.durys.jakub.recruitmentapp.technicalinterview.domain;
 
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Interview {
+public class TechnicalInterview {
 
-    private final InterviewId interviewId;
+    private final TechnicalInterviewId technicalInterviewId;
     private final RegistrationId registrationId;
 
 }
