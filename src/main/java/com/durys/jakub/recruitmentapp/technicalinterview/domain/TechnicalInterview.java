@@ -16,7 +16,7 @@ public class TechnicalInterview {
     private final Set<Opinion> opinions = new HashSet<>();
 
     public TechnicalInterview accept(ReviewerId reviewerId, String opinion) {
-        opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.ACCEPTED));
+        add(new Opinion(reviewerId, opinion, Opinion.Status.ACCEPTED));
 
         if (opinions.size() >= acceptanceLevel.val()) {
             //todo markAsAccepted
@@ -26,9 +26,13 @@ public class TechnicalInterview {
     }
 
     public TechnicalInterview decline(ReviewerId reviewerId, String opinion) {
-        opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.DECLINED));
+        add(new Opinion(reviewerId, opinion, Opinion.Status.DECLINED));
         //todo markAsDeclined
         return this;
+    }
+
+    private void add(Opinion opinion) {
+        opinions.add(opinion)
     }
 
 }
