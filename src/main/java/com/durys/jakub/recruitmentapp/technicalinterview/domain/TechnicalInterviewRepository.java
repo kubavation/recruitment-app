@@ -4,5 +4,5 @@ import reactor.core.publisher.Mono;
 
 public interface TechnicalInterviewRepository {
     Mono<TechnicalInterview> load(TechnicalInterviewId id);
-    Mono<Void> save(TechnicalInterview interview);
+    Mono<TechnicalInterview> save(TechnicalInterview interview);
 }
