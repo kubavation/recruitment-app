@@ -27,14 +27,13 @@ public class TechnicalInterviewApplicationService {
                         .flatMap(interviewRepository::save);
     }
 
-    public void addNegativeOpinion(UUID interviewId, UUID reviewerId, String opinion) {
+    public Mono<Void> addNegativeOpinion(UUID interviewId, UUID reviewerId, String opinion) {
 
-        TechnicalInterview technicalInterview = interviewRepository.load(new TechnicalInterviewId(interviewId))
-                .orElseThrow(RuntimeException::new); //todo
-
-        reviewerRepository.load(new ReviewerId(reviewerId))
-                .subscribe(reviewer -> reviewer.leaveNegativeOpinion(technicalInterview, opinion));
-
+        return interviewRepository
+                .load(new TechnicalInterviewId(interviewId))
+                .zipWith(reviewerRepository.load(new ReviewerId(reviewerId)))
+                .flatMap(t -> t.getT2().leaveNegativeOpinion(t.getT1(), opinion))
+                .flatMap(interviewRepository::save);
     }
 
 }
