@@ -18,7 +18,7 @@ public class TechnicalInterview {
     public TechnicalInterview accept(ReviewerId reviewerId, String opinion) {
         add(new Opinion(reviewerId, opinion, Opinion.Status.ACCEPTED));
 
-        if (opinions.size() >= acceptanceLevel.val()) {
+        if (accepted()) {
             //todo markAsAccepted
         }
 
@@ -32,7 +32,11 @@ public class TechnicalInterview {
     }
 
     private void add(Opinion opinion) {
-        opinions.add(opinion)
+        opinions.add(opinion);
+    }
+
+    private boolean accepted() {
+        return opinions.size() >= acceptanceLevel.val();
     }
 
 }
