@@ -17,10 +17,15 @@ public class TechnicalInterview {
 
     public void accept(ReviewerId reviewerId, String opinion) {
         opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.ACCEPTED));
+
+        if (opinions.size() >= acceptanceLevel.val()) {
+            //todo markAsAccepted
+        }
     }
 
     public void decline(ReviewerId reviewerId, String opinion) {
         opinions.add(new Opinion(reviewerId, opinion, Opinion.Status.DECLINED));
+        //todo markAsDeclined
     }
-    
+
 }
