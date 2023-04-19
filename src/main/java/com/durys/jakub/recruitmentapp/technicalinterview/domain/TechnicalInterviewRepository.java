@@ -1,8 +1,8 @@
 package com.durys.jakub.recruitmentapp.technicalinterview.domain;
 
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 public interface TechnicalInterviewRepository {
-    Optional<TechnicalInterview> load(TechnicalInterviewId id);
-    void save(TechnicalInterview interview);
+    Mono<TechnicalInterview> load(TechnicalInterviewId id);
+    Mono<Void> save(TechnicalInterview interview);
 }
