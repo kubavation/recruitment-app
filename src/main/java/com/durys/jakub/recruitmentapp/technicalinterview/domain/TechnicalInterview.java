@@ -8,5 +8,6 @@ public class TechnicalInterview {
 
     private final TechnicalInterviewId technicalInterviewId;
     private final RegistrationId registrationId;
+    private final InterviewAcceptanceLevel acceptanceLevel;
 
 }
