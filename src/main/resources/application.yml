@@ -16,4 +16,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8777/eureka/
-am-service-url: http://ACCESS-MANAGEMENT
+am-service-url: http://ACCESS-MANAGEMENT/api
