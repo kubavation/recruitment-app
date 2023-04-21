@@ -17,7 +17,7 @@ public class AMReviewerRepository implements ReviewerRepository {
     public Flux<Reviewer> load() {
        return client
             .get()
-            .uri("/roles/REVIEWER/users")
+            .uri("/users/roles/REVIEWER")
             .retrieve()
             .bodyToFlux(Reviewer.class);
     }
