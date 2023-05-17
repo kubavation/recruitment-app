@@ -19,3 +19,8 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8777/eureka/
 am-service-url: http://ACCESS-MANAGEMENT/api
+
+export:
+  registration-statistics:
+    enabled: true
+    cron: 0 0 23 * * *
