@@ -19,4 +19,8 @@ class JdbcOfferRepository implements OfferRepository {
     public Offer save(Offer offer) {
         return offer;
     }
+
+
+
+
 }
