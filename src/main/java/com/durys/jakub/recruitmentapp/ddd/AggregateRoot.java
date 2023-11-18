@@ -17,7 +17,7 @@ public abstract class AggregateRoot {
         this.domainEvents = new ArrayList<>();
     }
 
-    public void add(DomainEvent event) {
+    public void addEvent(DomainEvent event) {
         domainEvents.add(event);
     }
 

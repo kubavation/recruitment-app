@@ -6,10 +6,10 @@ public class OfferFactory {
 
     public static Offer create(String position, String description, Integer applicantLimit, LocalDate from, LocalDate to) {
         return new Offer(
-            new Position(position),
-            new Description(description),
-            new ApplicantLimit(applicantLimit),
-            new OfferPeriod(from, to)
+                new Position(position),
+                new Description(description),
+                new ApplicantLimit(applicantLimit),
+                new OfferPeriod(from, to)
         );
     }
 

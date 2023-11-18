@@ -24,7 +24,7 @@ public class Offer extends AggregateRoot {
     private final OfferPeriod period;
     private Status state;
 
-    Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period, Status state) {
+    public Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period, Status state) {
         this.offerId = offerId;
         this.position = position;
         this.description = description;
@@ -34,7 +34,14 @@ public class Offer extends AggregateRoot {
     }
 
     Offer(Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
+
         this(new Offer.Id(UUID.randomUUID()), position, description, limit, period, Status.New);
+
+        addEvent(
+                new OfferAdded(
+                        id().value(), position().name(), description().value(),
+                        limit().value(), period().from(), period().to())
+        );
     }
 
     public OfferPublished publish() {
@@ -63,9 +70,23 @@ public class Offer extends AggregateRoot {
         return offerId;
     }
 
-
     public Status state() {
         return state;
     }
 
+    Position position() {
+        return position;
+    }
+
+    Description description() {
+        return description;
+    }
+
+    ApplicantLimit limit() {
+        return limit;
+    }
+
+    OfferPeriod period() {
+        return period;
+    }
 }
