@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.offer.infrastructure.persistance;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,6 +25,8 @@ public class OfferEntity {
     private LocalDate from;
     private LocalDate to;
     private String state;
+
+    @Column(name = "CLOSED_AT")
     private LocalDateTime closedAt;
 
     public OfferEntity(UUID id, String position, String description, Integer limit, LocalDate from, LocalDate to, String state) {
