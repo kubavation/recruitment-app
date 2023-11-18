@@ -2,8 +2,7 @@ package com.durys.jakub.recruitmentapp.offer.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
+import static com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

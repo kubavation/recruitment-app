@@ -7,8 +7,8 @@ import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.offer.domain.command.AddOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.CloseOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.PublishOfferCommand;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
+
+import static com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
 
 @ApplicationService
 public class OfferApplicationService {

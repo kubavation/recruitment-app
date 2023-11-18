@@ -1,13 +1,12 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import static com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
