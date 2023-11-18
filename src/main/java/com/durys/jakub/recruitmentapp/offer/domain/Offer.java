@@ -1,5 +1,7 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 
@@ -7,10 +9,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Offer {
+public class Offer extends AggregateRoot {
 
 
-    public record Id(UUID value) { }
+    public record Id(UUID value) {}
 
     public enum Status {
         New, Published, Closed
@@ -39,7 +41,7 @@ public class Offer {
     public OfferPublished publish() {
 
         if (state == Status.Published) {
-            throw new RuntimeException("Offer cannot be published");
+            throw new InvalidStateForOperationException("Offer cannot be published");
         }
 
         this.state = Status.Published;
@@ -51,7 +53,7 @@ public class Offer {
     public OfferClosed close(LocalDateTime closedAt) {
 
         if (state == Status.Closed) {
-            throw new RuntimeException("Offer cannot be closed");
+            throw new InvalidStateForOperationException("Offer cannot be closed");
         }
 
         this.state = Status.Closed;

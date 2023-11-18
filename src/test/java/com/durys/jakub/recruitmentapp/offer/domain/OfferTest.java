@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ class OfferTest {
         Offer offer = new Offer(new Offer.Id(UUID.randomUUID()), new Position("IT specialist"), new Description("Description"),
                 new ApplicantLimit(2), new OfferPeriod(LocalDate.now(), null), Offer.Status.Published);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, offer::publish);
+        InvalidStateForOperationException exception = assertThrows(InvalidStateForOperationException.class, offer::publish);
         assertThat(exception.getMessage()).isEqualTo("Offer cannot be published");
     }
 
@@ -54,7 +55,7 @@ class OfferTest {
                 new ApplicantLimit(2), new OfferPeriod(LocalDate.now(), null), Offer.Status.Closed);
         LocalDateTime closedAt = LocalDateTime.now();
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> offer.close(closedAt));
+        InvalidStateForOperationException exception = assertThrows(InvalidStateForOperationException.class, () -> offer.close(closedAt));
         assertThat(exception.getMessage()).isEqualTo("Offer cannot be closed");
     }
 
