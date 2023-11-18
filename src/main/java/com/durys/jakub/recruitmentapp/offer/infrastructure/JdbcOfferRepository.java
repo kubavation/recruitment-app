@@ -16,7 +16,7 @@ class JdbcOfferRepository implements OfferRepository {
     }
 
     @Override
-    public void save(Offer offer) {
-
+    public Offer save(Offer offer) {
+        return offer;
     }
 }
