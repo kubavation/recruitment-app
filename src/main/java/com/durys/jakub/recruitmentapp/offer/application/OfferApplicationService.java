@@ -18,14 +18,14 @@ public class OfferApplicationService {
 
     public void addOffer(String position, String description, Integer applicantLimit, LocalDate from, LocalDate to) {
 
-        Offer offer = new Offer(
-                new OfferId(identityProvider.identity()),
-                new Position(position),
-                new Description(description),
-                new ApplicantLimit(applicantLimit),
-                new OfferPeriod(from, to));
-
-        offerRepository.save(offer);
+//        Offer offer = new Offer(
+//                new OfferId(identityProvider.identity()),
+//                new Position(position),
+//                new Description(description),
+//                new ApplicantLimit(applicantLimit),
+//                new OfferPeriod(from, to));
+//
+//        offerRepository.save(offer);
     }
 
     public void activateOffer(UUID offerId) {
