@@ -3,7 +3,7 @@ package com.durys.jakub.recruitmentapp.offer.infrastructure.persistance;
 import com.durys.jakub.recruitmentapp.events.EventHandler;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent;
-import com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.OfferAdded;
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ class OrderEventHandler implements EventHandler<OfferEvent> {
 
         switch (offerEvent) {
             case OfferAdded added -> handle(added);
+            case OfferPublished published -> handle(published);
             default -> log.warn("Unsupported event {}", offerEvent);
         }
     }
@@ -35,5 +36,11 @@ class OrderEventHandler implements EventHandler<OfferEvent> {
                 event.from(), event.to(), Offer.Status.New.name());
 
         entityManager.persist(entity);
+    }
+
+    private void handle(OfferPublished event) {
+
+        OfferEntity entity = entityManager.find(OfferEntity.class, event.offerId());
+        entity.setState(Offer.Status.Published.name());
     }
 }
