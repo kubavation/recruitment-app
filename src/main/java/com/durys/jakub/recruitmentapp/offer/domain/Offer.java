@@ -44,7 +44,7 @@ public class Offer extends AggregateRoot {
         );
     }
 
-    public OfferPublished publish() {
+    public void publish() {
 
         if (state == Status.Published) {
             throw new InvalidStateForOperationException("Offer cannot be published");
@@ -52,18 +52,18 @@ public class Offer extends AggregateRoot {
 
         this.state = Status.Published;
 
-        return new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value);
+        addEvent(new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value));
     }
 
 
-    public OfferClosed close(LocalDateTime closedAt) {
+    public void close(LocalDateTime closedAt) {
 
         if (state == Status.Closed) {
             throw new InvalidStateForOperationException("Offer cannot be closed");
         }
 
         this.state = Status.Closed;
-        return new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt);
+        addEvent(new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt));
     }
 
     public Id id() {

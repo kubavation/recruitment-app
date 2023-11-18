@@ -19,8 +19,8 @@ class OfferTest {
         Offer offer = new Offer(new Offer.Id(UUID.randomUUID()), new Position("IT specialist"), new Description("Description"),
                 new ApplicantLimit(2), new OfferPeriod(LocalDate.now(), null), Offer.Status.New);
 
-        OfferPublished event = offer.publish();
-        assertThat(new Offer.Id(event.offerId())).isEqualTo(offer.id());
+        offer.publish();
+        assertTrue(offer.domainEvents().stream().anyMatch(event -> event instanceof OfferPublished));
         assertThat(offer.state()).isEqualTo(Offer.Status.Published);
     }
 
@@ -42,8 +42,8 @@ class OfferTest {
                 new ApplicantLimit(2), new OfferPeriod(LocalDate.now(), null), Offer.Status.Published);
         LocalDateTime closedAt = LocalDateTime.now();
 
-        OfferClosed event = offer.close(closedAt);
-        assertThat(new Offer.Id(event.offerId())).isEqualTo(offer.id());
+        offer.close(closedAt);
+        assertTrue(offer.domainEvents().stream().anyMatch(event -> event instanceof OfferClosed));
         assertThat(offer.state()).isEqualTo(Offer.Status.Closed);
     }
 

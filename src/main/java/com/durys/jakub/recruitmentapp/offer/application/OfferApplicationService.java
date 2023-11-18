@@ -8,8 +8,6 @@ import com.durys.jakub.recruitmentapp.offer.domain.command.AddOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.CloseOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.PublishOfferCommand;
 
-import static com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
-
 @ApplicationService
 public class OfferApplicationService {
 
@@ -32,7 +30,7 @@ public class OfferApplicationService {
 
         Offer offer = offerRepository.load(command.offerId());
 
-        OfferClosed event = offer.close(command.at()); //todo
+        offer.close(command.at());
         offerRepository.save(offer);
     }
 
@@ -40,7 +38,7 @@ public class OfferApplicationService {
 
         Offer offer = offerRepository.load(command.offerId());
 
-        OfferPublished event = offer.publish(); //todo
+        offer.publish();
         offerRepository.save(offer);
     }
 }
