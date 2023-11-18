@@ -26,6 +26,7 @@ class OrderEventHandler implements EventHandler<OfferEvent> {
         switch (offerEvent) {
             case OfferAdded added -> handle(added);
             case OfferPublished published -> handle(published);
+            case OfferClosed closed -> handle(closed);
             default -> log.warn("Unsupported event {}", offerEvent);
         }
     }
@@ -39,8 +40,13 @@ class OrderEventHandler implements EventHandler<OfferEvent> {
     }
 
     private void handle(OfferPublished event) {
-
         OfferEntity entity = entityManager.find(OfferEntity.class, event.offerId());
         entity.setState(Offer.Status.Published.name());
+    }
+
+    private void handle(OfferClosed event) {
+        OfferEntity entity = entityManager.find(OfferEntity.class, event.offerId());
+        entity.setState(Offer.Status.Closed.name());
+        entity.setClosedAt(event.closedAt());
     }
 }

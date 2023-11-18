@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Table(name = "OFFER")
@@ -23,6 +24,7 @@ public class OfferEntity {
     private LocalDate from;
     private LocalDate to;
     private String state;
+    private LocalDateTime closedAt;
 
     public OfferEntity(UUID id, String position, String description, Integer limit, LocalDate from, LocalDate to, String state) {
         this.id = id;

@@ -62,4 +62,25 @@ class OrderEventHandlerTest {
         assertEquals(Offer.Status.Published.name(), entityManager.find(OfferEntity.class, id).getState());
     }
 
+    @Test
+    @Transactional
+    void shouldChangeStateOfOfferEntityToClosed() {
+
+        var id = UUID.randomUUID();
+        var closedAt = LocalDate.of(2023, 10, 10).atStartOfDay();
+
+        OfferEntity entity = new OfferEntity(id, "IT specialist", "Description",
+                1, LocalDate.of(2023, 1, 1), null, Offer.Status.New.name());
+        entityManager.persist(entity);
+
+        var event = new OfferEvent.OfferClosed(id, closedAt);
+
+        orderEventHandler.handle(event);
+
+        var loaded = entityManager.find(OfferEntity.class, id);
+
+        assertEquals(Offer.Status.Closed.name(), loaded.getState());
+        assertEquals(closedAt, loaded.getClosedAt());
+    }
+
 }
