@@ -29,8 +29,8 @@ public class Offer {
         this.state = state;
     }
 
-    Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
-        this(offerId, position, description, limit, period, Status.New);
+    Offer(Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
+        this(new Offer.Id(UUID.randomUUID()), position, description, limit, period, Status.New);
     }
 
     public OfferPublished publish() {
@@ -43,5 +43,11 @@ public class Offer {
 
         return new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value);
     }
+
+
+    public Id id() {
+        return offerId;
+    }
+
 
 }
