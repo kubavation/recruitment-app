@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 
 class OfferApplicationServiceTest {
 
-
     private OfferRepository offerRepository = Mockito.mock(OfferRepository.class);
 
     private final OfferApplicationService offerApplicationService = new OfferApplicationService(offerRepository);
