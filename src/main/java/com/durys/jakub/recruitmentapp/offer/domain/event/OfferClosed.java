@@ -7,4 +7,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record OfferClosed(UUID id, Instant at, UUID offerId, LocalDateTime closedAt) implements DomainEvent {
+
+    public OfferClosed(UUID offerId, LocalDateTime closedAt) {
+        this(UUID.randomUUID(), Instant.now(), offerId, closedAt);
+    }
 }

@@ -11,7 +11,7 @@ public class JdbcOfferRepository implements OfferRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Offer load(OfferId offerId) {
+    public Offer load(Offer.Id offerId) {
         return null;
     }
 

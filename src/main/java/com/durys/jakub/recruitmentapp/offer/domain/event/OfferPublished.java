@@ -6,4 +6,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record OfferPublished(UUID id, Instant at, UUID offerId) implements DomainEvent {
+
+    public OfferPublished(UUID offerId) {
+        this(UUID.randomUUID(), Instant.now(), offerId);
+    }
 }
