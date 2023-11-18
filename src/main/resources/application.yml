@@ -8,12 +8,23 @@ spring:
   cloud:
     config:
       label: master
-  jpa:
-    show-sql: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/company-management
+#    username: postgres
+#    password: root
   datasource:
-    url: jdbc:postgresql://localhost:5432/company-management
-    username: postgres
-    password: root
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
 eureka:
   client:
     serviceUrl:
