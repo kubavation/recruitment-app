@@ -8,19 +8,42 @@ spring:
   cloud:
     config:
       label: master
-  jpa:
-    show-sql: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/company-management
+#    username: postgres
+#    password: root
   datasource:
-    url: jdbc:postgresql://localhost:5432/company-management
-    username: postgres
-    password: root
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+
+  h2:
+    console:
+      enabled: true
+
 eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8777/eureka/
+    enabled: false
 am-service-url: http://ACCESS-MANAGEMENT/api
 
 export:
   registration-statistics:
     enabled: true
     cron: 0 0 23 * * *
+
+q:
+  mail-queue: todo-fix
+queue:
+  notification: todo-fix

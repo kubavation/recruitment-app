@@ -4,20 +4,20 @@ import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 
 import java.util.Objects;
 
-record ApplicantLimit(Integer limit) {
+record ApplicantLimit(Integer value) {
 
     ApplicantLimit {
-        test(limit);
+        test(value);
     }
 
     static void test(Integer limit) {
 
         if (Objects.isNull(limit)) {
-            throw new ValidationException("Applicant limit cannot be empty");
+            throw new ValidationException("Applicant value cannot be empty");
         }
 
         if (limit <= 0) {
-            throw new ValidationException("Applicant limit cannot be less than 1");
+            throw new ValidationException("Applicant value cannot be less than 1");
         }
 
     }

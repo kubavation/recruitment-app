@@ -17,7 +17,7 @@ class ApplicantLimitTest {
     void shouldNotCreateApplicantLimit_whenLimitIsEmpty() {
 
         ValidationException exception = assertThrows(ValidationException.class, () -> new ApplicantLimit(null));
-        assertThat(exception.getMessage()).isEqualTo("Applicant limit cannot be empty");
+        assertThat(exception.getMessage()).isEqualTo("Applicant value cannot be empty");
     }
 
 
@@ -25,7 +25,7 @@ class ApplicantLimitTest {
     void shouldNotCreateApplicantLimit_whenLimitIsLessThanOne() {
 
         ValidationException exception = assertThrows(ValidationException.class, () -> new ApplicantLimit(0));
-        assertThat(exception.getMessage()).isEqualTo("Applicant limit cannot be less than 1");
+        assertThat(exception.getMessage()).isEqualTo("Applicant value cannot be less than 1");
     }
 
 
