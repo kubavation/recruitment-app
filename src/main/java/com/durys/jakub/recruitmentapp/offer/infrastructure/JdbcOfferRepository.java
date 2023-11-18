@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @RequiredArgsConstructor
-public class JdbcOfferRepository implements OfferRepository {
+class JdbcOfferRepository implements OfferRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
