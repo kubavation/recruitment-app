@@ -11,7 +11,7 @@ record OfferPeriod(LocalDate from, LocalDate to) {
         test(from, to);
     }
 
-    static void test(LocalDate from, LocalDate to) { //todo validationHandler
+    static void test(LocalDate from, LocalDate to) {
 
         if (Objects.isNull(from)) {
             throw new ValidationException("Date from cannot be empty");

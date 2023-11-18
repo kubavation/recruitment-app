@@ -1,5 +1,8 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
+
+import java.time.Instant;
 import java.util.UUID;
 
 public class Offer {
@@ -29,4 +32,16 @@ public class Offer {
     Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
         this(offerId, position, description, limit, period, Status.New);
     }
+
+    public OfferPublished publish() {
+
+        if (state == Status.Published) {
+            throw new RuntimeException("Offer cannot be published");
+        }
+
+        this.state = Status.Published;
+
+        return new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value);
+    }
+
 }
