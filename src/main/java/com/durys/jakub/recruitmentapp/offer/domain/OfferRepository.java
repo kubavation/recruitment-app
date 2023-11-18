@@ -1,6 +1,8 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
-public interface OfferRepository {
-    Offer load(OfferId offerId);
-    void save(Offer offer);
+import com.durys.jakub.recruitmentapp.ddd.DomainRepository;
+
+public interface OfferRepository extends DomainRepository<Offer> {
+    Offer load(Offer.Id offerId);
+    Offer save(Offer offer);
 }

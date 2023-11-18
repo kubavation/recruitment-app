@@ -1,15 +1,24 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
-import lombok.NonNull;
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 
-public record ApplicantLimit(Integer limit) {
+import java.util.Objects;
 
-    public ApplicantLimit(@NonNull Integer limit) {
+record ApplicantLimit(Integer limit) {
 
-        if (limit < 0) {
-            throw new RuntimeException("Invalid argument");
+    ApplicantLimit {
+        test(limit);
+    }
+
+    static void test(Integer limit) {
+
+        if (Objects.isNull(limit)) {
+            throw new ValidationException("Applicant limit cannot be empty");
         }
 
-        this.limit = limit;
+        if (limit <= 0) {
+            throw new ValidationException("Applicant limit cannot be less than 1");
+        }
+
     }
 }

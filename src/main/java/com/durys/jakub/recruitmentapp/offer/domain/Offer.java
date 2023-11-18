@@ -1,44 +1,72 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
-import lombok.Getter;
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 
-@Getter
-public class Offer {
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class Offer extends AggregateRoot {
+
+
+    public record Id(UUID value) {}
 
     public enum Status {
-        NEW, ACTIVE, INACTIVE
+        New, Published, Closed
     }
 
-    private final OfferId offerId;
+    private final Id offerId;
     private final Position position;
     private final Description description;
     private final ApplicantLimit limit;
     private final OfferPeriod period;
-    private Status status;
+    private Status state;
 
-    public Offer(OfferId offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
+    Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period, Status state) {
         this.offerId = offerId;
         this.position = position;
         this.description = description;
         this.limit = limit;
         this.period = period;
-        this.status = Status.NEW;
+        this.state = state;
     }
 
-    public Offer(OfferId offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period, Status status) {
-        this.offerId = offerId;
-        this.position = position;
-        this.description = description;
-        this.limit = limit;
-        this.period = period;
-        this.status = status;
+    Offer(Position position, Description description, ApplicantLimit limit, OfferPeriod period) {
+        this(new Offer.Id(UUID.randomUUID()), position, description, limit, period, Status.New);
     }
 
-    public void activate() {
-        this.status = Status.ACTIVE;
+    public OfferPublished publish() {
+
+        if (state == Status.Published) {
+            throw new InvalidStateForOperationException("Offer cannot be published");
+        }
+
+        this.state = Status.Published;
+
+        return new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value);
     }
 
-    public void deactivate() {
-        this.status = Status.INACTIVE;
+
+    public OfferClosed close(LocalDateTime closedAt) {
+
+        if (state == Status.Closed) {
+            throw new InvalidStateForOperationException("Offer cannot be closed");
+        }
+
+        this.state = Status.Closed;
+        return new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt);
     }
+
+    public Id id() {
+        return offerId;
+    }
+
+
+    public Status state() {
+        return state;
+    }
+
 }

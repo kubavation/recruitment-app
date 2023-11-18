@@ -3,7 +3,7 @@ package com.durys.jakub.recruitmentapp.cv.application;
 import com.durys.jakub.recruitmentapp.cv.domain.Cv;
 import com.durys.jakub.recruitmentapp.cv.domain.CvId;
 import com.durys.jakub.recruitmentapp.cv.domain.CvRepository;
-import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
+import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.external.mail.MailClient;
 import com.durys.jakub.recruitmentapp.external.mail.MailFactory;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationAccepted;

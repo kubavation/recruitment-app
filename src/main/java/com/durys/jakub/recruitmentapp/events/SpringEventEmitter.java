@@ -1,6 +1,5 @@
 package com.durys.jakub.recruitmentapp.events;
 
-import com.durys.jakub.recruitmentapp.ddd.annotations.events.DomainEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 

@@ -1,44 +1,46 @@
 package com.durys.jakub.recruitmentapp.offer.application;
 
-import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
-import com.durys.jakub.recruitmentapp.offer.domain.*;
-import com.durys.jakub.recruitmentapp.sharedkernel.identity.DomainIdentityProvider;
-import com.durys.jakub.recruitmentapp.sharedkernel.identity.UUIDDomainIdentityProvider;
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.UUID;
+import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
+import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.offer.domain.OfferFactory;
+import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
+import com.durys.jakub.recruitmentapp.offer.domain.command.AddOfferCommand;
+import com.durys.jakub.recruitmentapp.offer.domain.command.CloseOfferCommand;
+import com.durys.jakub.recruitmentapp.offer.domain.command.PublishOfferCommand;
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 
 @ApplicationService
-@RequiredArgsConstructor
 public class OfferApplicationService {
 
     private final OfferRepository offerRepository;
-    private final DomainIdentityProvider<UUID> identityProvider = new UUIDDomainIdentityProvider();
 
-    public void addOffer(String position, String description, Integer applicantLimit, LocalDate from, LocalDate to) {
+    public OfferApplicationService(OfferRepository offerRepository) {
+        this.offerRepository = offerRepository;
+    }
 
-        Offer offer = new Offer(
-                new OfferId(identityProvider.identity()),
-                new Position(position),
-                new Description(description),
-                new ApplicantLimit(applicantLimit),
-                new OfferPeriod(from, to));
+
+    void handle(AddOfferCommand command) {
+
+        Offer offer = OfferFactory.create(command.position(), command.description(),
+                command.applicantLimit(), command.from(), command.to());
 
         offerRepository.save(offer);
     }
 
-    public void activateOffer(UUID offerId) {
-        Offer offer = offerRepository.load(new OfferId(offerId));
-        offer.activate();
+    void handle(CloseOfferCommand command) {
+
+        Offer offer = offerRepository.load(command.offerId());
+
+        OfferClosed event = offer.close(command.at()); //todo
         offerRepository.save(offer);
     }
 
-    public void deactivateOffer(UUID offerId) {
-        Offer offer = offerRepository.load(new OfferId(offerId));
-        offer.deactivate();
+    void handle(PublishOfferCommand command) {
+
+        Offer offer = offerRepository.load(command.offerId());
+
+        OfferPublished event = offer.publish(); //todo
         offerRepository.save(offer);
     }
-
-
 }
