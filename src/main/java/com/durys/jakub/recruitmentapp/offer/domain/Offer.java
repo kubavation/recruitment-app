@@ -1,11 +1,14 @@
 package com.durys.jakub.recruitmentapp.offer.domain;
 
+import com.durys.jakub.recruitmentapp.offer.domain.event.OfferClosed;
 import com.durys.jakub.recruitmentapp.offer.domain.event.OfferPublished;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Offer {
+
 
     public record Id(UUID value) { }
 
@@ -44,6 +47,16 @@ public class Offer {
         return new OfferPublished(UUID.randomUUID(), Instant.now(), offerId.value);
     }
 
+
+    public OfferClosed close(LocalDateTime closedAt) {
+
+        if (state == Status.Closed) {
+            throw new RuntimeException("Offer cannot be closed");
+        }
+
+        this.state = Status.Closed;
+        return new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt);
+    }
 
     public Id id() {
         return offerId;
