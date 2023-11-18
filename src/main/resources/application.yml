@@ -35,3 +35,8 @@ export:
   registration-statistics:
     enabled: true
     cron: 0 0 23 * * *
+
+q:
+  mail-queue: todo-fix
+queue:
+  notification: todo-fix
