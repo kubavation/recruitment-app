@@ -63,4 +63,8 @@ public class Offer {
     }
 
 
+    public Status state() {
+        return state;
+    }
+
 }

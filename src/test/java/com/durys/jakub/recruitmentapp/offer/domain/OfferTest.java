@@ -21,6 +21,7 @@ class OfferTest {
 
         OfferPublished event = offer.publish();
         assertThat(new Offer.Id(event.offerId())).isEqualTo(offer.id());
+        assertThat(offer.state()).isEqualTo(Offer.Status.Published);
     }
 
     @Test
@@ -43,6 +44,7 @@ class OfferTest {
 
         OfferClosed event = offer.close(closedAt);
         assertThat(new Offer.Id(event.offerId())).isEqualTo(offer.id());
+        assertThat(offer.state()).isEqualTo(Offer.Status.Closed);
     }
 
     @Test
