@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.technicalinterview.application;
 
-import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
+import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerRepository;
 import com.durys.jakub.recruitmentapp.technicalinterview.domain.TechnicalInterviewId;

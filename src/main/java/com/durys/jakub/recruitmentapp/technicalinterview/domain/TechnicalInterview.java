@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.technicalinterview.domain;
 
-import com.durys.jakub.recruitmentapp.ddd.annotations.events.DomainEventRegistry;
+import com.durys.jakub.recruitmentapp.events.DomainEventRegistry;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationId;
 import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import com.durys.jakub.recruitmentapp.technicalinterview.domain.event.TechnicalInterviewAccepted;

@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.offer.application;
 
-import com.durys.jakub.recruitmentapp.ddd.annotations.ApplicationService;
+import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferFactory;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;

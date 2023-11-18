@@ -1,7 +1,5 @@
-package com.durys.jakub.recruitmentapp.ddd.annotations.events;
+package com.durys.jakub.recruitmentapp.events;
 
-import com.durys.jakub.recruitmentapp.events.DomainEvent;
-import com.durys.jakub.recruitmentapp.events.EventEmitter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

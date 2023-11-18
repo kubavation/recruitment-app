@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.ddd.annotations;
+package com.durys.jakub.recruitmentapp.ddd;
 
 import org.springframework.stereotype.Component;
 
