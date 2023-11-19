@@ -24,7 +24,6 @@ class DomainEventsAspectTest {
 
 
     @Test
-    @Transactional
     void shouldEmitEvents() {
         var command = new AddOfferCommand("Position", "Description", 1,
                 LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 3));
