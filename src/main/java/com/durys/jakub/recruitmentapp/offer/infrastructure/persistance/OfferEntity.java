@@ -14,6 +14,8 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Data
+@Builder
+@AllArgsConstructor
 public class OfferEntity {
 
     @Id
