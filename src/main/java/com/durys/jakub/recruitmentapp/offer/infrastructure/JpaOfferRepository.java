@@ -5,26 +5,38 @@ import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferFactory;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
-class JdbcOfferRepository implements OfferRepository {
+class JpaOfferRepository implements OfferRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final EntityManager entityManager;
 
     @Override
     public Offer load(Offer.Id offerId) {
 
-        OfferEntity entity = jdbcTemplate
-                .queryForObject("SELECT * FROM OFFER WHERE ID = " + offerId.value(), OfferEntity.class);
+        OfferEntity entity = entityManager.find(OfferEntity.class, offerId.value());
+
+        if (Objects.isNull(entity)) {
+            throw new RuntimeException("Entity not found");
+        }
 
         return new OfferAssembler().toAggregate(entity);
     }
 
     @Override
     public Offer save(Offer offer) {
-        return offer;
+
+        OfferAssembler assembler = new OfferAssembler();
+
+        OfferEntity entity = assembler.toModel(offer);
+
+        entityManager.persist(entity);
+
+        return assembler.toAggregate(entity);
     }
 
 
@@ -39,7 +51,15 @@ class JdbcOfferRepository implements OfferRepository {
 
         @Override
         public OfferEntity toModel(Offer aggregate) {
-            return null; //todo
+            return OfferEntity.builder()
+                    .id(aggregate.id().value())
+                    .limit(aggregate.limit())
+                    .position(aggregate.position())
+                    .description(aggregate.description())
+                    .from(aggregate.from())
+                    .to(aggregate.to())
+                    .state(aggregate.state().name())
+                    .build();
         }
     }
 

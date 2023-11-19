@@ -5,6 +5,7 @@ import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import static com.durys.jakub.recruitmentapp.offer.domain.event.OfferEvent.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -39,8 +40,8 @@ public class Offer extends AggregateRoot {
 
         addEvent(
                 new OfferAdded(
-                        id().value(), position().name(), description().value(),
-                        limit().value(), period().from(), period().to())
+                        id().value(), position(), description(),
+                        limit(), from(), to())
         );
     }
 
@@ -74,19 +75,23 @@ public class Offer extends AggregateRoot {
         return state;
     }
 
-    Position position() {
-        return position;
+    public String position() {
+        return position.name();
     }
 
-    Description description() {
-        return description;
+    public String description() {
+        return description.value();
     }
 
-    ApplicantLimit limit() {
-        return limit;
+    public Integer limit() {
+        return limit.value();
     }
 
-    OfferPeriod period() {
-        return period;
+    public LocalDate from() {
+        return period.from();
+    }
+
+    public LocalDate to() {
+        return period.to();
     }
 }

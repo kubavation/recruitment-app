@@ -7,6 +7,7 @@ import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.offer.domain.command.AddOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.CloseOfferCommand;
 import com.durys.jakub.recruitmentapp.offer.domain.command.PublishOfferCommand;
+import jakarta.transaction.Transactional;
 
 @ApplicationService
 public class OfferApplicationService {
@@ -18,7 +19,8 @@ public class OfferApplicationService {
     }
 
 
-    void handle(AddOfferCommand command) {
+    @Transactional
+    public void handle(AddOfferCommand command) {
 
         Offer offer = OfferFactory.create(command.position(), command.description(),
                 command.applicantLimit(), command.from(), command.to());
@@ -26,7 +28,8 @@ public class OfferApplicationService {
         offerRepository.save(offer);
     }
 
-    void handle(CloseOfferCommand command) {
+    @Transactional
+    public void handle(CloseOfferCommand command) {
 
         Offer offer = offerRepository.load(command.offerId());
 
@@ -34,7 +37,8 @@ public class OfferApplicationService {
         offerRepository.save(offer);
     }
 
-    void handle(PublishOfferCommand command) {
+    @Transactional
+    public void handle(PublishOfferCommand command) {
 
         Offer offer = offerRepository.load(command.offerId());
 
