@@ -40,8 +40,8 @@ public class Offer extends AggregateRoot {
 
         addEvent(
                 new OfferAdded(
-                        id().value(), position().name(), description().value(),
-                        limit().value(), period().from(), period().to())
+                        id().value(), position(), description(),
+                        limit(), from(), to())
         );
     }
 
