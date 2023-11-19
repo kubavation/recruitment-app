@@ -18,7 +18,7 @@ public class OfferApplicationService {
     }
 
 
-    void handle(AddOfferCommand command) {
+    public void handle(AddOfferCommand command) {
 
         Offer offer = OfferFactory.create(command.position(), command.description(),
                 command.applicantLimit(), command.from(), command.to());
@@ -26,7 +26,7 @@ public class OfferApplicationService {
         offerRepository.save(offer);
     }
 
-    void handle(CloseOfferCommand command) {
+    public void handle(CloseOfferCommand command) {
 
         Offer offer = offerRepository.load(command.offerId());
 
@@ -34,7 +34,7 @@ public class OfferApplicationService {
         offerRepository.save(offer);
     }
 
-    void handle(PublishOfferCommand command) {
+    public void handle(PublishOfferCommand command) {
 
         Offer offer = offerRepository.load(command.offerId());
 
