@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-class JdbcOfferRepository implements OfferRepository {
+class JpaOfferRepository implements OfferRepository {
 
     private final EntityManager entityManager;
 
