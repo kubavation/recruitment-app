@@ -3,7 +3,6 @@ package com.durys.jakub.recruitmentapp.cv.domain;
 import com.durys.jakub.recruitmentapp.cv.domain.events.CvAccepted;
 import com.durys.jakub.recruitmentapp.cv.domain.events.CvDeclined;
 import com.durys.jakub.recruitmentapp.events.DomainEventRegistry;
-import com.durys.jakub.recruitmentapp.registration.domain.RegistrationId;
 import lombok.AllArgsConstructor;
 
 import java.util.Collections;

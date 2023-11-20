@@ -2,7 +2,6 @@ package com.durys.jakub.recruitmentapp.cv.domain.events;
 
 import com.durys.jakub.recruitmentapp.cv.domain.CvId;
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
-import com.durys.jakub.recruitmentapp.registration.domain.RegistrationId;
 
 import java.time.Instant;
 import java.util.UUID;
