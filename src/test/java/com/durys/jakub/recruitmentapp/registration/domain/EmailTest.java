@@ -14,7 +14,7 @@ class EmailTest {
 
     @Test
     void shouldThrowExceptionWhenEmailIsEmpty() {
-        var exception = assertThrows(ValidationException.class, () -> new Email("valid@gmail.com"));
+        var exception = assertThrows(ValidationException.class, () -> new Email(""));
         assertEquals("Email cannot be empty", exception.getMessage());
     }
 

@@ -3,16 +3,16 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import org.apache.commons.lang.StringUtils;
 
-record Email(String value) {
+record PhoneNumber(String value) {
 
-    Email {
+    PhoneNumber {
         test(value);
     }
 
-    static void test(String email) {
+    static void test(String phoneNumber) {
 
-        if (StringUtils.isEmpty(email)) {
-            throw new ValidationException("Email cannot be empty");
+        if (StringUtils.isEmpty(phoneNumber)) {
+            throw new ValidationException("Phone number cannot be empty");
         }
 
         //todo additional validation
