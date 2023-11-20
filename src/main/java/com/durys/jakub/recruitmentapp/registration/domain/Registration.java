@@ -19,8 +19,9 @@ public class Registration {
     private final Offer.Id offerId;
     private final ApplicantInformation applicantInformation;
     private final Cv cv;
-
     private RegistrationStatus status;
+
+
 
 
     public void markAsRejected(String reason) {
