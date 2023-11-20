@@ -1,25 +1,28 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.events.DomainEventRegistry;
+import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationAccepted;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationDeclined;
 
+import java.util.UUID;
+
 public class Registration {
 
-    private final RegistrationId id;
-    private final OfferId offerId;
+    public record Id(UUID value) {}
+
+    public enum RegistrationStatus {
+        Submitted, Rejected, Accepted
+    }
+
+    private final Id id;
+    private final Offer.Id offerId;
     private final ApplicantInformation applicantInformation;
     private final Cv cv;
-
     private RegistrationStatus status;
 
-    public Registration(RegistrationId id, OfferId offerId, ApplicantInformation applicantInformation, Cv cv) {
-        this.id = id;
-        this.offerId = offerId;
-        this.applicantInformation = applicantInformation;
-        this.cv = cv;
-        this.status = RegistrationStatus.NEW;
-    }
+
+
 
     public void markAsRejected(String reason) {
 

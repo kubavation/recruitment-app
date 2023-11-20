@@ -2,7 +2,6 @@ package com.durys.jakub.recruitmentapp.events;
 
 import com.durys.jakub.recruitmentapp.offer.application.OfferApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.command.AddOfferCommand;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
