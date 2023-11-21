@@ -1,6 +1,8 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
-public interface RegistrationRepository {
+import com.durys.jakub.recruitmentapp.ddd.DomainRepository;
+
+public interface RegistrationRepository extends DomainRepository<Registration> {
 
     Registration load(Registration.Id id);
 

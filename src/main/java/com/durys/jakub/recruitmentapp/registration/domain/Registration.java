@@ -1,10 +1,12 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
+import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 
 import java.util.UUID;
 
-public class Registration {
+public class Registration extends AggregateRoot {
+
 
     public record Id(UUID value) {}
 
@@ -65,5 +67,9 @@ public class Registration {
         return applicantInformation.email();
     }
 
+
+    public Id id() {
+        return id;
+    }
 
 }
