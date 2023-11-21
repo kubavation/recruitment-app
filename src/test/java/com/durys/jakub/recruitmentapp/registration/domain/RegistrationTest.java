@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationApproved;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationRejected;
 import org.junit.jupiter.api.Test;
 
@@ -44,11 +45,52 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Accepted");
+                "430212343", "cv.pdf", new byte[]{}, null, "Approved");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, () -> registration.reject("Reason"));
 
         assertEquals("Registration cannot be rejected", exception.getMessage());
+    }
+
+
+
+    @Test
+    void shouldApproveRegistration() {
+
+
+        Registration registration = RegistrationFactory.create(
+                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                "430212343", "cv.pdf", new byte[]{}, null, "Submitted");
+
+        registration.approve();
+
+        assertEquals(Registration.Status.Approved, registration.state());
+        assertTrue(registration.domainEvents().stream().anyMatch(event -> event instanceof RegistrationApproved));
+    }
+
+    @Test
+    void shouldNotApprovedRegistration_whenStateIsAlreadyApproved() {
+
+        Registration registration = RegistrationFactory.create(
+                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                "430212343", "cv.pdf", new byte[]{}, null, "Approved");
+
+        RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
+
+        assertEquals("Registration cannot be approved", exception.getMessage());
+    }
+
+
+    @Test
+    void shouldNotApprovedRegistration_whenStateIsAlreadyRejected() {
+
+        Registration registration = RegistrationFactory.create(
+                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                "430212343", "cv.pdf", new byte[]{}, null, "Rejected");
+
+        RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
+
+        assertEquals("Registration cannot be approved", exception.getMessage());
     }
 
 }

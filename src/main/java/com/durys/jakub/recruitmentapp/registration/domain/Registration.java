@@ -3,6 +3,7 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationApproved;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationRejected;
 
 import java.util.UUID;
@@ -12,7 +13,7 @@ public class Registration extends AggregateRoot {
     public record Id(UUID value) {}
 
     public enum Status {
-        Submitted, Rejected, Accepted
+        Submitted, Rejected, Approved
     }
 
     private final Id id;
@@ -42,7 +43,7 @@ public class Registration extends AggregateRoot {
 
     public void reject(String reason) {
 
-        if (status == Status.Rejected || status == Status.Accepted) {
+        if (status == Status.Rejected || status == Status.Approved) {
             throw new InvalidStateForOperationException("Registration cannot be rejected");
         }
 
@@ -51,6 +52,19 @@ public class Registration extends AggregateRoot {
 
         addEvent(
             new RegistrationRejected(id.value, reason)
+        );
+    }
+
+    public void approve() {
+
+        if (status == Status.Rejected || status == Status.Approved) {
+            throw new InvalidStateForOperationException("Registration cannot be approved");
+        }
+
+        this.status = Status.Approved;
+
+        addEvent(
+            new RegistrationApproved(id.value)
         );
     }
 
