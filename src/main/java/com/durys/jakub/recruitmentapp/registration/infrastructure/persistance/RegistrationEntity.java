@@ -23,17 +23,14 @@ public class RegistrationEntity {
     @JoinColumn(name = "OFFER_ID")
     private OfferEntity offer;
 
-    @Column(name = "APPLICANT_FIRST_NAME")
-    private String applicantFirstName;
-
-    @Column(name = "APPLICANT_LAST_NAME")
-    private String applicantLastName;
-
-    @Column(name = "APPLICANT_EMAIL")
-    private String applicantEmail;
-
-    @Column(name = "APPLICANT_PHONE_NUMBER")
-    private String applicantPhoneNumber;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "firstName", column = @Column(name = "APPLICANT_FIRST_NAME")),
+        @AttributeOverride(name = "lastName", column = @Column(name = "APPLICANT_LAST_NAME")),
+        @AttributeOverride(name = "email", column = @Column(name = "APPLICANT_EMAIL")),
+        @AttributeOverride(name = "phoneNumber", column = @Column(name = "APPLICANT_PHONE_NUMBER"))
+    })
+    private ApplicantInformation applicant;
 
     private String status;
 
@@ -46,15 +43,11 @@ public class RegistrationEntity {
     @Column(name = "FILE")
     private byte[] file;
 
-    RegistrationEntity(UUID id, OfferEntity offer, String applicantFirstName, String applicantLastName,
-                       String applicantEmail, String applicantPhoneNumber, String status,
+    RegistrationEntity(UUID id, OfferEntity offer, ApplicantInformation applicant, String status,
                        String rejectionReason, String fileName, byte[] file) {
         this.id = id;
         this.offer = offer;
-        this.applicantFirstName = applicantFirstName;
-        this.applicantLastName = applicantLastName;
-        this.applicantEmail = applicantEmail;
-        this.applicantPhoneNumber = applicantPhoneNumber;
+        this.applicant = applicant;
         this.status = status;
         this.rejectionReason = rejectionReason;
         this.fileName = fileName;

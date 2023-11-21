@@ -1,8 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
-import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationApproved;
-import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationRejected;
+import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
