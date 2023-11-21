@@ -64,41 +64,9 @@ public class Registration extends AggregateRoot {
         this.status = Status.Approved;
 
         addEvent(
-            new RegistrationApproved(id.value)
+            new RegistrationApproved(id.value) //todo creating temporary account
         );
     }
-
-//    public void markAsRejected(String reason) {
-//
-//        if (status != RegistrationStatus.NEW) {
-//            throw new RuntimeException("Invalid operation");
-//        }
-//
-//        this.status = RegistrationStatus.REJECTED;
-//
-//        DomainEventRegistry
-//                .instance()
-//                .publish(new RegistrationDeclined(id, offerId, applicantInformation, reason));
-//    }
-//
-//    public void markAsAccepted() {
-//
-//        if (status != RegistrationStatus.NEW) {
-//            throw new RuntimeException("Invalid operation");
-//        }
-//
-//        this.status = RegistrationStatus.ACCEPTED;
-//
-//        DomainEventRegistry
-//                .instance()
-//                .publish(new RegistrationAccepted(id, offerId, cv));
-//
-//    }
-
-    public String applicantEmail() {
-        return applicantInformation.email();
-    }
-
 
     public Id id() {
         return id;
