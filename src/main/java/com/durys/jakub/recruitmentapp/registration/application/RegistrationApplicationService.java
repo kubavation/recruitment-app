@@ -1,6 +1,9 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
+import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
 import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
@@ -14,9 +17,16 @@ import lombok.RequiredArgsConstructor;
 public class RegistrationApplicationService {
 
     private final RegistrationRepository registrationRepository;
+    private final OfferRepository offerRepository;
 
     @Transactional
     public void handle(SubmitRegistrationCommand command) {
+
+        Offer offer = offerRepository.load(new Offer.Id(command.offerId()));
+
+        if (offer.isClosed()) {
+            throw new InvalidStateForOperationException("Cannot register application to this offer");
+        }
 
         Registration registration = RegistrationFactory.create(
                 command.offerId(), command.firstName(), command.lastName(),

@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public class Offer extends AggregateRoot {
 
-
     public record Id(UUID value) {}
 
     public enum Status {
@@ -65,6 +64,11 @@ public class Offer extends AggregateRoot {
 
         this.state = Status.Closed;
         addEvent(new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt));
+    }
+
+
+    public boolean isClosed() {
+        return state == Status.Closed; //todo limit
     }
 
     public Id id() {
