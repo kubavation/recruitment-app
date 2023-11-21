@@ -1,13 +1,12 @@
 package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
+import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Table(name = "OFFER_REGISTRATION")
@@ -19,6 +18,10 @@ public class RegistrationEntity {
 
     @Id
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OFFER_ID")
+    private OfferEntity offer;
 
     @Column(name = "APPLICANT_FIRST_NAME")
     private String applicantFirstName;
@@ -43,10 +46,11 @@ public class RegistrationEntity {
     @Column(name = "FILE")
     private byte[] file;
 
-    RegistrationEntity(UUID id, String applicantFirstName, String applicantLastName,
+    RegistrationEntity(UUID id, OfferEntity offer, String applicantFirstName, String applicantLastName,
                        String applicantEmail, String applicantPhoneNumber, String status,
                        String rejectionReason, String fileName, byte[] file) {
         this.id = id;
+        this.offer = offer;
         this.applicantFirstName = applicantFirstName;
         this.applicantLastName = applicantLastName;
         this.applicantEmail = applicantEmail;
