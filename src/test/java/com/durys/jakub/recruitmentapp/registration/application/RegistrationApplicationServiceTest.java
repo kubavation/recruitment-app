@@ -3,6 +3,7 @@ package com.durys.jakub.recruitmentapp.registration.application;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationFactory;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
+import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,22 @@ class RegistrationApplicationServiceTest {
                 RegistrationFactory.create(
                     UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
                     "430212343", "cv.pdf", new byte[]{}));
+
+        service.handle(command);
+
+        verify(registrationRepository).save(Mockito.any(Registration.class));
+    }
+
+    @Test
+    void shouldApproveRegistration() {
+
+        var registrationId = new Registration.Id(UUID.randomUUID());
+        var command = new ApproveRegistrationCommand(registrationId.value());
+
+        when(registrationRepository.load(registrationId)).thenReturn(
+                RegistrationFactory.create(
+                        UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                        "430212343", "cv.pdf", new byte[]{}));
 
         service.handle(command);
 
