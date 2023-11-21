@@ -38,6 +38,12 @@ public class Registration extends AggregateRoot {
         this.applicantInformation = applicantInformation;
         this.cv = cv;
         this.status = Status.Submitted;
+
+        addEvent(
+            new RegistrationSubmitted(
+                id.value, offerId.value(), applicantInformation.firstName(), applicantInformation.lastName(),
+                applicantInformation.email(), applicantInformation.phoneNumber(), cv.fileName(), cv.file())
+        );
     }
 
     public void reject(String reason) {
