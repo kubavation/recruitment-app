@@ -15,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Data
 @Builder
-@AllArgsConstructor
 public class RegistrationEntity {
 
     @Id
@@ -27,7 +26,7 @@ public class RegistrationEntity {
     @Column(name = "APPLICANT_LAST_NAME")
     private String applicantLastName;
 
-    @Column(name = "APPLICANT_LAST_NAME")
+    @Column(name = "APPLICANT_EMAIL")
     private String applicantEmail;
 
     @Column(name = "APPLICANT_PHONE_NUMBER")
