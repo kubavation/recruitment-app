@@ -28,15 +28,13 @@ class JpaOfferRepository implements OfferRepository {
     }
 
     @Override
-    public Offer save(Offer offer) {
+    public void save(Offer offer) {
 
         OfferAssembler assembler = new OfferAssembler();
 
         OfferEntity entity = assembler.toModel(offer);
 
         entityManager.persist(entity);
-
-        return assembler.toAggregate(entity);
     }
 
 
