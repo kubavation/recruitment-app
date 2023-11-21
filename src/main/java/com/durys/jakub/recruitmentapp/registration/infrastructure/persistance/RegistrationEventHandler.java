@@ -16,8 +16,13 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
         switch (registrationEvent) {
             case RegistrationApproved approved -> handle(approved);
             case RegistrationRejected rejected -> handle(rejected);
-            case default -> log.warn("Unsupported event {}", registrationEvent);
+            case RegistrationSubmitted submitted -> handle(submitted);
+            default -> log.warn("Unsupported event {}", registrationEvent);
         }
+    }
+
+    void handle(RegistrationSubmitted event) {
+
     }
 
     void handle(RegistrationApproved event) {
@@ -27,4 +32,5 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
     void handle(RegistrationRejected event) {
 
     }
+
 }
