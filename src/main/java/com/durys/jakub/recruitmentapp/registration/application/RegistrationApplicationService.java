@@ -5,6 +5,7 @@ import com.durys.jakub.recruitmentapp.registration.domain.*;
 import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 
@@ -14,9 +15,8 @@ public class RegistrationApplicationService {
 
     private final RegistrationRepository registrationRepository;
 
-
-
-    void handle(SubmitRegistrationCommand command) {
+    @Transactional
+    public void handle(SubmitRegistrationCommand command) {
 
         Registration registration = RegistrationFactory.create(
                 command.offerId(), command.firstName(), command.lastName(),
@@ -25,7 +25,8 @@ public class RegistrationApplicationService {
         registrationRepository.save(registration);
     }
 
-    void handle(RejectRegistrationCommand command) {
+    @Transactional
+    public void handle(RejectRegistrationCommand command) {
 
         Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
 
@@ -34,7 +35,8 @@ public class RegistrationApplicationService {
         registrationRepository.save(registration);
     }
 
-    void handle(ApproveRegistrationCommand command) {
+    @Transactional
+    public void handle(ApproveRegistrationCommand command) {
 
         Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
 
