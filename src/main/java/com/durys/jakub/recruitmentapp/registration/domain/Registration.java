@@ -1,16 +1,17 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationRejected;
 
 import java.util.UUID;
 
 public class Registration extends AggregateRoot {
 
-
     public record Id(UUID value) {}
 
-    public enum RegistrationStatus {
+    public enum Status {
         Submitted, Rejected, Accepted
     }
 
@@ -18,14 +19,17 @@ public class Registration extends AggregateRoot {
     private final Offer.Id offerId;
     private final ApplicantInformation applicantInformation;
     private final Cv cv;
-    private RegistrationStatus status;
+    private RejectionReason rejectionReason;
+    private Status status;
 
-    Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, Cv cv, RegistrationStatus status) {
+    Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, Cv cv,
+                 RejectionReason reason, Status status) {
         this.id = id;
         this.offerId = offerId;
         this.applicantInformation = applicantInformation;
         this.cv = cv;
         this.status = status;
+        this.rejectionReason = reason;
     }
 
     Registration(Offer.Id offerId, ApplicantInformation applicantInformation, Cv cv) {
@@ -33,7 +37,21 @@ public class Registration extends AggregateRoot {
         this.offerId = offerId;
         this.applicantInformation = applicantInformation;
         this.cv = cv;
-        this.status = RegistrationStatus.Submitted;
+        this.status = Status.Submitted;
+    }
+
+    public void reject(String reason) {
+
+        if (status == Status.Rejected || status == Status.Accepted) {
+            throw new InvalidStateForOperationException("Registration cannot be rejected");
+        }
+
+        this.rejectionReason = new RejectionReason(reason);
+        this.status = Status.Rejected;
+
+        addEvent(
+            new RegistrationRejected(id.value, reason)
+        );
     }
 
 //    public void markAsRejected(String reason) {
@@ -70,6 +88,14 @@ public class Registration extends AggregateRoot {
 
     public Id id() {
         return id;
+    }
+
+    public Status state() {
+        return status;
+    }
+
+    public String rejectReason() {
+        return rejectionReason.value();
     }
 
 }

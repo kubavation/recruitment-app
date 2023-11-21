@@ -26,7 +26,7 @@ public class RegistrationFactory {
                 new Offer.Id(offerId),
                 new ApplicantInformation(applicantFirstName, applicantLastName, email, phoneNumber),
                 new Cv(fileName, file),
-                rejectionReason.isEmpty() ? null : new RejectionReason(rejectionReason),
+                rejectionReason == null ? null : new RejectionReason(rejectionReason),
                 Registration.Status.valueOf(state)
         );
     }
