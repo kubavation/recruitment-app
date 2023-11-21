@@ -43,8 +43,8 @@ public class RegistrationEntity {
     @Column(name = "FILE")
     private byte[] file;
 
-    RegistrationEntity(UUID id, OfferEntity offer, ApplicantInformation applicant, String status,
-                       String rejectionReason, String fileName, byte[] file) {
+    RegistrationEntity(UUID id, OfferEntity offer, ApplicantInformation applicant,
+                       String rejectionReason, String fileName, byte[] file, String status) {
         this.id = id;
         this.offer = offer;
         this.applicant = applicant;
