@@ -17,4 +17,20 @@ class ApplicantInformation {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
+    String firstName() {
+        return name.firstName();
+    }
+
+    String lastName() {
+        return name.lastName();
+    }
+
+    String email() {
+        return email.value();
+    }
+
+    String phoneNumber() {
+        return phoneNumber.value();
+    }
 }
