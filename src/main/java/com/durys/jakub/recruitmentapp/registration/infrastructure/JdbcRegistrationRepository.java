@@ -12,7 +12,7 @@ public class JdbcRegistrationRepository implements RegistrationRepository {
 
 
     @Override
-    public Registration load(RegistrationId id) {
+    public Registration load(Registration.Id id) {
         return null;
     }
 
