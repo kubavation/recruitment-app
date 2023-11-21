@@ -2,14 +2,13 @@ package com.durys.jakub.recruitmentapp.registration.infrastructure;
 
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @RequiredArgsConstructor
-public class JdbcRegistrationRepository implements RegistrationRepository {
+class JpaRegistrationRepository implements RegistrationRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
+    private final EntityManager entityManager;
 
     @Override
     public Registration load(Registration.Id id) {
