@@ -2,10 +2,7 @@ package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -14,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Data
 @Builder
+@AllArgsConstructor
 public class RegistrationEntity {
 
     @Id
