@@ -71,6 +71,19 @@ class RegistrationEventHandlerTest {
         assertThat(entityManager.find(RegistrationEntity.class, registrationId).getStatus()).isEqualTo(Registration.Status.Approved.name());
     }
 
+    @Test
+    @Transactional
+    void shouldRejectRegistrationEntity() {
+
+        UUID registrationId = addRegistration();
+
+        var event = new RegistrationEvent.RegistrationRejected(registrationId, "Reason");
+
+        registrationEventHandler.handle(event);
+
+        assertThat(entityManager.find(RegistrationEntity.class, registrationId).getStatus()).isEqualTo(Registration.Status.Rejected.name());
+    }
+
     private UUID addRegistration() {
 
         OfferEntity offer = entityManager.find(OfferEntity.class, offerId);
