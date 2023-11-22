@@ -1,7 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.events.EventHandler;
-import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent;
@@ -46,6 +45,10 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
 
     void handle(RegistrationApproved event) {
 
+        RegistrationEntity registration = entityManager.find(RegistrationEntity.class, event.registrationId());
+        registration.setStatus(Registration.Status.Approved.name());
+
+        entityManager.persist(registration);
     }
 
     void handle(RegistrationRejected event) {
