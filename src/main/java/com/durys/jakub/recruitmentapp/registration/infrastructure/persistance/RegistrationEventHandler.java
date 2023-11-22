@@ -46,6 +46,7 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
     void handle(RegistrationApproved event) {
 
         RegistrationEntity registration = entityManager.find(RegistrationEntity.class, event.registrationId());
+
         registration.setStatus(Registration.Status.Approved.name());
 
         entityManager.persist(registration);
@@ -53,6 +54,12 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
 
     void handle(RegistrationRejected event) {
 
+        RegistrationEntity registration = entityManager.find(RegistrationEntity.class, event.registrationId());
+
+        registration.setStatus(Registration.Status.Rejected.name());
+        registration.setRejectionReason(event.reason());
+
+        entityManager.persist(registration);
     }
 
 }
