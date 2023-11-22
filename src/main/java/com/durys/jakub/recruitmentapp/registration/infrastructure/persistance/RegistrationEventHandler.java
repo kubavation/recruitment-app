@@ -37,7 +37,7 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
         ApplicantInformation applicantInformation = new ApplicantInformation(
                 event.applicantFirstName(), event.applicantLastName(), event.applicantEmail(), event.applicantPhoneNumber());
 
-        RegistrationEntity registration = new RegistrationEntity(event.id(), offer,
+        RegistrationEntity registration = new RegistrationEntity(event.registrationId(), offer,
                 applicantInformation, null, event.fileName(), event.file(), Registration.Status.Submitted.name());
 
         entityManager.persist(registration);
