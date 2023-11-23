@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
+import com.durys.jakub.recruitmentapp.cv.Cv;
 import com.durys.jakub.recruitmentapp.events.EventHandler;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
@@ -34,11 +35,13 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
 
         OfferEntity offer = entityManager.find(OfferEntity.class, event.offerId());
 
+        Cv cv = entityManager.find(Cv.class, event.cvId());
+
         ApplicantInformation applicantInformation = new ApplicantInformation(
                 event.applicantFirstName(), event.applicantLastName(), event.applicantEmail(), event.applicantPhoneNumber());
 
         RegistrationEntity registration = new RegistrationEntity(event.registrationId(), offer,
-                applicantInformation, null, event.fileName(), event.file(), Registration.Status.Submitted.name());
+                applicantInformation, null, cv, Registration.Status.Submitted.name());
 
         entityManager.persist(registration);
     }
