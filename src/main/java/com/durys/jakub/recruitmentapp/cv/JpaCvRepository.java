@@ -14,7 +14,8 @@ class JpaCvRepository implements CvRepository {
     }
 
     @Override
-    public void save(Cv cv) {
+    public CvId save(Cv cv) {
         entityManager.persist(cv);
+        return cv.getId();
     }
 }
