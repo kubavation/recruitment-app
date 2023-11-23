@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
@@ -18,31 +19,31 @@ public class Registration extends AggregateRoot {
     private final Id id;
     private final Offer.Id offerId;
     private final ApplicantInformation applicantInformation;
-    private final Cv cv;
+    private final CvId cvId;
     private RejectionReason rejectionReason;
     private Status status;
 
-    Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, Cv cv,
+    Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, CvId cvId,
                  RejectionReason reason, Status status) {
         this.id = id;
         this.offerId = offerId;
         this.applicantInformation = applicantInformation;
-        this.cv = cv;
+        this.cvId = cvId;
         this.status = status;
         this.rejectionReason = reason;
     }
 
-    Registration(Offer.Id offerId, ApplicantInformation applicantInformation, Cv cv) {
+    Registration(Offer.Id offerId, ApplicantInformation applicantInformation, CvId cvId) {
         this.id = new Id(UUID.randomUUID());
         this.offerId = offerId;
         this.applicantInformation = applicantInformation;
-        this.cv = cv;
+        this.cvId = cvId;
         this.status = Status.Submitted;
 
         addEvent(
             new RegistrationSubmitted(
                 id.value, offerId.value(), applicantInformation.firstName(), applicantInformation.lastName(),
-                applicantInformation.email(), applicantInformation.phoneNumber(), cv.fileName(), cv.file())
+                applicantInformation.email(), applicantInformation.phoneNumber(), cvId)
         );
     }
 
