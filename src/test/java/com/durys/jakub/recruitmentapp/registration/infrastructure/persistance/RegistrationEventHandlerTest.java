@@ -1,5 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
+import com.durys.jakub.recruitmentapp.cv.Cv;
+import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
@@ -27,6 +29,7 @@ class RegistrationEventHandlerTest {
     EntityManager entityManager;
 
     private static UUID offerId = UUID.randomUUID();
+    private static UUID cvId = UUID.randomUUID();
 
     @BeforeEach
     @Transactional
@@ -37,9 +40,13 @@ class RegistrationEventHandlerTest {
     }
 
     void init() {
+
         OfferEntity offer = new OfferEntity(offerId, "IT specialist", "Description",
                 1, LocalDate.of(2023, 1, 1), null, Offer.Status.Published.name());
         entityManager.persist(offer);
+
+        Cv cv = new Cv(new CvId(cvId), "cv.pdf", new byte[] {});
+        entityManager.persist(cv);
     }
 
     @Test
@@ -51,7 +58,7 @@ class RegistrationEventHandlerTest {
 
         var event = new RegistrationEvent.RegistrationSubmitted(
             id, offerId, "John", "Doe", "johndoe@gmail.com", "321321211",
-            "cv.pdf", new byte[] {} );
+                new CvId(UUID.randomUUID()) );
 
         registrationEventHandler.handle(event);
 
@@ -87,11 +94,12 @@ class RegistrationEventHandlerTest {
     private UUID addRegistration() {
 
         OfferEntity offer = entityManager.find(OfferEntity.class, offerId);
+        Cv cv = entityManager.find(Cv.class, new CvId(cvId));
 
         RegistrationEntity registration = new RegistrationEntity(
                 UUID.randomUUID(), offer,
                 new ApplicantInformation("John", "Doe","johndoe@gmail.com", "321321211"),
-                "cv.pdf", null, new byte[] {},
+                null, cv,
                 Registration.Status.Submitted.name());
 
         entityManager.persist(registration);

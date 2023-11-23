@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.domain.events;
 
+import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
 
 import java.time.Instant;
@@ -9,14 +10,14 @@ public sealed interface RegistrationEvent extends DomainEvent {
 
     record RegistrationSubmitted(UUID id, Instant at, UUID registrationId, UUID offerId, String applicantFirstName,
                                  String applicantLastName, String applicantEmail, String applicantPhoneNumber,
-                                 String fileName, byte[] file) implements RegistrationEvent { //todo move file to external storage
+                                 CvId cvId) implements RegistrationEvent {
 
         public RegistrationSubmitted(UUID registrationId, UUID offerId, String applicantFirstName,
                                      String applicantLastName, String applicantEmail, String applicantPhoneNumber,
-                                     String fileName, byte[] file) {
+                                     CvId cvId) {
 
             this(UUID.randomUUID(), Instant.now(), registrationId, offerId, applicantFirstName, applicantLastName,
-                    applicantEmail, applicantPhoneNumber, fileName, file);
+                    applicantEmail, applicantPhoneNumber, cvId);
         }
     }
 

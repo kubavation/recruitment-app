@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.infrastructure.persistance;
 
+import com.durys.jakub.recruitmentapp.cv.Cv;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,20 +36,17 @@ public class RegistrationEntity {
     @Column(name = "REJECTION_REASON")
     private String rejectionReason;
 
-    @Column(name = "FILE_NAME")
-    private String fileName;
-
-    @Column(name = "FILE")
-    private byte[] file;
+    @OneToOne
+    @JoinColumn(name = "CV_ID")
+    private Cv cv;
 
     RegistrationEntity(UUID id, OfferEntity offer, ApplicantInformation applicant,
-                       String rejectionReason, String fileName, byte[] file, String status) {
+                       String rejectionReason, Cv cv, String status) {
         this.id = id;
         this.offer = offer;
         this.applicant = applicant;
         this.status = status;
         this.rejectionReason = rejectionReason;
-        this.fileName = fileName;
-        this.file = file;
+        this.cv = cv;
     }
 }

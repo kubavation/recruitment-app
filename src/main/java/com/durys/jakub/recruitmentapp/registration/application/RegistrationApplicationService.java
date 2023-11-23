@@ -1,6 +1,9 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.cv.Cv;
+import com.durys.jakub.recruitmentapp.cv.CvId;
+import com.durys.jakub.recruitmentapp.cv.CvRepository;
 import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class RegistrationApplicationService {
 
     private final RegistrationRepository registrationRepository;
+    private final CvRepository cvRepository;
     private final OfferRepository offerRepository;
 
     @Transactional
@@ -28,9 +32,11 @@ public class RegistrationApplicationService {
             throw new InvalidStateForOperationException("Cannot register application to this offer");
         }
 
+        CvId cvId = cvRepository.save(new Cv(command.fileName(), command.file()));
+
         Registration registration = RegistrationFactory.create(
                 command.offerId(), command.firstName(), command.lastName(),
-                command.email(), command.phoneNumber(), command.fileName(), command.file());
+                command.email(), command.phoneNumber(), cvId);
 
         registrationRepository.save(registration);
     }

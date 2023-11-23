@@ -1,5 +1,8 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
+import com.durys.jakub.recruitmentapp.cv.Cv;
+import com.durys.jakub.recruitmentapp.cv.CvId;
+import com.durys.jakub.recruitmentapp.cv.CvRepository;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferFactory;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
@@ -22,9 +25,10 @@ class RegistrationApplicationServiceTest {
 
     private final RegistrationRepository registrationRepository = mock(RegistrationRepository.class);
     private final OfferRepository offerRepository = mock(OfferRepository.class);
+    private final CvRepository cvRepository = mock(CvRepository.class);
 
     private final RegistrationApplicationService service
-            = new RegistrationApplicationService(registrationRepository, offerRepository);
+            = new RegistrationApplicationService(registrationRepository, cvRepository, offerRepository);
 
 
     @Test
@@ -66,11 +70,12 @@ class RegistrationApplicationServiceTest {
 
         var registrationId = new Registration.Id(UUID.randomUUID());
         var command = new RejectRegistrationCommand(registrationId.value(), "Reason");
+        var cv = new Cv(new CvId(UUID.randomUUID()), "cv.pdf", new byte[] {});
 
         when(registrationRepository.load(registrationId)).thenReturn(
                 RegistrationFactory.create(
                     UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                    "430212343", "cv.pdf", new byte[]{}));
+                    "430212343", cv.getId()));
 
         service.handle(command);
 
@@ -83,11 +88,12 @@ class RegistrationApplicationServiceTest {
 
         var registrationId = new Registration.Id(UUID.randomUUID());
         var command = new ApproveRegistrationCommand(registrationId.value());
+        var cv = new Cv(new CvId(UUID.randomUUID()), "cv.pdf", new byte[] {});
 
         when(registrationRepository.load(registrationId)).thenReturn(
                 RegistrationFactory.create(
                         UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                        "430212343", "cv.pdf", new byte[]{}));
+                        "430212343", cv.getId()));
 
         service.handle(command);
 

@@ -2,6 +2,8 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
+
+import com.durys.jakub.recruitmentapp.cv.CvId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -18,7 +20,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Submitted");
+                "430212343", new CvId(UUID.randomUUID()), null, "Submitted");
 
         registration.reject(rejectReason);
 
@@ -32,7 +34,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Rejected");
+                "430212343", new CvId(UUID.randomUUID()), null, "Rejected");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, () -> registration.reject("Reason"));
 
@@ -44,7 +46,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Approved");
+                "430212343", new CvId(UUID.randomUUID()), null, "Approved");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, () -> registration.reject("Reason"));
 
@@ -59,7 +61,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Submitted");
+                "430212343", new CvId(UUID.randomUUID()), null, "Submitted");
 
         registration.approve();
 
@@ -72,7 +74,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Approved");
+                "430212343", new CvId(UUID.randomUUID()), null, "Approved");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
 
@@ -85,7 +87,7 @@ class RegistrationTest {
 
         Registration registration = RegistrationFactory.create(
                 UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", "cv.pdf", new byte[]{}, null, "Rejected");
+                "430212343", new CvId(UUID.randomUUID()), null, "Rejected");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
 
