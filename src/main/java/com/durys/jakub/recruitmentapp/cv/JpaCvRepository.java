@@ -10,11 +10,11 @@ class JpaCvRepository implements CvRepository {
 
     @Override
     public Cv load(CvId id) {
-        return null;
+        return entityManager.find(Cv.class, id);
     }
 
     @Override
     public void save(Cv cv) {
-
+        entityManager.persist(cv);
     }
 }

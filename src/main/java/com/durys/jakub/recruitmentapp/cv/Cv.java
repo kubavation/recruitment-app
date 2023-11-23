@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.cv;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -9,6 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "CV")
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@Getter
 public class Cv {
 
     @EmbeddedId
