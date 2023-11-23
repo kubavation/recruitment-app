@@ -70,7 +70,7 @@ public class Registration extends AggregateRoot {
         this.status = Status.Approved;
 
         addEvent(
-            new RegistrationApproved(id.value) //todo creating temporary account
+            new RegistrationApproved(id.value, cvId) //todo creating temporary account
         );
     }
 

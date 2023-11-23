@@ -21,10 +21,10 @@ public sealed interface RegistrationEvent extends DomainEvent {
         }
     }
 
-    record RegistrationApproved(UUID id, Instant at, UUID registrationId) implements RegistrationEvent {
+    record RegistrationApproved(UUID id, Instant at, UUID registrationId, CvId cvId) implements RegistrationEvent {
 
-        public RegistrationApproved(UUID registrationId) {
-            this(UUID.randomUUID(), Instant.now(), registrationId);
+        public RegistrationApproved(UUID registrationId, CvId cvId) {
+            this(UUID.randomUUID(), Instant.now(), registrationId, cvId);
         }
     }
 
