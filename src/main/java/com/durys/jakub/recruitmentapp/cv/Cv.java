@@ -1,10 +1,21 @@
 package com.durys.jakub.recruitmentapp.cv;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.UUID;
 
+@Entity
+@Table(name = "CV")
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Cv {
 
+    @EmbeddedId
+    @AttributeOverride(name = "value", column = @Column(name = "id"))
     private final CvId id;
+
+    @Column(name = "FILE_NAME")
     private final String fileName;
     private final byte[] content;
 
