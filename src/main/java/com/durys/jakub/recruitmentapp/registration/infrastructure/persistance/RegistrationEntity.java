@@ -36,12 +36,6 @@ public class RegistrationEntity {
     @Column(name = "REJECTION_REASON")
     private String rejectionReason;
 
-    @Column(name = "FILE_NAME")
-    private String fileName;
-
-    @Column(name = "FILE")
-    private byte[] file;
-
     @OneToOne
     @JoinColumn(name = "CV_ID")
     private Cv cv;
