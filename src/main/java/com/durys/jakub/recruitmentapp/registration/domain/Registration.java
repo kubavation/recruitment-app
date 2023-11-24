@@ -1,11 +1,17 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class Registration extends AggregateRoot {
@@ -22,6 +28,8 @@ public class Registration extends AggregateRoot {
     private final CvId cvId;
     private RejectionReason rejectionReason;
     private Status status;
+    private final Set<Review> reviews = new HashSet<>();
+
 
     Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, CvId cvId,
                  RejectionReason reason, Status status) {
@@ -74,6 +82,24 @@ public class Registration extends AggregateRoot {
         );
     }
 
+    public void addReview(ReviewerId reviewerId, String opinion) {
+
+        if (reviews.stream().anyMatch(r -> r.reviewerId().equals(reviewerId))) {
+            throw new ValidationException("Review already exists");
+        }
+
+        reviews.add(
+            new Review(reviewerId, opinion, LocalDateTime.now())
+        );
+
+    }
+
+    public void changeReview(ReviewerId reviewerId, String opinion) {
+        reviews.removeIf(review -> review.reviewerId().equals(reviewerId));
+        addReview(reviewerId, opinion);
+    }
+
+
     public Id id() {
         return id;
     }
@@ -84,6 +110,14 @@ public class Registration extends AggregateRoot {
 
     public String rejectReason() {
         return rejectionReason.value();
+    }
+
+    public String getOpinion(ReviewerId reviewerId) {
+        return reviews.stream()
+                .filter(review -> review.reviewerId().equals(reviewerId))
+                .map(Review::opinion)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Review not found"));
     }
 
 }

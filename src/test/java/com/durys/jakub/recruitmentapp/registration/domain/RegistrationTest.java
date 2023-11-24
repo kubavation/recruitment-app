@@ -4,6 +4,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperation
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
 import com.durys.jakub.recruitmentapp.cv.CvId;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -93,5 +94,20 @@ class RegistrationTest {
 
         assertEquals("Registration cannot be approved", exception.getMessage());
     }
+
+
+    @Test
+    void shouldAddReviewToRegistration() {
+
+        Registration registration = RegistrationFactory.create(
+                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                "430212343", new CvId(UUID.randomUUID()), null, "Submitted");
+        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
+
+        registration.addReview(reviewerId, "Opinion");
+
+        assertNotNull(registration.getOpinion(reviewerId));
+    }
+
 
 }
