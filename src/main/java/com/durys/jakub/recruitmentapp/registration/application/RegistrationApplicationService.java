@@ -8,11 +8,15 @@ import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
+import com.durys.jakub.recruitmentapp.registration.domain.command.AddRegistrationOpinionCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
 
 
 @ApplicationService
@@ -57,6 +61,16 @@ public class RegistrationApplicationService {
         Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
 
         registration.approve();
+
+        registrationRepository.save(registration);
+    }
+
+    @Transactional
+    public void handle(AddRegistrationOpinionCommand command) {
+
+        Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
+
+        registration.addReview(new ReviewerId(UUID.randomUUID()), command.opinion()); //todo get reviewerId
 
         registrationRepository.save(registration);
 

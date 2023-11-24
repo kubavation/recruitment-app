@@ -9,6 +9,7 @@ import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationFactory;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
+import com.durys.jakub.recruitmentapp.registration.domain.command.AddRegistrationOpinionCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
@@ -99,5 +100,23 @@ class RegistrationApplicationServiceTest {
 
         verify(registrationRepository).save(Mockito.any(Registration.class));
     }
+
+    @Test
+    void shouldAddOpinion() {
+
+        var registrationId = new Registration.Id(UUID.randomUUID());
+        var command = new AddRegistrationOpinionCommand(registrationId.value(), "Opinion");
+        var cv = new Cv(new CvId(UUID.randomUUID()), "cv.pdf", new byte[] {});
+
+        when(registrationRepository.load(registrationId)).thenReturn(
+                RegistrationFactory.create(
+                        UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                        "430212343", cv.getId()));
+
+        service.handle(command);
+
+        verify(registrationRepository).save(Mockito.any(Registration.class));
+    }
+
 
 }
