@@ -94,7 +94,7 @@ class RegistrationTest {
 
         assertNotNull(registration.getOpinion(reviewerId));
     }
-    
+
     @Test
     void shouldChangeReview() {
 
