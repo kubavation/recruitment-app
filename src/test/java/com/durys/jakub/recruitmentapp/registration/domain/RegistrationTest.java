@@ -3,6 +3,7 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import org.junit.jupiter.api.Test;
@@ -93,6 +94,32 @@ class RegistrationTest {
 
         assertNotNull(registration.getOpinion(reviewerId));
     }
+
+    @Test
+    void shouldThrowException_whenReviewByReviewerAlreadyExists() {
+
+        Registration registration = addRegistrationWithStatus("Submitted");
+        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
+
+        registration.addReview(reviewerId, "Opinion");
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> registration.addReview(reviewerId, "Opinion"));
+        assertEquals("Review already exists", exception.getMessage());
+    }
+
+    @Test
+    void shouldChangeReview() {
+
+        Registration registration = addRegistrationWithStatus("Submitted");
+        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
+        registration.addReview(reviewerId, "Opinion");
+
+        registration.changeReview(reviewerId, "Another opinion");
+
+        assertEquals(1, registration.numberOfReviews());
+        assertEquals("Another opinion", registration.getOpinion(reviewerId));
+    }
+
 
     private static Registration addRegistrationWithStatus(String status) {
         return RegistrationFactory.create(

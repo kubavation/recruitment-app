@@ -16,6 +16,7 @@ import java.util.UUID;
 
 public class Registration extends AggregateRoot {
 
+
     public record Id(UUID value) {}
 
     public enum Status {
@@ -118,6 +119,11 @@ public class Registration extends AggregateRoot {
                 .map(Review::opinion)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Review not found"));
+    }
+
+
+    public Integer numberOfReviews() {
+        return reviews.size();
     }
 
 }
