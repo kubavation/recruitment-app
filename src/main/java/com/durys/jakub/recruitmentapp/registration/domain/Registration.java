@@ -87,8 +87,14 @@ public class Registration extends AggregateRoot {
 
         reviews.removeIf(review -> review.reviewerId().equals(reviewerId));
 
+        LocalDateTime createdAt = LocalDateTime.now();
+
         reviews.add(
-            new Review(reviewerId, opinion, LocalDateTime.now())
+            new Review(reviewerId, opinion, createdAt)
+        );
+
+        addEvent(
+            new ReviewAdded(id.value, reviewerId, opinion, createdAt)
         );
 
     }
