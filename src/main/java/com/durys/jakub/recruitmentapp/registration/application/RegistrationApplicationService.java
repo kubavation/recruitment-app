@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.identity.IdentityProvider;
 import com.durys.jakub.recruitmentapp.cv.Cv;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.cv.CvRepository;
@@ -8,11 +9,15 @@ import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
+import com.durys.jakub.recruitmentapp.registration.domain.command.AddRegistrationOpinionCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
 import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
 
 
 @ApplicationService
@@ -22,6 +27,7 @@ public class RegistrationApplicationService {
     private final RegistrationRepository registrationRepository;
     private final CvRepository cvRepository;
     private final OfferRepository offerRepository;
+    private final IdentityProvider identityProvider;
 
     @Transactional
     public void handle(SubmitRegistrationCommand command) {
@@ -57,6 +63,18 @@ public class RegistrationApplicationService {
         Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
 
         registration.approve();
+
+        registrationRepository.save(registration);
+    }
+
+    @Transactional
+    public void handle(AddRegistrationOpinionCommand command) {
+
+        Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
+
+        ReviewerId reviewerId = new ReviewerId(identityProvider.identifier());
+
+        registration.addReview(reviewerId, command.opinion());
 
         registrationRepository.save(registration);
 

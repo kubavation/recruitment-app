@@ -3,7 +3,9 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.cv.CvId;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -18,9 +20,7 @@ class RegistrationTest {
 
         String rejectReason = "Reason";
 
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Submitted");
+        Registration registration = addRegistrationWithStatus("Submitted");
 
         registration.reject(rejectReason);
 
@@ -32,9 +32,7 @@ class RegistrationTest {
     @Test
     void shouldNotRejectedRegistration_whenStateIsAlreadyRejected() {
 
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Rejected");
+        Registration registration = addRegistrationWithStatus("Rejected");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, () -> registration.reject("Reason"));
 
@@ -44,9 +42,7 @@ class RegistrationTest {
     @Test
     void shouldNotRejectedRegistration_whenStateIsAlreadyAccepted() {
 
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Approved");
+        Registration registration = addRegistrationWithStatus("Approved");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, () -> registration.reject("Reason"));
 
@@ -58,10 +54,7 @@ class RegistrationTest {
     @Test
     void shouldApproveRegistration() {
 
-
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Submitted");
+        Registration registration = addRegistrationWithStatus("Submitted");
 
         registration.approve();
 
@@ -72,9 +65,7 @@ class RegistrationTest {
     @Test
     void shouldNotApprovedRegistration_whenStateIsAlreadyApproved() {
 
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Approved");
+        Registration registration = addRegistrationWithStatus("Approved");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
 
@@ -85,13 +76,43 @@ class RegistrationTest {
     @Test
     void shouldNotApprovedRegistration_whenStateIsAlreadyRejected() {
 
-        Registration registration = RegistrationFactory.create(
-                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
-                "430212343", new CvId(UUID.randomUUID()), null, "Rejected");
+        Registration registration = addRegistrationWithStatus("Rejected");
 
         RuntimeException exception = assertThrows(InvalidStateForOperationException.class, registration::approve);
 
         assertEquals("Registration cannot be approved", exception.getMessage());
+    }
+
+
+    @Test
+    void shouldAddReviewToRegistration() {
+
+        Registration registration = addRegistrationWithStatus("Submitted");
+        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
+
+        registration.addReview(reviewerId, "Opinion");
+
+        assertNotNull(registration.getOpinion(reviewerId));
+    }
+
+    @Test
+    void shouldChangeReview() {
+
+        Registration registration = addRegistrationWithStatus("Submitted");
+        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
+        registration.addReview(reviewerId, "Opinion");
+
+        registration.addReview(reviewerId, "Another opinion");
+
+        assertEquals(1, registration.numberOfReviews());
+        assertEquals("Another opinion", registration.getOpinion(reviewerId));
+    }
+
+
+    private static Registration addRegistrationWithStatus(String status) {
+        return RegistrationFactory.create(
+                UUID.randomUUID(), UUID.randomUUID(), "John", "Doe", "jondoe@gmail.com",
+                "430212343", new CvId(UUID.randomUUID()), null, status);
     }
 
 }

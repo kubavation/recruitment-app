@@ -1,14 +1,21 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class Registration extends AggregateRoot {
+
 
     public record Id(UUID value) {}
 
@@ -22,6 +29,8 @@ public class Registration extends AggregateRoot {
     private final CvId cvId;
     private RejectionReason rejectionReason;
     private Status status;
+    private final Set<Review> reviews = new HashSet<>();
+
 
     Registration(Id id, Offer.Id offerId, ApplicantInformation applicantInformation, CvId cvId,
                  RejectionReason reason, Status status) {
@@ -70,8 +79,24 @@ public class Registration extends AggregateRoot {
         this.status = Status.Approved;
 
         addEvent(
-            new RegistrationApproved(id.value) //todo creating temporary account
+            new RegistrationApproved(id.value, cvId) //todo creating temporary account
         );
+    }
+
+    public void addReview(ReviewerId reviewerId, String opinion) {
+
+        reviews.removeIf(review -> review.reviewerId().equals(reviewerId));
+
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        reviews.add(
+            new Review(reviewerId, opinion, createdAt)
+        );
+
+        addEvent(
+            new ReviewAdded(id.value, reviewerId, opinion, createdAt)
+        );
+
     }
 
     public Id id() {
@@ -84,6 +109,19 @@ public class Registration extends AggregateRoot {
 
     public String rejectReason() {
         return rejectionReason.value();
+    }
+
+    public String getOpinion(ReviewerId reviewerId) {
+        return reviews.stream()
+                .filter(review -> review.reviewerId().equals(reviewerId))
+                .map(Review::opinion)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+    }
+
+
+    public Integer numberOfReviews() {
+        return reviews.size();
     }
 
 }

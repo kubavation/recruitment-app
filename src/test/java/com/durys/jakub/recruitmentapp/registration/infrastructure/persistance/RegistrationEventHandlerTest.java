@@ -71,7 +71,7 @@ class RegistrationEventHandlerTest {
 
         UUID registrationId = addRegistration();
 
-        var event = new RegistrationEvent.RegistrationApproved(registrationId);
+        var event = new RegistrationEvent.RegistrationApproved(registrationId, new CvId(cvId));
 
         registrationEventHandler.handle(event);
 
