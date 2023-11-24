@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.identity.IdentityProvider;
 import com.durys.jakub.recruitmentapp.cv.Cv;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.cv.CvRepository;
@@ -26,6 +27,7 @@ public class RegistrationApplicationService {
     private final RegistrationRepository registrationRepository;
     private final CvRepository cvRepository;
     private final OfferRepository offerRepository;
+    private final IdentityProvider identityProvider;
 
     @Transactional
     public void handle(SubmitRegistrationCommand command) {
@@ -70,7 +72,9 @@ public class RegistrationApplicationService {
 
         Registration registration = registrationRepository.load(new Registration.Id(command.registrationId()));
 
-        registration.addReview(new ReviewerId(UUID.randomUUID()), command.opinion()); //todo get reviewerId
+        ReviewerId reviewerId = new ReviewerId(identityProvider.identifier());
+
+        registration.addReview(reviewerId, command.opinion());
 
         registrationRepository.save(registration);
 

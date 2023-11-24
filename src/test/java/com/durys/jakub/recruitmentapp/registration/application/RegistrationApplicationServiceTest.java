@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.application;
 
+import com.durys.jakub.recruitmentapp.commons.identity.IdentityProvider;
 import com.durys.jakub.recruitmentapp.cv.Cv;
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.cv.CvRepository;
@@ -27,9 +28,10 @@ class RegistrationApplicationServiceTest {
     private final RegistrationRepository registrationRepository = mock(RegistrationRepository.class);
     private final OfferRepository offerRepository = mock(OfferRepository.class);
     private final CvRepository cvRepository = mock(CvRepository.class);
+    private final IdentityProvider identityProvider = mock(IdentityProvider.class);
 
     private final RegistrationApplicationService service
-            = new RegistrationApplicationService(registrationRepository, cvRepository, offerRepository);
+            = new RegistrationApplicationService(registrationRepository, cvRepository, offerRepository, identityProvider);
 
 
     @Test
