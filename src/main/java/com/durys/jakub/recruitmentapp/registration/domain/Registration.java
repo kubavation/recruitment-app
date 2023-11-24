@@ -85,21 +85,13 @@ public class Registration extends AggregateRoot {
 
     public void addReview(ReviewerId reviewerId, String opinion) {
 
-        if (reviews.stream().anyMatch(r -> r.reviewerId().equals(reviewerId))) {
-            throw new ValidationException("Review already exists");
-        }
+        reviews.removeIf(review -> review.reviewerId().equals(reviewerId));
 
         reviews.add(
             new Review(reviewerId, opinion, LocalDateTime.now())
         );
 
     }
-
-    public void changeReview(ReviewerId reviewerId, String opinion) {
-        reviews.removeIf(review -> review.reviewerId().equals(reviewerId));
-        addReview(reviewerId, opinion);
-    }
-
 
     public Id id() {
         return id;

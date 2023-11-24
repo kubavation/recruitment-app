@@ -94,19 +94,7 @@ class RegistrationTest {
 
         assertNotNull(registration.getOpinion(reviewerId));
     }
-
-    @Test
-    void shouldThrowException_whenReviewByReviewerAlreadyExists() {
-
-        Registration registration = addRegistrationWithStatus("Submitted");
-        ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
-
-        registration.addReview(reviewerId, "Opinion");
-
-        ValidationException exception = assertThrows(ValidationException.class, () -> registration.addReview(reviewerId, "Opinion"));
-        assertEquals("Review already exists", exception.getMessage());
-    }
-
+    
     @Test
     void shouldChangeReview() {
 
@@ -114,7 +102,7 @@ class RegistrationTest {
         ReviewerId reviewerId = new ReviewerId(UUID.randomUUID());
         registration.addReview(reviewerId, "Opinion");
 
-        registration.changeReview(reviewerId, "Another opinion");
+        registration.addReview(reviewerId, "Another opinion");
 
         assertEquals(1, registration.numberOfReviews());
         assertEquals("Another opinion", registration.getOpinion(reviewerId));
