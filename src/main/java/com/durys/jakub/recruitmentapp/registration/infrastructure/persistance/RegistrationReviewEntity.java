@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Table(name = "OFFER_REGISTRATION_REVIEW")
@@ -18,20 +19,26 @@ public class RegistrationReviewEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("registrationId")
-    private RegistrationEntity registration;
+    private final RegistrationEntity registration;
 
-    private String opinion;
+    private final String opinion;
+
+    @Column(name = "CREATED_AT")
+    private final LocalDateTime createdAt;
 
 
-    RegistrationReviewEntity(RegistrationReviewEntityId id, RegistrationEntity registration, String opinion) {
+    RegistrationReviewEntity(RegistrationReviewEntityId id, RegistrationEntity registration,
+                             String opinion, LocalDateTime createdAt) {
         this.id = id;
         this.registration = registration;
         this.opinion = opinion;
+        this.createdAt = createdAt;
     }
 
-    RegistrationReviewEntity(UUID reviewerId, RegistrationEntity registration, String opinion) {
+    RegistrationReviewEntity(UUID reviewerId, RegistrationEntity registration, String opinion, LocalDateTime createdAt) {
         this.id = new RegistrationReviewEntityId(registration.getId(), reviewerId);
         this.registration = registration;
         this.opinion = opinion;
+        this.createdAt = createdAt;
     }
 }

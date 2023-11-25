@@ -6,6 +6,7 @@ import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.infrastructure.persistance.OfferEntity;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,6 +91,25 @@ class RegistrationEventHandlerTest {
         registrationEventHandler.handle(event);
 
         assertThat(entityManager.find(RegistrationEntity.class, registrationId).getStatus()).isEqualTo(Registration.Status.Rejected.name());
+    }
+
+    @Test
+    @Transactional
+    void shouldAddRegistrationReviewEntity() {
+
+        UUID registrationId = addRegistration();
+        UUID reviewerId = UUID.randomUUID();
+        String opinion = "Opinion";
+
+        var event = new RegistrationEvent.ReviewAdded(registrationId, new ReviewerId(reviewerId), opinion, LocalDateTime.now());
+
+        registrationEventHandler.handle(event);
+
+        RegistrationReviewEntity review = entityManager
+                .find(RegistrationReviewEntity.class, new RegistrationReviewEntityId(registrationId, reviewerId));
+
+        assertNotNull(review);
+        assertThat(review.getOpinion()).isEqualTo(opinion);
     }
 
     private UUID addRegistration() {
