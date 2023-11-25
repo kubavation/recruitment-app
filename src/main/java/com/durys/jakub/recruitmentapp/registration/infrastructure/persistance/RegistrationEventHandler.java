@@ -70,10 +70,19 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
 
         RegistrationEntity registration = entityManager.find(RegistrationEntity.class, event.registrationId());
 
-        RegistrationReviewEntity review = new RegistrationReviewEntity(event.reviewerId().value(), registration,
-                event.opinion(), event.createdAt());
+        var registrationReviewEntityId = new RegistrationReviewEntityId(registration.getId(), event.reviewerId().value());
 
-        entityManager.persist(review);
+        RegistrationReviewEntity review = entityManager.find(RegistrationReviewEntity.class, registrationReviewEntityId);
+
+        if (review != null) {
+            review.setOpinion(event.opinion());
+            review.setCreatedAt(event.createdAt());
+            return;
+        }
+
+        entityManager.persist(
+                new RegistrationReviewEntity(registrationReviewEntityId, registration, event.opinion(), event.createdAt())
+            );
     }
 
 }

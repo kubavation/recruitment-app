@@ -112,6 +112,29 @@ class RegistrationEventHandlerTest {
         assertThat(review.getOpinion()).isEqualTo(opinion);
     }
 
+
+    @Test
+    @Transactional
+    void shouldUpdateRegistrationReviewEntity() {
+
+        UUID registrationId = addRegistration();
+        UUID reviewerId = UUID.randomUUID();
+        String opinion = "Opinion";
+        String secondOpinion = "Opinion2";
+
+        var event = new RegistrationEvent.ReviewAdded(registrationId, new ReviewerId(reviewerId), opinion, LocalDateTime.now());
+        registrationEventHandler.handle(event);
+
+        var secondEvent = new RegistrationEvent.ReviewAdded(registrationId, new ReviewerId(reviewerId), secondOpinion, LocalDateTime.now());
+        registrationEventHandler.handle(secondEvent);
+
+        RegistrationReviewEntity review = entityManager
+                .find(RegistrationReviewEntity.class, new RegistrationReviewEntityId(registrationId, reviewerId));
+
+        assertNotNull(review);
+        assertThat(review.getOpinion()).isEqualTo(secondOpinion);
+    }
+
     private UUID addRegistration() {
 
         OfferEntity offer = entityManager.find(OfferEntity.class, offerId);

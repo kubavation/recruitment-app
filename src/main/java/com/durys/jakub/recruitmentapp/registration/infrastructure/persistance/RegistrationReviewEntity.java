@@ -21,10 +21,10 @@ public class RegistrationReviewEntity {
     @MapsId("registrationId")
     private final RegistrationEntity registration;
 
-    private final String opinion;
+    private String opinion;
 
     @Column(name = "CREATED_AT")
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
 
     RegistrationReviewEntity(RegistrationReviewEntityId id, RegistrationEntity registration,
