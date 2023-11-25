@@ -22,6 +22,7 @@ public class Offer extends AggregateRoot {
     private final Description description;
     private final ApplicantLimit limit;
     private final OfferPeriod period;
+    private OfferConfiguration configuration;
     private Status state;
 
     public Offer(Id offerId, Position position, Description description, ApplicantLimit limit, OfferPeriod period, Status state) {
@@ -64,6 +65,16 @@ public class Offer extends AggregateRoot {
 
         this.state = Status.Closed;
         addEvent(new OfferClosed(UUID.randomUUID(), Instant.now(), offerId.value, closedAt));
+    }
+
+    public void changeConfiguration(Integer numberOfRequiredReviews, Integer numberOfTechnicalInterviews,
+                                    Integer numberOfBusinessInterviews) {
+
+        if (state != Status.New) {
+            throw new InvalidStateForOperationException("Cannot change offer configuration");
+        }
+
+        this.configuration = new OfferConfiguration(numberOfRequiredReviews, numberOfTechnicalInterviews, numberOfBusinessInterviews);
     }
 
 
