@@ -13,18 +13,24 @@ import java.util.UUID;
 @Data
 public class RegistrationReviewEntity {
 
-    @Id
-    @Column(name = "REVIEWER_ID")
-    private UUID reviewerId;
+    @EmbeddedId
+    private final RegistrationReviewEntityId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REGISTRATION_ID")
+    @MapsId("registrationId")
     private RegistrationEntity registration;
 
     private String opinion;
 
+
+    RegistrationReviewEntity(RegistrationReviewEntityId id, RegistrationEntity registration, String opinion) {
+        this.id = id;
+        this.registration = registration;
+        this.opinion = opinion;
+    }
+
     RegistrationReviewEntity(UUID reviewerId, RegistrationEntity registration, String opinion) {
-        this.reviewerId = reviewerId;
+        this.id = new RegistrationReviewEntityId(registration.getId(), reviewerId);
         this.registration = registration;
         this.opinion = opinion;
     }
