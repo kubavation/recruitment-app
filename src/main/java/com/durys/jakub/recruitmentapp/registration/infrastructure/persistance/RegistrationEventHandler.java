@@ -27,6 +27,7 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
             case RegistrationApproved approved -> handle(approved);
             case RegistrationRejected rejected -> handle(rejected);
             case RegistrationSubmitted submitted -> handle(submitted);
+            case ReviewAdded reviewAdded -> handle(reviewAdded);
             default -> log.warn("Unsupported event {}", registrationEvent);
         }
     }
@@ -63,6 +64,25 @@ class RegistrationEventHandler implements EventHandler<RegistrationEvent> {
         registration.setRejectionReason(event.reason());
 
         entityManager.persist(registration);
+    }
+
+    void handle(ReviewAdded event) {
+
+        RegistrationEntity registration = entityManager.find(RegistrationEntity.class, event.registrationId());
+
+        var registrationReviewEntityId = new RegistrationReviewEntityId(registration.getId(), event.reviewerId().value());
+
+        RegistrationReviewEntity review = entityManager.find(RegistrationReviewEntity.class, registrationReviewEntityId);
+
+        if (review != null) {
+            review.setOpinion(event.opinion());
+            review.setCreatedAt(event.createdAt());
+            return;
+        }
+
+        entityManager.persist(
+                new RegistrationReviewEntity(registrationReviewEntityId, registration, event.opinion(), event.createdAt())
+            );
     }
 
 }

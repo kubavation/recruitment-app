@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-class OrderEventHandler implements EventHandler<OfferEvent> {
+class OfferrEventHandler implements EventHandler<OfferEvent> {
 
     private final EntityManager entityManager;
 
