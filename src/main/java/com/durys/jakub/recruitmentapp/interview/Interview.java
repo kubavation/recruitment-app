@@ -14,6 +14,10 @@ public class Interview extends AggregateRoot {
     public record Id(UUID value) {
     }
 
+    public enum State {
+        NEW, PLANNED, COMPLETED
+    }
+
     private final Id id;
     private LocalDateTime at;
     private final Registration.Id registrationId;
