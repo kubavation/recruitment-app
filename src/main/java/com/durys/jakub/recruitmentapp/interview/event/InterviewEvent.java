@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public sealed interface InterviewEvent extends DomainEvent {
 
-    record InterviewCreated(UUID id, Instant at) implements InterviewEvent {
+    record InterviewInitialized(UUID id, Instant at, UUID interviewId, UUID registrationId, UUID tenantId) implements InterviewEvent {
     }
 }
