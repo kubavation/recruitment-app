@@ -22,36 +22,37 @@ class InterviewTest {
         Interview interview = new Interview(
                 new Registration.Id(UUID.randomUUID()), new Offer.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
 
-        assertEquals(Interview.State.NEW, interview.state());
+        assertEquals(Interview.State.New, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewInitialized));
     }
 
     @Test
     void shouldAssignInterview() {
 
-        Interview interview = addInterview("NEW");
+        Interview interview = addInterview("New");
 
         interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
 
-        assertEquals(Interview.State.PLANNED, interview.state());
+        assertEquals(Interview.State.Planned, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.ReviewerAssigned));
     }
 
     @Test
     void shouldCompletedInterview() {
 
-        Interview interview = addInterview("PLANNED");
+        Interview interview = addInterview("New");
+        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
 
         interview.complete("Opinion", true);
 
-        assertEquals(Interview.State.COMPLETED, interview.state());
+        assertEquals(Interview.State.Completed, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewCompleted));
     }
 
 
     private Interview addInterview(String state) {
         return InterviewFactory.create(
-            UUID.randomUUID(), null, UUID.randomUUID(),
+            UUID.randomUUID(), UUID.randomUUID(),
             UUID.randomUUID(), new TenantId(UUID.randomUUID()), null, state);
     }
 

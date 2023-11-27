@@ -17,7 +17,7 @@ public class Interview extends AggregateRoot {
     public record Id(UUID value) {}
 
     public enum State {
-        NEW, PLANNED, COMPLETED
+        New, Planned, Completed
     }
 
     private final Id id;
@@ -32,7 +32,7 @@ public class Interview extends AggregateRoot {
         this.registrationId = registrationId;
         this.offerId = offerId;
         this.tenantId = tenantId;
-        this.state = State.NEW;
+        this.state = State.New;
 
         addEvent(
             new InterviewInitialized(this.id.value, this.registrationId.value(), this.tenantId.value())
@@ -50,12 +50,12 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state == State.COMPLETED) {
+        if (state == State.Completed) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
         this.review = new Review(reviewerId, at);
-        this.state = State.PLANNED;
+        this.state = State.Planned;
 
         addEvent(
             new ReviewerAssigned(id.value, reviewerId.value(), at)
@@ -64,12 +64,12 @@ public class Interview extends AggregateRoot {
 
     public void complete(String opinion, boolean acceptation) {
 
-        if (state != State.PLANNED) {
+        if (state != State.Planned) {
             throw new InvalidStateForOperationException("Cannot complete interview");
         }
 
         review.complete(opinion, acceptation);
-        state = State.COMPLETED;
+        state = State.Completed;
 
         addEvent(
             new InterviewCompleted(id.value, opinion, acceptation)
