@@ -1,4 +1,6 @@
 package com.durys.jakub.recruitmentapp.sharedkernel;
 
-public record TenantId(String value) {
+import java.util.UUID;
+
+public record TenantId(UUID value) {
 }

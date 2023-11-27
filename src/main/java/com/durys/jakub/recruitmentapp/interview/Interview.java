@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.interview;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
+import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
@@ -32,6 +33,10 @@ public class Interview extends AggregateRoot {
         this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = State.NEW;
+        
+        addEvent(
+                new InterviewInitialized(this.id.value, this.registrationId.value(), this.tenantId.value())
+        );
     }
 
     Interview(Id id, LocalDateTime at, Registration.Id registrationId, Offer.Id offerId,

@@ -8,5 +8,9 @@ import java.util.UUID;
 public sealed interface InterviewEvent extends DomainEvent {
 
     record InterviewInitialized(UUID id, Instant at, UUID interviewId, UUID registrationId, UUID tenantId) implements InterviewEvent {
+
+        public InterviewInitialized(UUID interviewId, UUID registrationId, UUID tenantId) {
+            this(UUID.randomUUID(), Instant.now(), interviewId, registrationId, tenantId);
+        }
     }
 }
