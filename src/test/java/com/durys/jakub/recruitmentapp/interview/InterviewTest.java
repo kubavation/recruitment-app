@@ -37,6 +37,17 @@ class InterviewTest {
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.ReviewerAssigned));
     }
 
+    @Test
+    void shouldCompletedInterview() {
+
+        Interview interview = addInterview("PLANNED");
+
+        interview.complete("Opinion", true);
+
+        assertEquals(Interview.State.COMPLETED, interview.state());
+        assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewCompleted));
+    }
+
 
     private Interview addInterview(String state) {
         return InterviewFactory.create(

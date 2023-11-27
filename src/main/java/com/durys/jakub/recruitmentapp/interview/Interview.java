@@ -27,6 +27,7 @@ public class Interview extends AggregateRoot {
     private final Offer.Id offerId;
     private final TenantId tenantId;
     private ReviewerId reviewerId;
+    private ReviewerReply reply;
     private State state;
 
     public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
@@ -63,7 +64,21 @@ public class Interview extends AggregateRoot {
         this.state = State.PLANNED;
 
         addEvent(
-            new InterviewEvent.ReviewerAssigned(id.value, reviewerId.value(), at)
+            new ReviewerAssigned(id.value, reviewerId.value(), at)
+        );
+    }
+
+    public void complete(String opinion, boolean acceptation) {
+
+        if (state != State.PLANNED) {
+            throw new InvalidStateForOperationException("Cannot complete interview");
+        }
+
+        this.reply = new ReviewerReply(opinion, acceptation);
+        this.state = State.COMPLETED;
+
+        addEvent(
+                new InterviewCompleted(id.value, opinion, acceptation)
         );
     }
 
