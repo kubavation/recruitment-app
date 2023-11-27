@@ -8,6 +8,8 @@ import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent.*;
@@ -27,6 +29,7 @@ public class Interview extends AggregateRoot {
     private final TenantId tenantId;
     private Review review;
     private State state;
+    private List<AvailableTerm> availableTerms = new ArrayList<>();
 
     public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
@@ -49,6 +52,10 @@ public class Interview extends AggregateRoot {
         this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = state;
+    }
+
+    public void addAvailableTerms(List<AvailableTerm> availableTerms) {
+        this.availableTerms = availableTerms;
     }
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
