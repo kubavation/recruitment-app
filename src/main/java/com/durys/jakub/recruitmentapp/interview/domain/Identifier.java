@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.interview;
+package com.durys.jakub.recruitmentapp.interview.domain;
 
 import java.util.UUID;
 

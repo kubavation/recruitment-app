@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.interview;
+package com.durys.jakub.recruitmentapp.interview.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
@@ -10,10 +10,9 @@ import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
+import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent.*;
 
 public class Interview extends AggregateRoot {
-
 
     public record Id(UUID value) {}
 
@@ -107,8 +106,6 @@ public class Interview extends AggregateRoot {
             new InterviewCompleted(id.value, opinion, acceptation)
         );
     }
-
-
 
     public State state() {
         return state;

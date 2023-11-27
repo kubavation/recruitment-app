@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.interview;
+package com.durys.jakub.recruitmentapp.interview.domain;
 
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;

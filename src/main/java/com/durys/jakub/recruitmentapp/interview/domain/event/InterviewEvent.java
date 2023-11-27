@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.interview.event;
+package com.durys.jakub.recruitmentapp.interview.domain.event;
 
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
 
