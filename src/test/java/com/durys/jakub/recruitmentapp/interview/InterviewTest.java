@@ -42,11 +42,24 @@ class InterviewTest {
 
         Interview interview = addInterview("Waiting");
         interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        interview.acceptInvitation();
 
         interview.complete("Opinion", true);
 
         assertEquals(Interview.State.Completed, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewCompleted));
+    }
+
+    @Test
+    void shouldAcceptInterviewInvitation() {
+
+        Interview interview = addInterview("New");
+        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+
+        interview.acceptInvitation();
+
+        assertEquals(Interview.State.Planned, interview.state());
+        //assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewCompleted));
     }
 
 

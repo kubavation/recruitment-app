@@ -65,8 +65,14 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    public void acceptReviewInvitation() {
+    public void acceptInvitation() {
 
+        if (state != State.Waiting) {
+            throw new InvalidStateForOperationException("Interview already completed");
+        }
+
+        review.accept();
+        state = State.Planned;
     }
 
     public void complete(String opinion, boolean acceptation) {
