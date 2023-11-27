@@ -27,20 +27,20 @@ class InterviewTest {
     }
 
     @Test
-    void shouldAssignInterview() {
+    void shouldAssignReviewer() {
 
         Interview interview = addInterview("New");
 
         interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
 
-        assertEquals(Interview.State.Planned, interview.state());
+        assertEquals(Interview.State.Waiting, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.ReviewerAssigned));
     }
 
     @Test
-    void shouldCompletedInterview() {
+    void shouldCompleteInterview() {
 
-        Interview interview = addInterview("New");
+        Interview interview = addInterview("Waiting");
         interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
 
         interview.complete("Opinion", true);
@@ -52,8 +52,8 @@ class InterviewTest {
 
     private Interview addInterview(String state) {
         return InterviewFactory.create(
-            UUID.randomUUID(), UUID.randomUUID(),
-            UUID.randomUUID(), new TenantId(UUID.randomUUID()), null, state);
+            UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+            UUID.randomUUID(), new TenantId(UUID.randomUUID()), state);
     }
 
 }

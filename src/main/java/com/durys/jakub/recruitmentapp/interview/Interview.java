@@ -17,10 +17,11 @@ public class Interview extends AggregateRoot {
     public record Id(UUID value) {}
 
     public enum State {
-        New, Planned, Completed
+        New, Waiting, Planned, Completed
     }
 
     private final Id id;
+    private final Identifier identifier;
     private final Registration.Id registrationId;
     private final Offer.Id offerId;
     private final TenantId tenantId;
@@ -29,6 +30,7 @@ public class Interview extends AggregateRoot {
 
     public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
+        this.identifier = new Identifier(UUID.randomUUID());
         this.registrationId = registrationId;
         this.offerId = offerId;
         this.tenantId = tenantId;
@@ -39,9 +41,10 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    Interview(Id id, Registration.Id registrationId, Offer.Id offerId,
-              TenantId tenantId, ReviewerId reviewerId, State state) {
+    Interview(Id id, Identifier identifier, Registration.Id registrationId, Offer.Id offerId,
+              TenantId tenantId, State state) {
         this.id = id;
+        this.identifier = identifier;
         this.registrationId = registrationId;
         this.offerId = offerId;
         this.tenantId = tenantId;
@@ -55,11 +58,15 @@ public class Interview extends AggregateRoot {
         }
 
         this.review = new Review(reviewerId, at);
-        this.state = State.Planned;
+        this.state = State.Waiting;
 
         addEvent(
             new ReviewerAssigned(id.value, reviewerId.value(), at)
         );
+    }
+
+    public void acceptReviewInvitation() {
+
     }
 
     public void complete(String opinion, boolean acceptation) {
