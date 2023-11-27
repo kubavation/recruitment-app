@@ -2,12 +2,13 @@ package com.durys.jakub.recruitmentapp.interview;
 
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InterviewFactory {
 
     public static Interview create(UUID registrationId, UUID offerId, TenantId tenantId) {
