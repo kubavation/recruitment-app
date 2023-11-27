@@ -16,14 +16,14 @@ public class InterviewFactory {
 
     public static Interview create(UUID id, LocalDateTime at, UUID registrationId, UUID offerId,
               TenantId tenantId, UUID reviewerId, String state) {
-        
+
         return new Interview(
                 new Interview.Id(id),
                 at,
                 new Registration.Id(registrationId),
                 new Offer.Id(offerId),
                 tenantId,
-                new ReviewerId(UUID.randomUUID()),
+                new ReviewerId(reviewerId),
                 Interview.State.valueOf(state));
     }
 

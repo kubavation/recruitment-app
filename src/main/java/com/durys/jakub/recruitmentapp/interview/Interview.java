@@ -3,6 +3,8 @@ package com.durys.jakub.recruitmentapp.interview;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
+
+import com.durys.jakub.recruitmentapp.interview.event.InterviewEvent;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
@@ -33,9 +35,9 @@ public class Interview extends AggregateRoot {
         this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = State.NEW;
-        
+
         addEvent(
-                new InterviewInitialized(this.id.value, this.registrationId.value(), this.tenantId.value())
+            new InterviewInitialized(this.id.value, this.registrationId.value(), this.tenantId.value())
         );
     }
 
@@ -50,14 +52,25 @@ public class Interview extends AggregateRoot {
         this.state = state;
     }
 
-    public void assignReviewer(ReviewerId reviewerId) {
+    public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
         if (state == State.COMPLETED) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
         this.reviewerId = reviewerId;
+        this.at = at;
+        this.state = State.PLANNED;
+
+        addEvent(
+            new InterviewEvent.ReviewerAssigned(id.value, reviewerId.value(), at)
+        );
     }
 
+
+
+    public State state() {
+        return state;
+    }
 
 }
