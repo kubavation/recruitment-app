@@ -14,6 +14,7 @@ import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
 
 public class Interview extends AggregateRoot {
 
+
     public record Id(UUID value) {}
 
     public enum State {
@@ -68,7 +69,7 @@ public class Interview extends AggregateRoot {
     public void acceptInvitation() {
 
         if (state != State.Waiting) {
-            throw new InvalidStateForOperationException("Interview already completed");
+            throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
         review.accept();
@@ -76,6 +77,20 @@ public class Interview extends AggregateRoot {
 
         addEvent(
             new InvitationAccepted(id.value)
+        );
+    }
+
+    public void declineInvitation() {
+
+        if (state != State.Waiting) {
+            throw new InvalidStateForOperationException("Invitation cannot be declined");
+        }
+
+        review.decline();
+        state = State.Waiting;
+
+        addEvent(
+            new InvitationDeclined(id.value)
         );
     }
 
@@ -97,6 +112,10 @@ public class Interview extends AggregateRoot {
 
     public State state() {
         return state;
+    }
+
+    public ReviewerId reviewerId() {
+        return review.reviewerId();
     }
 
 }

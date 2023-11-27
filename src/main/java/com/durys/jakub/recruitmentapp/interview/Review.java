@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 
 class Review {
 
-
     enum State {
-        Waiting, Accepted, Declined
+        Waiting, Accepted, Declined, Completed
     }
 
     private ReviewerId reviewerId;
@@ -27,7 +26,17 @@ class Review {
         state = State.Accepted;
     }
 
+    void decline() {
+        reviewerId = null;
+        state = State.Declined;
+    }
+
     void complete(String opinion, boolean acceptation) {
        reply = new Reply(opinion, acceptation);
+       state = State.Completed;
+    }
+
+    ReviewerId reviewerId() {
+        return reviewerId;
     }
 }

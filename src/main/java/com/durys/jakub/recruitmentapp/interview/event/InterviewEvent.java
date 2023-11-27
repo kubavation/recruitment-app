@@ -35,4 +35,11 @@ public sealed interface InterviewEvent extends DomainEvent {
             this(UUID.randomUUID(), Instant.now(), interviewId);
         }
     }
+
+    record InvitationDeclined(UUID id, Instant at, UUID interviewId) implements InterviewEvent {
+
+        public InvitationDeclined(UUID interviewId) {
+            this(UUID.randomUUID(), Instant.now(), interviewId);
+        }
+    }
 }
