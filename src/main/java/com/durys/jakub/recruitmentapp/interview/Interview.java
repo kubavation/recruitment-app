@@ -2,9 +2,6 @@ package com.durys.jakub.recruitmentapp.interview;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
-import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
-
-import com.durys.jakub.recruitmentapp.interview.event.InterviewEvent;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
@@ -12,6 +9,8 @@ import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static com.durys.jakub.recruitmentapp.interview.event.InterviewEvent.*;
 
 public class Interview extends AggregateRoot {
 
@@ -22,12 +21,10 @@ public class Interview extends AggregateRoot {
     }
 
     private final Id id;
-    private LocalDateTime at;
     private final Registration.Id registrationId;
     private final Offer.Id offerId;
     private final TenantId tenantId;
-    private ReviewerId reviewerId;
-    private ReviewerReply reply;
+    private Review review;
     private State state;
 
     public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
@@ -42,14 +39,12 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    Interview(Id id, LocalDateTime at, Registration.Id registrationId, Offer.Id offerId,
+    Interview(Id id, Registration.Id registrationId, Offer.Id offerId,
               TenantId tenantId, ReviewerId reviewerId, State state) {
         this.id = id;
-        this.at = at;
         this.registrationId = registrationId;
         this.offerId = offerId;
         this.tenantId = tenantId;
-        this.reviewerId = reviewerId;
         this.state = state;
     }
 
@@ -59,8 +54,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
-        this.reviewerId = reviewerId;
-        this.at = at;
+        this.review = new Review(reviewerId, at);
         this.state = State.PLANNED;
 
         addEvent(
@@ -74,11 +68,11 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot complete interview");
         }
 
-        this.reply = new ReviewerReply(opinion, acceptation);
-        this.state = State.COMPLETED;
+        review.complete(opinion, acceptation);
+        state = State.COMPLETED;
 
         addEvent(
-                new InterviewCompleted(id.value, opinion, acceptation)
+            new InterviewCompleted(id.value, opinion, acceptation)
         );
     }
 
