@@ -73,6 +73,10 @@ public class Interview extends AggregateRoot {
 
         review.accept();
         state = State.Planned;
+
+        addEvent(
+            new InvitationAccepted(id.value)
+        );
     }
 
     public void complete(String opinion, boolean acceptation) {

@@ -59,7 +59,7 @@ class InterviewTest {
         interview.acceptInvitation();
 
         assertEquals(Interview.State.Planned, interview.state());
-        //assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewCompleted));
+        assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InvitationAccepted));
     }
 
 
