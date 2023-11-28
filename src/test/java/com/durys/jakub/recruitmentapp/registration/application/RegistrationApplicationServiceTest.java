@@ -10,6 +10,7 @@ import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationFactory;
 import com.durys.jakub.recruitmentapp.registration.domain.RegistrationRepository;
+import static com.durys.jakub.recruitmentapp.registration.domain.command.RegistrationCommand.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
