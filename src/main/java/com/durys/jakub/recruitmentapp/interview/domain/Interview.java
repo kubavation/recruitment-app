@@ -5,6 +5,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
+import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
@@ -63,6 +64,10 @@ public class Interview extends AggregateRoot {
 
         this.availableTerms = availableTerms;
         this.state = State.Waiting;
+
+        addEvent(
+            new InterviewTermsChosen(id.value, availableTerms)
+        );
     }
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {

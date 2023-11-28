@@ -9,15 +9,10 @@ import com.durys.jakub.recruitmentapp.ddd.ApplicationService;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
-import com.durys.jakub.recruitmentapp.registration.domain.command.AddRegistrationOpinionCommand;
-import com.durys.jakub.recruitmentapp.registration.domain.command.ApproveRegistrationCommand;
-import com.durys.jakub.recruitmentapp.registration.domain.command.RejectRegistrationCommand;
-import com.durys.jakub.recruitmentapp.registration.domain.command.SubmitRegistrationCommand;
+import static com.durys.jakub.recruitmentapp.registration.domain.command.RegistrationCommand.*;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import java.util.UUID;
 
 
 @ApplicationService
