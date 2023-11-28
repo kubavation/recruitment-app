@@ -15,12 +15,16 @@ class Review {
     private Reply reply;
     private State state;
 
+    Review(LocalDateTime at) {
+        this.at = at;
+        this.state = State.Waiting;
+    }
+
     Review(ReviewerId reviewerId, LocalDateTime at) {
         this.reviewerId = reviewerId;
         this.at = at;
         this.state = State.Waiting;
     }
-
 
     void accept() {
         state = State.Accepted;

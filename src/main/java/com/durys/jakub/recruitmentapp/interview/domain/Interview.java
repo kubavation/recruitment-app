@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.interview.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
@@ -8,6 +9,8 @@ import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent.*;
@@ -27,6 +30,7 @@ public class Interview extends AggregateRoot {
     private final TenantId tenantId;
     private Review review;
     private State state;
+    private List<AvailableTerm> availableTerms = new ArrayList<>();
 
     public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
@@ -51,10 +55,24 @@ public class Interview extends AggregateRoot {
         this.state = state;
     }
 
+    public void chooseAvailableTerms(List<AvailableTerm> availableTerms) {
+
+        if (state != State.New) {
+            throw new InvalidStateForOperationException("Cannot change available terms");
+        }
+
+        this.availableTerms = availableTerms;
+        this.state = State.Waiting;
+    }
+
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
         if (state == State.Completed) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
+        }
+
+        if (!dateValidWithAvailableTerms(at)) {
+            throw new ValidationException("Chosen date not in range of available terms");
         }
 
         this.review = new Review(reviewerId, at);
@@ -105,6 +123,11 @@ public class Interview extends AggregateRoot {
         addEvent(
             new InterviewCompleted(id.value, opinion, acceptation)
         );
+    }
+
+    boolean dateValidWithAvailableTerms(LocalDateTime at) {
+        return availableTerms.stream()
+                .anyMatch(term -> term.inRange(at));
     }
 
     public State state() {
