@@ -1,9 +1,11 @@
 package com.durys.jakub.recruitmentapp.interview.domain.event;
 
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
+import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public sealed interface InterviewEvent extends DomainEvent {
@@ -40,6 +42,13 @@ public sealed interface InterviewEvent extends DomainEvent {
 
         public InvitationDeclined(UUID interviewId) {
             this(UUID.randomUUID(), Instant.now(), interviewId);
+        }
+    }
+
+    record InterviewTermsChosen(UUID id, Instant at, UUID interviewId, List<AvailableTerm> availableTerms) implements InterviewEvent {
+
+        public InterviewTermsChosen(UUID interviewId, List<AvailableTerm> availableTerms) {
+            this(UUID.randomUUID(), Instant.now(), interviewId, availableTerms);
         }
     }
 }
