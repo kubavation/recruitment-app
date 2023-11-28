@@ -64,6 +64,10 @@ public class Interview extends AggregateRoot {
 
         this.availableTerms = availableTerms;
         this.state = State.Waiting;
+
+        addEvent(
+            new InterviewTermsChosen(id.value, availableTerms)
+        );
     }
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
