@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.interview.domain;
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
@@ -61,12 +62,17 @@ public class Interview extends AggregateRoot {
         }
 
         this.availableTerms = availableTerms;
+        this.state = State.Waiting;
     }
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
         if (state == State.Completed) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
+        }
+
+        if (!dateValidWithAvailableTerms(at)) {
+            throw new ValidationException("Chosen date not in range of available terms");
         }
 
         this.review = new Review(reviewerId, at);
@@ -117,6 +123,11 @@ public class Interview extends AggregateRoot {
         addEvent(
             new InterviewCompleted(id.value, opinion, acceptation)
         );
+    }
+
+    boolean dateValidWithAvailableTerms(LocalDateTime at) {
+        return availableTerms.stream()
+                .anyMatch(term -> term.inRange(at));
     }
 
     public State state() {
