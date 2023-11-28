@@ -54,7 +54,12 @@ public class Interview extends AggregateRoot {
         this.state = state;
     }
 
-    public void addAvailableTerms(List<AvailableTerm> availableTerms) {
+    public void chooseAvailableTerms(List<AvailableTerm> availableTerms) {
+
+        if (state != State.New) {
+            throw new InvalidStateForOperationException("Cannot change available terms");
+        }
+
         this.availableTerms = availableTerms;
     }
 
