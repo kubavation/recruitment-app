@@ -34,10 +34,9 @@ class InterviewTest {
 
         Interview interview = new Interview(
                 new Registration.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
-
         var availableTerms = List.of(
-            new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-            new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
         );
 
         interview.chooseAvailableTerms(availableTerms);
@@ -50,11 +49,7 @@ class InterviewTest {
     void shouldAssignReviewer() {
 
         Interview interview = addInterview("New");
-        var availableTerms = List.of(
-                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
-        );
-        interview.chooseAvailableTerms(availableTerms);
+        addAvailableTerms(interview);
 
         interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 30));
 
@@ -66,11 +61,7 @@ class InterviewTest {
     void shouldNotAssignReviewer_whenTermIsNotValidWithAvailableTerms() {
 
         Interview interview = addInterview("New");
-        var availableTerms = List.of(
-                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
-        );
-        interview.chooseAvailableTerms(availableTerms);
+        addAvailableTerms(interview);
 
         ValidationException exception = assertThrows(ValidationException.class,
                 () -> interview.assignReviewer(new ReviewerId(UUID.randomUUID()),
@@ -83,11 +74,7 @@ class InterviewTest {
     void shouldCompleteInterview() {
 
         Interview interview = addInterview("New");
-        var availableTerms = List.of(
-                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
-        );
-        interview.chooseAvailableTerms(availableTerms);
+        addAvailableTerms(interview);
 
         interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
         interview.acceptInvitation();
@@ -103,11 +90,7 @@ class InterviewTest {
 
         Interview interview = addInterview("New");
 
-        var availableTerms = List.of(
-                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
-        );
-        interview.chooseAvailableTerms(availableTerms);
+        addAvailableTerms(interview);
 
         interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
@@ -121,11 +104,7 @@ class InterviewTest {
     void shouldDeclineInterviewInvitation() {
 
         Interview interview = addInterview("New");
-        var availableTerms = List.of(
-                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
-                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
-        );
-        interview.chooseAvailableTerms(availableTerms);
+        addAvailableTerms(interview);
 
         interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
@@ -142,5 +121,15 @@ class InterviewTest {
             UUID.randomUUID(), UUID.randomUUID(),
             UUID.randomUUID(), new TenantId(UUID.randomUUID()), state);
     }
+
+
+    private static void addAvailableTerms(Interview interview) {
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+    }
+
 
 }
