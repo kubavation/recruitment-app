@@ -29,7 +29,7 @@ public class Interview extends AggregateRoot {
     private final TenantId tenantId;
     private Review review;
     private State state;
-    private List<AvailableTerm> availableTerms = new ArrayList<>();
+    private AvailableTerms availableTerms;
 
     public Interview(Registration.Id registrationId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
@@ -58,7 +58,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot change available terms");
         }
 
-        this.availableTerms = availableTerms;
+        this.availableTerms = new AvailableTerms(availableTerms);
         this.state = State.Waiting;
 
         addEvent(
@@ -72,7 +72,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
-        if (!dateValidWithAvailableTerms(at)) {
+        if (!availableTerms.dateValidWithAvailableTerms(at)) {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
@@ -126,10 +126,7 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    boolean dateValidWithAvailableTerms(LocalDateTime at) {
-        return availableTerms.stream()
-                .anyMatch(term -> term.inRange(at));
-    }
+
 
     public State state() {
         return state;
