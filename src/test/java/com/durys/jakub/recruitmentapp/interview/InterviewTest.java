@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.interview;
 
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.interview.domain.InterviewFactory;
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
@@ -39,7 +40,6 @@ class InterviewTest {
             new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
         );
 
-
         interview.chooseAvailableTerms(availableTerms);
 
         assertEquals(Interview.State.Waiting, interview.state());
@@ -50,11 +50,33 @@ class InterviewTest {
     void shouldAssignReviewer() {
 
         Interview interview = addInterview("New");
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
 
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 30));
 
-        assertEquals(Interview.State.Waiting, interview.state());
+        assertEquals(Interview.State.Planned, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.ReviewerAssigned));
+    }
+
+    @Test
+    void shouldNotAssignReviewer_whenTermIsNotValidWithAvailableTerms() {
+
+        Interview interview = addInterview("New");
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> interview.assignReviewer(new ReviewerId(UUID.randomUUID()),
+                        LocalDate.of(2023, 12, 12).atTime(16, 30)));
+
+        assertEquals("Chosen date not in range of available terms", exception.getMessage());
     }
 
     @Test
