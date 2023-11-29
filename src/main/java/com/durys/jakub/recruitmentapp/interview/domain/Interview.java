@@ -3,7 +3,6 @@ package com.durys.jakub.recruitmentapp.interview.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
-import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
@@ -27,17 +26,15 @@ public class Interview extends AggregateRoot {
     private final Id id;
     private final Identifier identifier;
     private final Registration.Id registrationId;
-    private final Offer.Id offerId;
     private final TenantId tenantId;
     private Review review;
     private State state;
     private List<AvailableTerm> availableTerms = new ArrayList<>();
 
-    public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
+    public Interview(Registration.Id registrationId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
         this.identifier = new Identifier(UUID.randomUUID());
         this.registrationId = registrationId;
-        this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = State.New;
 
@@ -46,12 +43,11 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    Interview(Id id, Identifier identifier, Registration.Id registrationId, Offer.Id offerId,
+    Interview(Id id, Identifier identifier, Registration.Id registrationId,
               TenantId tenantId, State state) {
         this.id = id;
         this.identifier = identifier;
         this.registrationId = registrationId;
-        this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = state;
     }

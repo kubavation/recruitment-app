@@ -21,7 +21,7 @@ class InterviewTest {
     void shouldCreateInterview() {
 
         Interview interview = new Interview(
-                new Registration.Id(UUID.randomUUID()), new Offer.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
+                new Registration.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
 
         assertEquals(Interview.State.New, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewInitialized));
@@ -79,7 +79,7 @@ class InterviewTest {
 
     private Interview addInterview(String state) {
         return InterviewFactory.create(
-            UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+            UUID.randomUUID(), UUID.randomUUID(),
             UUID.randomUUID(), new TenantId(UUID.randomUUID()), state);
     }
 
