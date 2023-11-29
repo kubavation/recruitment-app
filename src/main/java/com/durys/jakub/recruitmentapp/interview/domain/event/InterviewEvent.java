@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.interview.domain.event;
 
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -35,6 +36,13 @@ public sealed interface InterviewEvent extends DomainEvent {
 
         public InvitationAccepted(UUID interviewId) {
             this(UUID.randomUUID(), Instant.now(), interviewId);
+        }
+    }
+
+    record InvitationSent(UUID id, Instant at, UUID interviewId, ReviewerId reviewerId) implements InterviewEvent {
+
+        public InvitationSent(UUID interviewId, ReviewerId reviewerId) {
+            this(UUID.randomUUID(), Instant.now(), interviewId, reviewerId);
         }
     }
 

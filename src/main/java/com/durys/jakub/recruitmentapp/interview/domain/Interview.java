@@ -9,7 +9,6 @@ import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,7 +67,7 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state == State.Completed) {
+        if (state != State.Waiting) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
@@ -76,11 +75,31 @@ public class Interview extends AggregateRoot {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
-        this.review = new Review(reviewerId, at);
-        this.state = State.Waiting;
+        review = new Review(reviewerId, at);
+        review.acceptInvitation();
+
+        state = State.Planned;
 
         addEvent(
             new ReviewerAssigned(id.value, reviewerId.value(), at)
+        );
+    }
+
+    public void sendInvitationTo(ReviewerId reviewerId, LocalDateTime at) {
+
+        if (state != State.Waiting) {
+            throw new InvalidStateForOperationException("Cannot assign reviewer");
+        }
+
+        if (!availableTerms.dateValidWithAvailableTerms(at)) {
+            throw new ValidationException("Chosen date not in range of available terms");
+        }
+
+        review = new Review(reviewerId, at);
+        state = State.Planned;
+
+        addEvent(
+                new ReviewerAssigned(id.value, reviewerId.value(), at)
         );
     }
 
@@ -90,7 +109,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
-        review.accept();
+        review.acceptInvitation();
         state = State.Planned;
 
         addEvent(
@@ -104,7 +123,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Invitation cannot be declined");
         }
 
-        review.decline();
+        review.declineInvitation();
         state = State.Waiting;
 
         addEvent(
