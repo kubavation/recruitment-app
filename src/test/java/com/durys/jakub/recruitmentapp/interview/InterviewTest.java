@@ -82,8 +82,14 @@ class InterviewTest {
     @Test
     void shouldCompleteInterview() {
 
-        Interview interview = addInterview("Waiting");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        Interview interview = addInterview("New");
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
         interview.acceptInvitation();
 
         interview.complete("Opinion", true);
@@ -96,7 +102,14 @@ class InterviewTest {
     void shouldAcceptInterviewInvitation() {
 
         Interview interview = addInterview("New");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
         interview.acceptInvitation();
 
@@ -108,7 +121,13 @@ class InterviewTest {
     void shouldDeclineInterviewInvitation() {
 
         Interview interview = addInterview("New");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
         interview.declineInvitation();
 

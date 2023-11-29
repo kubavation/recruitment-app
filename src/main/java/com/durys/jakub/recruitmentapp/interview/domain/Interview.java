@@ -96,7 +96,7 @@ public class Interview extends AggregateRoot {
         }
 
         review = new Review(reviewerId, at);
-        state = State.Planned;
+        state = State.Waiting;
 
         addEvent(
                 new ReviewerAssigned(id.value, reviewerId.value(), at)
@@ -124,7 +124,6 @@ public class Interview extends AggregateRoot {
         }
 
         review.declineInvitation();
-        state = State.Waiting;
 
         addEvent(
             new InvitationDeclined(id.value)
