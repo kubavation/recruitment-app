@@ -1,18 +1,20 @@
 package com.durys.jakub.recruitmentapp.interview;
 
+import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.interview.domain.InterviewFactory;
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
-import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
+import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterviewTest {
@@ -21,28 +23,60 @@ class InterviewTest {
     void shouldCreateInterview() {
 
         Interview interview = new Interview(
-                new Registration.Id(UUID.randomUUID()), new Offer.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
+                new Registration.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
 
         assertEquals(Interview.State.New, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewInitialized));
     }
 
     @Test
+    void shouldSetInterviewAvailableTermsAndChangeStateToWaiting() {
+
+        Interview interview = new Interview(
+                new Registration.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+
+        interview.chooseAvailableTerms(availableTerms);
+
+        assertEquals(Interview.State.Waiting, interview.state());
+        assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewTermsChosen));
+    }
+
+    @Test
     void shouldAssignReviewer() {
 
         Interview interview = addInterview("New");
+        addAvailableTerms(interview);
 
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 30));
 
-        assertEquals(Interview.State.Waiting, interview.state());
+        assertEquals(Interview.State.Planned, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.ReviewerAssigned));
+    }
+
+    @Test
+    void shouldNotAssignReviewer_whenTermIsNotValidWithAvailableTerms() {
+
+        Interview interview = addInterview("New");
+        addAvailableTerms(interview);
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> interview.assignReviewer(new ReviewerId(UUID.randomUUID()),
+                        LocalDate.of(2023, 12, 12).atTime(16, 30)));
+
+        assertEquals("Chosen date not in range of available terms", exception.getMessage());
     }
 
     @Test
     void shouldCompleteInterview() {
 
-        Interview interview = addInterview("Waiting");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        Interview interview = addInterview("New");
+        addAvailableTerms(interview);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
         interview.acceptInvitation();
 
         interview.complete("Opinion", true);
@@ -55,7 +89,10 @@ class InterviewTest {
     void shouldAcceptInterviewInvitation() {
 
         Interview interview = addInterview("New");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+
+        addAvailableTerms(interview);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
         interview.acceptInvitation();
 
@@ -67,7 +104,9 @@ class InterviewTest {
     void shouldDeclineInterviewInvitation() {
 
         Interview interview = addInterview("New");
-        interview.assignReviewer(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(15, 0));
+        addAvailableTerms(interview);
+
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
 
         interview.declineInvitation();
 
@@ -79,8 +118,18 @@ class InterviewTest {
 
     private Interview addInterview(String state) {
         return InterviewFactory.create(
-            UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(),
+            UUID.randomUUID(), UUID.randomUUID(),
             UUID.randomUUID(), new TenantId(UUID.randomUUID()), state);
     }
+
+
+    private static void addAvailableTerms(Interview interview) {
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+                new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+        interview.chooseAvailableTerms(availableTerms);
+    }
+
 
 }

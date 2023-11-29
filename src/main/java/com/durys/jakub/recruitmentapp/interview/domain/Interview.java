@@ -3,14 +3,12 @@ package com.durys.jakub.recruitmentapp.interview.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
-import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,17 +25,15 @@ public class Interview extends AggregateRoot {
     private final Id id;
     private final Identifier identifier;
     private final Registration.Id registrationId;
-    private final Offer.Id offerId;
     private final TenantId tenantId;
     private Review review;
     private State state;
-    private List<AvailableTerm> availableTerms = new ArrayList<>();
+    private AvailableTerms availableTerms;
 
-    public Interview(Registration.Id registrationId, Offer.Id offerId, TenantId tenantId) {
+    public Interview(Registration.Id registrationId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
         this.identifier = new Identifier(UUID.randomUUID());
         this.registrationId = registrationId;
-        this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = State.New;
 
@@ -46,12 +42,11 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    Interview(Id id, Identifier identifier, Registration.Id registrationId, Offer.Id offerId,
+    Interview(Id id, Identifier identifier, Registration.Id registrationId,
               TenantId tenantId, State state) {
         this.id = id;
         this.identifier = identifier;
         this.registrationId = registrationId;
-        this.offerId = offerId;
         this.tenantId = tenantId;
         this.state = state;
     }
@@ -62,7 +57,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot change available terms");
         }
 
-        this.availableTerms = availableTerms;
+        this.availableTerms = new AvailableTerms(availableTerms);
         this.state = State.Waiting;
 
         addEvent(
@@ -72,19 +67,39 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state == State.Completed) {
+        if (state != State.Waiting) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
-        if (!dateValidWithAvailableTerms(at)) {
+        if (!availableTerms.dateValidWithAvailableTerms(at)) {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
-        this.review = new Review(reviewerId, at);
-        this.state = State.Waiting;
+        review = new Review(reviewerId, at);
+        review.acceptInvitation();
+
+        state = State.Planned;
 
         addEvent(
             new ReviewerAssigned(id.value, reviewerId.value(), at)
+        );
+    }
+
+    public void sendInvitationTo(ReviewerId reviewerId, LocalDateTime at) {
+
+        if (state != State.Waiting) {
+            throw new InvalidStateForOperationException("Cannot assign reviewer");
+        }
+
+        if (!availableTerms.dateValidWithAvailableTerms(at)) {
+            throw new ValidationException("Chosen date not in range of available terms");
+        }
+
+        review = new Review(reviewerId, at);
+        state = State.Waiting;
+
+        addEvent(
+                new ReviewerAssigned(id.value, reviewerId.value(), at)
         );
     }
 
@@ -94,7 +109,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
-        review.accept();
+        review.acceptInvitation();
         state = State.Planned;
 
         addEvent(
@@ -108,8 +123,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Invitation cannot be declined");
         }
 
-        review.decline();
-        state = State.Waiting;
+        review.declineInvitation();
 
         addEvent(
             new InvitationDeclined(id.value)
@@ -130,10 +144,7 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    boolean dateValidWithAvailableTerms(LocalDateTime at) {
-        return availableTerms.stream()
-                .anyMatch(term -> term.inRange(at));
-    }
+
 
     public State state() {
         return state;
