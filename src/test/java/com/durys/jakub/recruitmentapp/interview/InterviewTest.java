@@ -3,16 +3,17 @@ package com.durys.jakub.recruitmentapp.interview;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.interview.domain.InterviewFactory;
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
-import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
+import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterviewTest {
@@ -25,6 +26,24 @@ class InterviewTest {
 
         assertEquals(Interview.State.New, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewInitialized));
+    }
+
+    @Test
+    void shouldSetInterviewAvailableTermsAndChangeStateToWaiting() {
+
+        Interview interview = new Interview(
+                new Registration.Id(UUID.randomUUID()), new TenantId(UUID.randomUUID()));
+
+        var availableTerms = List.of(
+            new AvailableTerm(LocalDate.of(2023, 12, 12), LocalTime.of(8, 0), LocalTime.of(9, 0)),
+            new AvailableTerm(LocalDate.of(2023, 12, 13), LocalTime.of(10, 0), LocalTime.of(12, 0))
+        );
+
+
+        interview.chooseAvailableTerms(availableTerms);
+
+        assertEquals(Interview.State.Waiting, interview.state());
+        assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InterviewTermsChosen));
     }
 
     @Test
