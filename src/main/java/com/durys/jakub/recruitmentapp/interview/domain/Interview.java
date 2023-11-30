@@ -26,9 +26,12 @@ public class Interview extends AggregateRoot {
     private final Identifier identifier;
     private final Registration.Id registrationId;
     private final TenantId tenantId;
+
+    private Term term;
     private Review review;
-    private State state;
     private AvailableTerms availableTerms;
+
+    private State state;
 
     public Interview(Registration.Id registrationId, TenantId tenantId) {
         this.id = new Id(UUID.randomUUID());
