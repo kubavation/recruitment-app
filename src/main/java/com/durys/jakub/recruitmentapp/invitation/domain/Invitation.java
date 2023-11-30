@@ -51,4 +51,14 @@ public class Invitation extends AggregateRoot {
 
         this.interviewTerm = term;
     }
+
+    public void accept() {
+        this.state = State.Accepted;
+        //todo event
+    }
+
+    public void decline() {
+        this.state = State.Declined;
+        //todo event
+    }
 }
