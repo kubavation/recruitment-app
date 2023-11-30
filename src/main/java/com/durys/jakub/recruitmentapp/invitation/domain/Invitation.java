@@ -58,11 +58,17 @@ public class Invitation extends AggregateRoot {
 
     public void accept() {
         this.state = State.Accepted;
-        //todo event
+
+        addEvent(
+           new InvitationAccepted(id.value, interviewId.value(), this.interviewTerm.value(), this.reviewerId.value())
+        );
     }
 
     public void decline() {
         this.state = State.Declined;
-        //todo event
+
+        addEvent(
+            new InvitationDeclined(id.value, interviewId.value(), this.reviewerId.value())
+        );
     }
 }
