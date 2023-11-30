@@ -1,9 +1,9 @@
 package com.durys.jakub.recruitmentapp.invitation.domain;
 
-import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
+import static com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent.*;
 import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 
 import java.time.LocalDateTime;
@@ -39,6 +39,10 @@ public class Invitation extends AggregateRoot {
         this.reviewerId = reviewerId;
         this.availableTerms = availableTerms;
         this.state = State.New;
+
+        addEvent(
+            new InvitationReceived(this.id.value, this.interviewId.value(), this.reviewerId.value(), this.availableTerms.terms())
+        );
     }
 
     public void changeTerm(LocalDateTime at) {
