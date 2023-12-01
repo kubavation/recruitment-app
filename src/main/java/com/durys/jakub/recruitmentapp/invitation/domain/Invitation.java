@@ -15,7 +15,7 @@ public class Invitation extends AggregateRoot {
     public record Id(UUID value) {}
 
     enum State {
-        New, Accepted, Rejected, Closed
+        New, Closed
     }
 
     private final Id id;
@@ -61,7 +61,7 @@ public class Invitation extends AggregateRoot {
         }
 
         this.interviewTerm = term;
-        this.state = State.Accepted;
+        this.state = State.Closed;
 
         addEvent(
            new InvitationAccepted(id.value, interviewId.value(), this.interviewTerm.value(), this.reviewerId.value())
@@ -71,7 +71,7 @@ public class Invitation extends AggregateRoot {
     public void reject(String declineReason) {
 
         this.declineReason = new RejectionReason(declineReason);
-        this.state = State.Rejected;
+        this.state = State.Closed;
 
         addEvent(
             new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value())
