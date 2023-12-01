@@ -66,7 +66,7 @@ public class Invitation extends AggregateRoot {
 
     public void decline(String declineReason) {
 
-        this.declineReason = declineReason;
+        this.declineReason = new DeclineReason(declineReason);
         this.state = State.Declined;
 
         addEvent(
