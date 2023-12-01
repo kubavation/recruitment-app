@@ -16,20 +16,23 @@ import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEve
 
 public class Interview extends AggregateRoot {
 
+
     public record Id(UUID value) {}
 
     public enum State {
-        New, Waiting, Planned, Completed
+        New, Waiting, InvitationSent, Planned, Completed
     }
 
     private final Id id;
     private final Identifier identifier;
     private final Registration.Id registrationId;
     private final TenantId tenantId;
-
     private Term term;
     private Review review;
     private AvailableTerms availableTerms;
+    private ReviewerId reviewerId;
+
+    private Invitation invitation;
 
     private State state;
 
@@ -98,21 +101,23 @@ public class Interview extends AggregateRoot {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
-        review = new Review(reviewerId, at);
+        invitation = new Invitation(new Term(at), reviewerId);
         state = State.Waiting;
 
         addEvent(
-                new ReviewerAssigned(id.value, reviewerId.value(), at)
+                new InvitationSent(id.value, reviewerId, at)
         );
     }
 
-    public void acceptInvitation() {
+
+    public void acceptInvitation(ReviewerId reviewerId, LocalDateTime term) {
 
         if (state != State.Waiting) {
             throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
-        review.acceptInvitation();
+        this.term = new Term(term);
+        this.reviewerId = reviewerId;
         state = State.Planned;
 
         addEvent(
@@ -120,13 +125,19 @@ public class Interview extends AggregateRoot {
         );
     }
 
+
+    public void acceptInvitation() {
+
+
+    }
+
     public void declineInvitation() {
 
-        if (state != State.Waiting) {
+        if (state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Invitation cannot be declined");
         }
 
-        review.declineInvitation();
+        this.state = State.Waiting;
 
         addEvent(
             new InvitationDeclined(id.value)
@@ -156,5 +167,10 @@ public class Interview extends AggregateRoot {
     public ReviewerId reviewerId() {
         return review.reviewerId();
     }
+
+    public Id id() {
+        return id;
+    }
+
 
 }
