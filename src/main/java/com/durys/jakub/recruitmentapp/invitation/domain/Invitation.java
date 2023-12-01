@@ -11,10 +11,11 @@ import java.util.UUID;
 
 public class Invitation extends AggregateRoot {
 
-    record Id(UUID value) {}
+
+    public record Id(UUID value) {}
 
     enum State {
-        New, Accepted, Declined, Closed
+        New, Accepted, Rejected, Closed
     }
 
     private final Id id;
@@ -23,13 +24,18 @@ public class Invitation extends AggregateRoot {
     private final AvailableTerms availableTerms;
 
     private Term interviewTerm;
+    private RejectionReason declineReason;
+
     private State state;
 
-    Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms, State state) {
+    Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms,
+               Term interviewTerm, RejectionReason declineReason, State state) {
         this.id = id;
         this.interviewId = interviewId;
         this.reviewerId = reviewerId;
         this.availableTerms = availableTerms;
+        this.interviewTerm = interviewTerm;
+        this.declineReason = declineReason;
         this.state = state;
     }
 
@@ -45,7 +51,8 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void changeTerm(LocalDateTime at) {
+
+    public void accept(LocalDateTime at) {
 
         var term = new Term(at);
 
@@ -54,9 +61,6 @@ public class Invitation extends AggregateRoot {
         }
 
         this.interviewTerm = term;
-    }
-
-    public void accept() {
         this.state = State.Accepted;
 
         addEvent(
@@ -64,11 +68,18 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void decline() {
-        this.state = State.Declined;
+    public void reject(String declineReason) {
+
+        this.declineReason = new RejectionReason(declineReason);
+        this.state = State.Rejected;
 
         addEvent(
             new InvitationDeclined(id.value, interviewId.value(), this.reviewerId.value())
         );
+    }
+
+
+    public Id id() {
+        return id;
     }
 }

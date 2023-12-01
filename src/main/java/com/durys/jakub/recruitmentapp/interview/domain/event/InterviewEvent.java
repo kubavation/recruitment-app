@@ -39,10 +39,10 @@ public sealed interface InterviewEvent extends DomainEvent {
         }
     }
 
-    record InvitationSent(UUID id, Instant at, UUID interviewId, ReviewerId reviewerId) implements InterviewEvent {
+    record InvitationSent(UUID id, Instant at, UUID interviewId, ReviewerId reviewerId, LocalDateTime interviewAt) implements InterviewEvent {
 
-        public InvitationSent(UUID interviewId, ReviewerId reviewerId) {
-            this(UUID.randomUUID(), Instant.now(), interviewId, reviewerId);
+        public InvitationSent(UUID interviewId, ReviewerId reviewerId, LocalDateTime interviewAt) {
+            this(UUID.randomUUID(), Instant.now(), interviewId, reviewerId, interviewAt);
         }
     }
 
