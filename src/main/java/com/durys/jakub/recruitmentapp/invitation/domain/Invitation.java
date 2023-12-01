@@ -28,11 +28,14 @@ public class Invitation extends AggregateRoot {
 
     private State state;
 
-    Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms, State state) {
+    Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms,
+               Term interviewTerm, RejectionReason declineReason, State state) {
         this.id = id;
         this.interviewId = interviewId;
         this.reviewerId = reviewerId;
         this.availableTerms = availableTerms;
+        this.interviewTerm = interviewTerm;
+        this.declineReason = declineReason;
         this.state = state;
     }
 
