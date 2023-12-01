@@ -16,6 +16,7 @@ import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEve
 
 public class Interview extends AggregateRoot {
 
+
     public record Id(UUID value) {}
 
     public enum State {
@@ -166,5 +167,10 @@ public class Interview extends AggregateRoot {
     public ReviewerId reviewerId() {
         return review.reviewerId();
     }
+
+    public Id id() {
+        return id;
+    }
+
 
 }
