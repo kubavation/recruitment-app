@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.invitation.domain;
+package com.durys.jakub.recruitmentapp.interview.domain;
 
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 

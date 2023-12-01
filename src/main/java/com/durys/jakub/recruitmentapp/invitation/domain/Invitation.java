@@ -45,18 +45,15 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void changeTerm(LocalDateTime at) {
+
+    public void accept(LocalDateTime at) {
 
         var term = new Term(at);
 
         if (!availableTerms.dateValidWithAvailableTerms(term)) {
             throw new ValidationException("Chosen date not in range of available terms");
         }
-
-        this.interviewTerm = term;
-    }
-
-    public void accept() {
+        
         this.state = State.Accepted;
 
         addEvent(
