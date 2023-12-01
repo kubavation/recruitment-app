@@ -23,6 +23,8 @@ public class Invitation extends AggregateRoot {
     private final AvailableTerms availableTerms;
 
     private Term interviewTerm;
+    private DeclineReason declineReason;
+
     private State state;
 
     Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms, State state) {
@@ -53,7 +55,8 @@ public class Invitation extends AggregateRoot {
         if (!availableTerms.dateValidWithAvailableTerms(term)) {
             throw new ValidationException("Chosen date not in range of available terms");
         }
-        
+
+        this.interviewTerm = term;
         this.state = State.Accepted;
 
         addEvent(
@@ -61,7 +64,9 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void decline() {
+    public void decline(String declineReason) {
+
+        this.declineReason = declineReason;
         this.state = State.Declined;
 
         addEvent(
