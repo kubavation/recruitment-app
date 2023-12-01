@@ -73,7 +73,7 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state != State.Waiting) {
+        if (state != State.New && state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
@@ -81,9 +81,8 @@ public class Interview extends AggregateRoot {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
-        review = new Review(reviewerId, at);
-        review.acceptInvitation();
-
+        this.reviewerId = reviewerId;
+        this.term = new Term(at);
         state = State.Planned;
 
         addEvent(
