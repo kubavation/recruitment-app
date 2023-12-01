@@ -74,7 +74,7 @@ public class Invitation extends AggregateRoot {
         this.state = State.Rejected;
 
         addEvent(
-            new InvitationDeclined(id.value, interviewId.value(), this.reviewerId.value())
+            new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value())
         );
     }
 

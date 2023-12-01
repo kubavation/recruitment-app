@@ -19,7 +19,7 @@ public class Interview extends AggregateRoot {
     public record Id(UUID value) {}
 
     public enum State {
-        New, Waiting, Planned, Completed
+        New, Waiting, InvitationSent, Planned, Completed
     }
 
     private final Id id;
@@ -132,11 +132,11 @@ public class Interview extends AggregateRoot {
 
     public void declineInvitation() {
 
-        if (state != State.Waiting) {
+        if (state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Invitation cannot be declined");
         }
 
-        review.declineInvitation();
+        this.state = State.Waiting;
 
         addEvent(
             new InvitationDeclined(id.value)

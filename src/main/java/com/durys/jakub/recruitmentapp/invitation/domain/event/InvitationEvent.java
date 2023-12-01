@@ -25,9 +25,9 @@ public sealed interface InvitationEvent extends DomainEvent {
         }
     }
 
-    record InvitationDeclined(UUID id, Instant at, UUID interviewId, UUID invitationId, UUID reviewerId) implements InvitationEvent {
+    record InvitationRejected(UUID id, Instant at, UUID interviewId, UUID invitationId, UUID reviewerId) implements InvitationEvent {
 
-        public InvitationDeclined(UUID interviewId, UUID invitationId, UUID reviewerId) {
+        public InvitationRejected(UUID interviewId, UUID invitationId, UUID reviewerId) {
             this(UUID.randomUUID(), Instant.now(), interviewId, invitationId, reviewerId);
         }
     }
