@@ -1,4 +1,4 @@
 package com.durys.jakub.recruitmentapp.invitation.domain;
 
-record DeclineReason(String value) {
+record RejectionReason(String value) {
 }

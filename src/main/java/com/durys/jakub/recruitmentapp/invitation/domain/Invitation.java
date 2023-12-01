@@ -11,10 +11,10 @@ import java.util.UUID;
 
 public class Invitation extends AggregateRoot {
 
-    record Id(UUID value) {}
+    public record Id(UUID value) {}
 
     enum State {
-        New, Accepted, Declined, Closed
+        New, Accepted, Rejected, Closed
     }
 
     private final Id id;
@@ -23,7 +23,7 @@ public class Invitation extends AggregateRoot {
     private final AvailableTerms availableTerms;
 
     private Term interviewTerm;
-    private DeclineReason declineReason;
+    private RejectionReason declineReason;
 
     private State state;
 
@@ -64,10 +64,10 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void decline(String declineReason) {
+    public void reject(String declineReason) {
 
-        this.declineReason = new DeclineReason(declineReason);
-        this.state = State.Declined;
+        this.declineReason = new RejectionReason(declineReason);
+        this.state = State.Rejected;
 
         addEvent(
             new InvitationDeclined(id.value, interviewId.value(), this.reviewerId.value())
