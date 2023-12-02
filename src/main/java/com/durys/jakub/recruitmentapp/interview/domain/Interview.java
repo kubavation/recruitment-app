@@ -106,23 +106,17 @@ public class Interview extends AggregateRoot {
 
     public void acceptInvitation(ReviewerId reviewerId, LocalDateTime term) {
 
-        if (state != State.Waiting) {
+        if (state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
         this.term = new Term(term);
         this.reviewerId = reviewerId;
-        state = State.Planned;
+        this.state = State.Planned;
 
         addEvent(
             new InvitationAccepted(id.value)
         );
-    }
-
-
-    public void acceptInvitation() {
-
-
     }
 
     public void declineInvitation() {
