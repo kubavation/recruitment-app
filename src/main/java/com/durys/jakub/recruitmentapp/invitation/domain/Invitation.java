@@ -12,10 +12,11 @@ import java.util.UUID;
 public class Invitation extends AggregateRoot {
 
 
+
     public record Id(UUID value) {}
 
     enum State {
-        New, Accepted, Rejected, Closed
+        New, Closed
     }
 
     private final Id id;
@@ -24,18 +25,18 @@ public class Invitation extends AggregateRoot {
     private final AvailableTerms availableTerms;
 
     private Term interviewTerm;
-    private RejectionReason declineReason;
+    private RejectionReason rejectionReason;
 
     private State state;
 
     Invitation(Id id, Interview.Id interviewId, ReviewerId reviewerId, AvailableTerms availableTerms,
-               Term interviewTerm, RejectionReason declineReason, State state) {
+               Term interviewTerm, RejectionReason rejectionReason, State state) {
         this.id = id;
         this.interviewId = interviewId;
         this.reviewerId = reviewerId;
         this.availableTerms = availableTerms;
         this.interviewTerm = interviewTerm;
-        this.declineReason = declineReason;
+        this.rejectionReason = rejectionReason;
         this.state = state;
     }
 
@@ -61,7 +62,7 @@ public class Invitation extends AggregateRoot {
         }
 
         this.interviewTerm = term;
-        this.state = State.Accepted;
+        this.state = State.Closed;
 
         addEvent(
            new InvitationAccepted(id.value, interviewId.value(), this.interviewTerm.value(), this.reviewerId.value())
@@ -70,8 +71,8 @@ public class Invitation extends AggregateRoot {
 
     public void reject(String declineReason) {
 
-        this.declineReason = new RejectionReason(declineReason);
-        this.state = State.Rejected;
+        this.rejectionReason = new RejectionReason(declineReason);
+        this.state = State.Closed;
 
         addEvent(
             new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value())
@@ -81,5 +82,10 @@ public class Invitation extends AggregateRoot {
 
     public Id id() {
         return id;
+    }
+
+
+    public State state() {
+        return state;
     }
 }

@@ -32,8 +32,6 @@ public class Interview extends AggregateRoot {
     private AvailableTerms availableTerms;
     private ReviewerId reviewerId;
 
-    private Invitation invitation;
-
     private State state;
 
     public Interview(Registration.Id registrationId, TenantId tenantId) {
@@ -73,7 +71,7 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state != State.Waiting) {
+        if (state != State.Waiting && state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
@@ -81,9 +79,8 @@ public class Interview extends AggregateRoot {
             throw new ValidationException("Chosen date not in range of available terms");
         }
 
-        review = new Review(reviewerId, at);
-        review.acceptInvitation();
-
+        this.reviewerId = reviewerId;
+        this.term = new Term(at);
         state = State.Planned;
 
         addEvent(
@@ -91,44 +88,33 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    public void sendInvitationTo(ReviewerId reviewerId, LocalDateTime at) {
+    public void sendInvitationTo(ReviewerId reviewerId) {
 
         if (state != State.Waiting) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
-        if (!availableTerms.dateValidWithAvailableTerms(at)) {
-            throw new ValidationException("Chosen date not in range of available terms");
-        }
-
-        invitation = new Invitation(new Term(at), reviewerId);
-        state = State.Waiting;
+        state = State.InvitationSent;
 
         addEvent(
-                new InvitationSent(id.value, reviewerId, at)
+            new InvitationSent(id.value, reviewerId, availableTerms.terms())
         );
     }
 
 
     public void acceptInvitation(ReviewerId reviewerId, LocalDateTime term) {
 
-        if (state != State.Waiting) {
+        if (state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Invitation cannot be accepted");
         }
 
         this.term = new Term(term);
         this.reviewerId = reviewerId;
-        state = State.Planned;
+        this.state = State.Planned;
 
         addEvent(
             new InvitationAccepted(id.value)
         );
-    }
-
-
-    public void acceptInvitation() {
-
-
     }
 
     public void declineInvitation() {
@@ -150,7 +136,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot complete interview");
         }
 
-        review.complete(opinion, acceptation);
+        this.review = new Review(opinion, acceptation);
         state = State.Completed;
 
         addEvent(
@@ -165,7 +151,7 @@ public class Interview extends AggregateRoot {
     }
 
     public ReviewerId reviewerId() {
-        return review.reviewerId();
+        return reviewerId;
     }
 
     public Id id() {
