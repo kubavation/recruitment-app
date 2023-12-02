@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.interview;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.interview.domain.InterviewFactory;
@@ -11,6 +12,7 @@ import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -75,9 +77,10 @@ class InterviewTest {
 
         Interview interview = addInterview("New");
         addAvailableTerms(interview);
+        var reviewerId = new ReviewerId(UUID.randomUUID());
 
-        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
-        interview.acceptInvitation();
+        interview.sendInvitationTo(reviewerId);
+        interview.acceptInvitation(reviewerId, LocalDateTime.now());
 
         interview.complete("Opinion", true);
 
@@ -89,12 +92,12 @@ class InterviewTest {
     void shouldAcceptInterviewInvitation() {
 
         Interview interview = addInterview("New");
-
+        var reviewerId = new ReviewerId(UUID.randomUUID());
         addAvailableTerms(interview);
 
-        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
+        interview.sendInvitationTo(reviewerId);
 
-        interview.acceptInvitation();
+        interview.acceptInvitation(reviewerId, LocalDateTime.now());
 
         assertEquals(Interview.State.Planned, interview.state());
         assertTrue(interview.domainEvents().stream().anyMatch(event -> event instanceof InterviewEvent.InvitationAccepted));
@@ -106,7 +109,7 @@ class InterviewTest {
         Interview interview = addInterview("New");
         addAvailableTerms(interview);
 
-        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()), LocalDate.of(2023, 12, 12).atTime(8, 0));
+        interview.sendInvitationTo(new ReviewerId(UUID.randomUUID()));
 
         interview.declineInvitation();
 

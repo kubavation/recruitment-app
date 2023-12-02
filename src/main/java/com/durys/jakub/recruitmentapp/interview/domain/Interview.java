@@ -71,7 +71,7 @@ public class Interview extends AggregateRoot {
 
     public void assignReviewer(ReviewerId reviewerId, LocalDateTime at) {
 
-        if (state != State.New && state != State.InvitationSent) {
+        if (state != State.Waiting && state != State.InvitationSent) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
@@ -151,7 +151,7 @@ public class Interview extends AggregateRoot {
     }
 
     public ReviewerId reviewerId() {
-        return reviewerId();
+        return reviewerId;
     }
 
     public Id id() {
