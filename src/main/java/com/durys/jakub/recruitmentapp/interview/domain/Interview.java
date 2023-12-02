@@ -32,8 +32,6 @@ public class Interview extends AggregateRoot {
     private AvailableTerms availableTerms;
     private ReviewerId reviewerId;
 
-    private Invitation invitation;
-
     private State state;
 
     public Interview(Registration.Id registrationId, TenantId tenantId) {
@@ -138,7 +136,7 @@ public class Interview extends AggregateRoot {
             throw new InvalidStateForOperationException("Cannot complete interview");
         }
 
-        review.complete(opinion, acceptation);
+        this.review = new Review(opinion, acceptation);
         state = State.Completed;
 
         addEvent(
@@ -153,7 +151,7 @@ public class Interview extends AggregateRoot {
     }
 
     public ReviewerId reviewerId() {
-        return review.reviewerId();
+        return reviewerId();
     }
 
     public Id id() {

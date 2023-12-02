@@ -1,8 +1,6 @@
 package com.durys.jakub.recruitmentapp.interview.domain;
 
 class Review {
-
-    //additional info
     String opinion;
     boolean acceptation;
 
