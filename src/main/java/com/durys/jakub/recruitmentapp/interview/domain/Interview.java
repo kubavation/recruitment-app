@@ -90,21 +90,16 @@ public class Interview extends AggregateRoot {
         );
     }
 
-    public void sendInvitationTo(ReviewerId reviewerId, LocalDateTime at) {
+    public void sendInvitationTo(ReviewerId reviewerId) {
 
         if (state != State.Waiting) {
             throw new InvalidStateForOperationException("Cannot assign reviewer");
         }
 
-        if (!availableTerms.dateValidWithAvailableTerms(at)) {
-            throw new ValidationException("Chosen date not in range of available terms");
-        }
-
-        invitation = new Invitation(new Term(at), reviewerId);
-        state = State.Waiting;
+        state = State.InvitationSent;
 
         addEvent(
-                new InvitationSent(id.value, reviewerId, at)
+            new InvitationSent(id.value, reviewerId, availableTerms.terms())
         );
     }
 
