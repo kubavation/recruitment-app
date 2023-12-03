@@ -52,8 +52,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
 
         entity.setReviewerId(event.reviewerId());
         entity.setAt(event.interviewAt());
-
-        //todo statuses
+        entity.setState(Interview.State.Planned.name());
 
         entityManager.persist(entity);
     }
@@ -64,8 +63,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
 
         entity.setOpinion(event.opinion());
         entity.setAcceptation(event.acceptation());
-
-        //todo statuses
+        entity.setState(Interview.State.Completed.name());
 
         entityManager.persist(entity);
     }
@@ -80,7 +78,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
                 .collect(Collectors.toSet());
 
         entity.setAvailableTerms(terms);
-        //todo statuses
+        entity.setState(Interview.State.Waiting.name());
 
         entityManager.persist(entity);
     }
