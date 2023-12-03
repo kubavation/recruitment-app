@@ -11,8 +11,6 @@ import java.util.UUID;
 
 public class Invitation extends AggregateRoot {
 
-
-
     public record Id(UUID value) {}
 
     enum State {
