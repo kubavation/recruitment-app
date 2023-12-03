@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Table(name = "INTERVIEW")
 @Entity
@@ -52,5 +53,11 @@ public class InterviewEntity {
         this.registration = registration;
         this.tenantId = tenantId;
         this.state = state;
+    }
+
+     void setAvailableTerms(Set<InterviewAvailableTermEntity> availableTerms) {
+        this.availableTerms = availableTerms.stream()
+                .map(term -> term.setInterview(this))
+                .collect(Collectors.toSet());
     }
 }

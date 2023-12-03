@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent.*;
 
 @Component
@@ -26,6 +30,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
             case InterviewInitialized event -> handle(event);
             case ReviewerAssigned event -> handle(event);
             case InterviewCompleted event -> handle(event);
+            case InterviewTermsChosen event -> handle(event);
             default -> log.warn("Unsupported event {}", interviewEvent);
         }
     }
@@ -47,6 +52,8 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
         entity.setReviewerId(event.reviewerId());
         entity.setAt(event.interviewAt());
 
+        //todo statuses
+
         entityManager.persist(entity);
     }
 
@@ -56,6 +63,23 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
 
         entity.setOpinion(event.opinion());
         entity.setAcceptation(event.acceptation());
+
+        //todo statuses
+
+        entityManager.persist(entity);
+    }
+
+    private void handle(InterviewTermsChosen event) {
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, event.interviewId());
+
+        Set<InterviewAvailableTermEntity> terms = event.availableTerms()
+                .stream()
+                .map(term -> new InterviewAvailableTermEntity(UUID.randomUUID(), term.date(), term.from(), term.to()))
+                .collect(Collectors.toSet());
+
+        entity.setAvailableTerms(terms);
+        //todo statuses
 
         entityManager.persist(entity);
     }

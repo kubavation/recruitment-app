@@ -25,4 +25,16 @@ public class InterviewAvailableTermEntity {
     @ManyToOne
     @JoinColumn(name = "INTERVIEW_ID")
     private InterviewEntity interview;
+
+    InterviewAvailableTermEntity(UUID id, LocalDate at, LocalTime from, LocalTime to) {
+        this.id = id;
+        this.at = at;
+        this.from = from;
+        this.to = to;
+    }
+
+    InterviewAvailableTermEntity setInterview(InterviewEntity interview) {
+        this.interview = interview;
+        return this;
+    }
 }
