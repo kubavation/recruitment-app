@@ -36,6 +36,9 @@ public class InterviewEntity {
 
     private String state;
 
+    private String opinion;
+    private boolean acceptation;
+
     InterviewEntity(UUID id, String identifier, RegistrationEntity registration,
                     UUID tenantId, String state) {
         this.id = id;
