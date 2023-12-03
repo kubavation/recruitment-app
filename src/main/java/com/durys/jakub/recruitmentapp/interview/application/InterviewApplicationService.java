@@ -7,11 +7,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InterviewApplicationServicce {
+public class InterviewApplicationService {
 
     private final InterviewRepository interviewRepository;
 
-    InterviewApplicationServicce(InterviewRepository interviewRepository) {
+    InterviewApplicationService(InterviewRepository interviewRepository) {
         this.interviewRepository = interviewRepository;
     }
 

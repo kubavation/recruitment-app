@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class OfferEventHandlerTest {
 
     @Autowired
-    private OfferrEventHandler offerrEventHandler;
+    private OfferEventHandler offerEventHandler;
 
     @Autowired
     EntityManager entityManager;
@@ -40,7 +40,7 @@ class OfferEventHandlerTest {
         var event = new OfferEvent.OfferAdded(id, "IT specialist", "Description",
                 1, LocalDate.of(2023, 1, 1), null);
 
-        offerrEventHandler.handle(event);
+        offerEventHandler.handle(event);
 
         assertNotNull(entityManager.find(OfferEntity.class, id));
     }
@@ -57,7 +57,7 @@ class OfferEventHandlerTest {
 
         var event = new OfferEvent.OfferPublished(id);
 
-        offerrEventHandler.handle(event);
+        offerEventHandler.handle(event);
 
         assertEquals(Offer.Status.Published.name(), entityManager.find(OfferEntity.class, id).getState());
     }
@@ -75,7 +75,7 @@ class OfferEventHandlerTest {
 
         var event = new OfferEvent.OfferClosed(id, closedAt);
 
-        offerrEventHandler.handle(event);
+        offerEventHandler.handle(event);
 
         var loaded = entityManager.find(OfferEntity.class, id);
 

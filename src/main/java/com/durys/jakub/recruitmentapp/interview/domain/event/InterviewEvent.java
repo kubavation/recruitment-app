@@ -11,10 +11,11 @@ import java.util.UUID;
 
 public sealed interface InterviewEvent extends DomainEvent {
 
-    record InterviewInitialized(UUID id, Instant at, UUID interviewId, UUID registrationId, UUID tenantId) implements InterviewEvent {
+    record InterviewInitialized(UUID id, Instant at, UUID interviewId,
+                                UUID registrationId, UUID tenantId, String identifier) implements InterviewEvent {
 
-        public InterviewInitialized(UUID interviewId, UUID registrationId, UUID tenantId) {
-            this(UUID.randomUUID(), Instant.now(), interviewId, registrationId, tenantId);
+        public InterviewInitialized(UUID interviewId, UUID registrationId, UUID tenantId, String identifier) {
+            this(UUID.randomUUID(), Instant.now(), interviewId, registrationId, tenantId, identifier);
         }
     }
 
