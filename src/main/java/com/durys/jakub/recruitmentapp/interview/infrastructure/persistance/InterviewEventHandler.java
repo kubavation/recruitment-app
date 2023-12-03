@@ -24,6 +24,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
     public void handle(InterviewEvent interviewEvent) {
         switch (interviewEvent) {
             case InterviewInitialized event -> handle(event);
+            case ReviewerAssigned event -> handle(event);
             default -> log.warn("Unsupported event {}", interviewEvent);
         }
     }
@@ -34,6 +35,16 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
 
         InterviewEntity entity = new InterviewEntity(event.interviewId(), event.identifier(),
                 registration, event.tenantId(), Interview.State.New.name());
+
+        entityManager.persist(entity);
+    }
+
+    private void handle(ReviewerAssigned event) {
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, event.interviewId());
+
+        entity.setReviewerId(event.reviewerId());
+        entity.setAt(event.interviewAt());
 
         entityManager.persist(entity);
     }
