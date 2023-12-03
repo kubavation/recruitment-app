@@ -42,7 +42,8 @@ public class Interview extends AggregateRoot {
         this.state = State.New;
 
         addEvent(
-            new InterviewInitialized(this.id.value, this.registrationId.value(), this.tenantId.value())
+            new InterviewInitialized(this.id.value,
+                    this.registrationId.value(), this.tenantId.value(), this.identifier.value().toString())
         );
     }
 
