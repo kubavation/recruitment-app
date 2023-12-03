@@ -1,11 +1,14 @@
 package com.durys.jakub.recruitmentapp.interview.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.registration.infrastructure.persistance.RegistrationEntity;
+import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "INTERVIEW")
@@ -38,6 +41,9 @@ public class InterviewEntity {
 
     private String opinion;
     private boolean acceptation;
+
+    @OneToMany(mappedBy = "interview")
+    private Set<InterviewAvailableTermEntity> availableTerms = new HashSet<>();
 
     InterviewEntity(UUID id, String identifier, RegistrationEntity registration,
                     UUID tenantId, String state) {
