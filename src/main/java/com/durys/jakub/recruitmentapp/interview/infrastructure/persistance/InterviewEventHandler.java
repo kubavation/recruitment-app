@@ -33,6 +33,7 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
             case InterviewTermsChosen event -> handle(event);
             case InvitationSent event -> handle(event);
             case InvitationAccepted event -> handle(event);
+            case InvitationDeclined event -> handle(event);
             default -> log.warn("Unsupported event {}", interviewEvent);
         }
     }
@@ -99,6 +100,15 @@ class InterviewEventHandler implements EventHandler<InterviewEvent> {
         entity.setReviewerId(event.reviewerId().value());
         entity.setAt(event.term());
         entity.setState(Interview.State.Planned.name());
+
+        entityManager.persist(entity);
+    }
+
+    private void handle(InvitationDeclined event) {
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, event.interviewId());
+
+        entity.setState(Interview.State.Waiting.name());
 
         entityManager.persist(entity);
     }
