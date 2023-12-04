@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Data
 @Builder
-@AllArgsConstructor
 public class InvitationEntity {
 
     @Id
