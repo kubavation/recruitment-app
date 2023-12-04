@@ -114,7 +114,7 @@ public class Interview extends AggregateRoot {
         this.state = State.Planned;
 
         addEvent(
-            new InvitationAccepted(id.value)
+            new InvitationAccepted(id.value, reviewerId, term)
         );
     }
 
