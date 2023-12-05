@@ -13,7 +13,7 @@ public class Invitation extends AggregateRoot {
 
     public record Id(UUID value) {}
 
-    enum State {
+    public enum State {
         New, Closed
     }
 
