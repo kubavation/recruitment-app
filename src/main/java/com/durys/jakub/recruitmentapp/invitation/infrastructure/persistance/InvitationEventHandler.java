@@ -23,6 +23,7 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
         switch (invitationEvent) {
             case InvitationEvent.InvitationReceived event -> handle(event);
             case InvitationEvent.InvitationAccepted event -> handle(event);
+            case InvitationEvent.InvitationRejected event -> handle(event);
             default -> log.warn("Unsupported event {}", invitationEvent);
         }
     }
@@ -41,6 +42,16 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
         InvitationEntity invitation = entityManager.find(InvitationEntity.class, event.invitationId());
 
         invitation.setAt(event.term());
+        invitation.setState(Invitation.State.Closed.name());
+
+        entityManager.persist(invitation);
+    }
+
+    private void handle(InvitationEvent.InvitationRejected event) {
+
+        InvitationEntity invitation = entityManager.find(InvitationEntity.class, event.invitationId());
+
+        invitation.setReason(event.reason());
         invitation.setState(Invitation.State.Closed.name());
 
         entityManager.persist(invitation);
