@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import static com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent.*;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -21,14 +23,14 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
     @Transactional
     public void handle(InvitationEvent invitationEvent) {
         switch (invitationEvent) {
-            case InvitationEvent.InvitationReceived event -> handle(event);
-            case InvitationEvent.InvitationAccepted event -> handle(event);
-            case InvitationEvent.InvitationRejected event -> handle(event);
+            case InvitationReceived event -> handle(event);
+            case InvitationAccepted event -> handle(event);
+            case InvitationRejected event -> handle(event);
             default -> log.warn("Unsupported event {}", invitationEvent);
         }
     }
 
-    private void handle(InvitationEvent.InvitationReceived event) {
+    private void handle(InvitationReceived event) {
 
         InterviewEntity interview = entityManager.find(InterviewEntity.class, event.interviewId());
 
@@ -37,7 +39,7 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
         entityManager.persist(invitation);
     }
 
-    private void handle(InvitationEvent.InvitationAccepted event) {
+    private void handle(InvitationAccepted event) {
 
         InvitationEntity invitation = entityManager.find(InvitationEntity.class, event.invitationId());
 
@@ -47,7 +49,7 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
         entityManager.persist(invitation);
     }
 
-    private void handle(InvitationEvent.InvitationRejected event) {
+    private void handle(InvitationRejected event) {
 
         InvitationEntity invitation = entityManager.find(InvitationEntity.class, event.invitationId());
 
