@@ -39,6 +39,12 @@ public class InvitationEntity {
         this.state = state;
         this.reason = reason;
     }
+
+    InvitationEntity(UUID id, InterviewEntity interview, UUID reviewerId) {
+        this.id = id;
+        this.interview = interview;
+        this.reviewerId = reviewerId;
+    }
 }
 
 

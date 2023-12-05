@@ -13,7 +13,7 @@ public class Invitation extends AggregateRoot {
 
     public record Id(UUID value) {}
 
-    enum State {
+    public enum State {
         New, Closed
     }
 
@@ -73,7 +73,7 @@ public class Invitation extends AggregateRoot {
         this.state = State.Closed;
 
         addEvent(
-            new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value())
+            new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value(), declineReason)
         );
     }
 
