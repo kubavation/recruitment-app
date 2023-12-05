@@ -1,6 +1,7 @@
 package com.durys.jakub.recruitmentapp.invitation.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.events.EventHandler;
+import com.durys.jakub.recruitmentapp.interview.infrastructure.persistance.InterviewEntity;
 import com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -19,8 +20,18 @@ class InvitationEventHandler implements EventHandler<InvitationEvent> {
     @Transactional
     public void handle(InvitationEvent invitationEvent) {
         switch (invitationEvent) {
+            case InvitationEvent.InvitationReceived event -> handle(event);
             default -> log.warn("Unsupported event {}", invitationEvent);
         }
+    }
+
+    private void handle(InvitationEvent.InvitationReceived event) {
+
+        InterviewEntity interview = entityManager.find(InterviewEntity.class, event.interviewId());
+
+        InvitationEntity invitation = new InvitationEntity(event.invitationId(), interview, event.reviewerId());
+
+        entityManager.persist(invitation);
     }
 
 
