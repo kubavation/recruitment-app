@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public class Invitation extends AggregateRoot {
 
+
     public record Id(UUID value) {}
 
     public enum State {
@@ -67,13 +68,13 @@ public class Invitation extends AggregateRoot {
         );
     }
 
-    public void reject(String declineReason) {
+    public void reject(String rejectionReason) {
 
-        this.rejectionReason = new RejectionReason(declineReason);
+        this.rejectionReason = new RejectionReason(rejectionReason);
         this.state = State.Closed;
 
         addEvent(
-            new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value(), declineReason)
+            new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value(), rejectionReason)
         );
     }
 
@@ -85,5 +86,9 @@ public class Invitation extends AggregateRoot {
 
     public State state() {
         return state;
+    }
+
+    public Interview.Id interviewId() {
+        return interviewId;
     }
 }
