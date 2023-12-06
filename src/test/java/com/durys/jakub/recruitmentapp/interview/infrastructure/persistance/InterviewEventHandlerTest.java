@@ -2,6 +2,7 @@ package com.durys.jakub.recruitmentapp.interview.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
+import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,6 +101,51 @@ class InterviewEventHandlerTest {
         assertFalse(entity.getAvailableTerms().isEmpty());
     }
 
+    @Test
+    @Transactional
+    void shouldSendInvitation() {
+
+        var interviewId = addInterview("New");
+        var availableTerms = List.of(
+                new AvailableTerm(LocalDate.now(), LocalTime.of(8, 0), LocalTime.of(9, 0))
+        );
+
+
+        var event = new InterviewEvent.InvitationSent(interviewId, new ReviewerId(UUID.randomUUID()), availableTerms);
+
+        interviewEventHandler.handle(event);
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, interviewId);
+        assertEquals("InvitationSent", entity.getState());
+    }
+
+    @Test
+    @Transactional
+    void shouldChangeStateWhenInvitationAccepted() {
+
+        var interviewId = addInterview("New");
+
+        var event = new InterviewEvent.InvitationAccepted(interviewId, new ReviewerId(UUID.randomUUID()), LocalDateTime.now());
+
+        interviewEventHandler.handle(event);
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, interviewId);
+        assertEquals("Planned", entity.getState());
+    }
+
+    @Test
+    @Transactional
+    void shouldChangeStateWhenInvitationRejected() {
+
+        var interviewId = addInterview("New");
+
+        var event = new InterviewEvent.InvitationDeclined(interviewId);
+
+        interviewEventHandler.handle(event);
+
+        InterviewEntity entity = entityManager.find(InterviewEntity.class, interviewId);
+        assertEquals("Waiting", entity.getState());
+    }
 
     private UUID addInterview(String state) {
 
