@@ -1,0 +1,28 @@
+package com.durys.jakub.recruitmentapp.interview.infrastructure.in;
+
+import com.durys.jakub.recruitmentapp.interview.application.InterviewApplicationService;
+import com.durys.jakub.recruitmentapp.interview.domain.command.InterviewCommand;
+import com.durys.jakub.recruitmentapp.invitation.application.InvitationApplicationService;
+import com.durys.jakub.recruitmentapp.invitation.domain.command.InvitationCommand;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/interviews")
+class InterviewController {
+
+    private final InterviewApplicationService interviewApplicationService;
+
+    InterviewController(InterviewApplicationService interviewApplicationService) {
+        this.interviewApplicationService = interviewApplicationService;
+    }
+
+    @PatchMapping("/{interviewId}/complete")
+    void complete(@PathVariable UUID interviewId, @RequestBody CompleteInterviewDTO dto) {
+        interviewApplicationService.handle(
+            new InterviewCommand.CompleteInterviewCommand(interviewId, dto.opinion(), dto.acceptation())
+        );
+    }
+}
