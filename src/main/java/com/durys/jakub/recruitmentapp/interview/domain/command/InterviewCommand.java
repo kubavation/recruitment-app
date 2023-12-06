@@ -8,6 +8,6 @@ import java.util.UUID;
 public sealed interface InterviewCommand {
 
     record AssignReviewerCommand(UUID interviewId, ReviewerId reviewerId, LocalDateTime at) implements InterviewCommand {}
-    record SendInterviewCommand(UUID interviewId, ReviewerId reviewerId) implements InterviewCommand {}
+    record SendInvitationCommand(UUID interviewId, ReviewerId reviewerId) implements InterviewCommand {}
     record CompleteInterviewCommand(UUID interviewId, String opinion, boolean acceptation) implements InterviewCommand {}
 }

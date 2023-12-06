@@ -36,7 +36,7 @@ public class InterviewApplicationService {
     }
 
     @Transactional
-    public void handle(InterviewCommand.SendInterviewCommand command) {
+    public void handle(InterviewCommand.SendInvitationCommand command) {
 
         Interview interview = interviewRepository.load(new Interview.Id(command.interviewId()));
 
