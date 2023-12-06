@@ -8,6 +8,7 @@ import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -32,5 +33,14 @@ class InterviewController {
         interviewApplicationService.handle(
                 new InterviewCommand.AssignReviewerCommand(interviewId, new ReviewerId(reviewerId), at)
         );
+    }
+
+    @PostMapping("/{interviewId}/invitations")
+    void sendInvitations(@PathVariable UUID interviewId, @RequestBody Set<UUID> reviewersId) {
+
+        reviewersId
+            .forEach(reviewerId -> interviewApplicationService.handle(
+                 new InterviewCommand.SendInvitationCommand(interviewId, new ReviewerId(reviewerId))
+            ));
     }
 }
