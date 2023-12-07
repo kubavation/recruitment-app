@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Reviewer {
 
+
     public enum State {
         ACTIVE, ARCHIVED
     }
@@ -51,4 +52,9 @@ public class Reviewer {
 
         this.state = State.ARCHIVED;
     }
+
+    public ReviewerId id() {
+        return id;
+    }
+
 }
