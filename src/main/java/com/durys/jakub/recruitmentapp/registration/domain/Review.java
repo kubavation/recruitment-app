@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.registration.domain;
 
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
 
 import java.time.LocalDateTime;
 

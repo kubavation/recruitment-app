@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.sharedkernel;
+package com.durys.jakub.recruitmentapp.reviewer;
 
 import java.util.UUID;
 

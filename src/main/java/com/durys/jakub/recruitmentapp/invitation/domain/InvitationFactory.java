@@ -2,7 +2,7 @@ package com.durys.jakub.recruitmentapp.invitation.domain;
 
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

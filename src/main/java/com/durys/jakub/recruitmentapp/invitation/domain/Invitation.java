@@ -5,7 +5,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import static com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent.*;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

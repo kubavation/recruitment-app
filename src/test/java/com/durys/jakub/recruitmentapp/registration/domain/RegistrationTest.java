@@ -3,9 +3,8 @@ package com.durys.jakub.recruitmentapp.registration.domain;
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
-import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.cv.CvId;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
