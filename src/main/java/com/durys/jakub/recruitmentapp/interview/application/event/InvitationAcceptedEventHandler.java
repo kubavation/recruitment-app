@@ -4,7 +4,7 @@ import com.durys.jakub.recruitmentapp.events.EventHandler;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.interview.domain.InterviewRepository;
 import com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 

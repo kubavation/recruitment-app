@@ -2,7 +2,7 @@ package com.durys.jakub.recruitmentapp.registration.domain.events;
 
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

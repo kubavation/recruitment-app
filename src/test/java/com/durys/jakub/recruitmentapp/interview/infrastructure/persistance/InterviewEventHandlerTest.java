@@ -2,7 +2,7 @@ package com.durys.jakub.recruitmentapp.interview.infrastructure.persistance;
 
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
-import com.durys.jakub.recruitmentapp.sharedkernel.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
