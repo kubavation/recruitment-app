@@ -2,13 +2,21 @@ package com.durys.jakub.recruitmentapp.reviewer;
 
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "REVIEWER")
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Reviewer {
 
     public enum State {
         ACTIVE, ARCHIVED
     }
 
+    @EmbeddedId
+    @AttributeOverride(name = "value", column = @Column(name = "ID"))
     private final ReviewerId id;
     private final String name;
     private State state;
