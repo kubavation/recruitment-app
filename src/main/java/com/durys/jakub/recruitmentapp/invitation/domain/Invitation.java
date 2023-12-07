@@ -1,5 +1,6 @@
 package com.durys.jakub.recruitmentapp.invitation.domain;
 
+import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;
 import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
@@ -61,7 +62,7 @@ public class Invitation extends AggregateRoot {
         }
 
         this.interviewTerm = term;
-        this.state = State.Closed;
+        close();
 
         addEvent(
            new InvitationAccepted(id.value, interviewId.value(), this.interviewTerm.value(), this.reviewerId.value())
@@ -71,11 +72,20 @@ public class Invitation extends AggregateRoot {
     public void reject(String rejectionReason) {
 
         this.rejectionReason = new RejectionReason(rejectionReason);
-        this.state = State.Closed;
+        close();
 
         addEvent(
             new InvitationRejected(id.value, interviewId.value(), this.reviewerId.value(), rejectionReason)
         );
+    }
+
+    public void close() {
+
+        if (this.state == State.Closed) {
+            throw new InvalidStateForOperationException("Cannot close invitation");
+        }
+
+        this.state = State.Closed;
     }
 
 
