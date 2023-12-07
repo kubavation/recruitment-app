@@ -1,0 +1,19 @@
+package com.durys.jakub.recruitmentapp.reviewer.application.event;
+
+import com.durys.jakub.recruitmentapp.reviewer.ReviewerRepository;
+import com.durys.jakub.recruitmentapp.reviewer.event.ReviewersChanged;
+import org.springframework.stereotype.Component;
+
+@Component
+class ReviewersChangedEventHandler {
+
+    private final ReviewerRepository repository;
+
+    ReviewersChangedEventHandler(ReviewerRepository repository) {
+        this.repository = repository;
+    }
+
+    void handle(ReviewersChanged event) {
+        //todo
+    }
+}
