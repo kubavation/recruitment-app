@@ -1,6 +1,6 @@
 package com.durys.jakub.recruitmentapp.interview.domain.command;
 
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

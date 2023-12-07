@@ -1,7 +1,7 @@
 package com.durys.jakub.recruitmentapp.reviewer.application.event;
 
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerRepository;
-import com.durys.jakub.recruitmentapp.reviewer.event.ReviewersChanged;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerRepository;
+import com.durys.jakub.recruitmentapp.reviewer.domain.event.ReviewersChanged;
 import org.springframework.stereotype.Component;
 
 @Component

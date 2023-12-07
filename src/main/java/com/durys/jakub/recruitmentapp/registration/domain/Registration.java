@@ -4,7 +4,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperation
 import com.durys.jakub.recruitmentapp.cv.CvId;
 import com.durys.jakub.recruitmentapp.ddd.AggregateRoot;
 import com.durys.jakub.recruitmentapp.offer.domain.Offer;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 

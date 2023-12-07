@@ -4,7 +4,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperation
 import static com.durys.jakub.recruitmentapp.registration.domain.events.RegistrationEvent.*;
 
 import com.durys.jakub.recruitmentapp.cv.CvId;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

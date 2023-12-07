@@ -10,7 +10,7 @@ import com.durys.jakub.recruitmentapp.offer.domain.Offer;
 import com.durys.jakub.recruitmentapp.offer.domain.OfferRepository;
 import com.durys.jakub.recruitmentapp.registration.domain.*;
 import static com.durys.jakub.recruitmentapp.registration.domain.command.RegistrationCommand.*;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.reviewer;
+package com.durys.jakub.recruitmentapp.reviewer.domain;
 
 
 import com.durys.jakub.recruitmentapp.commons.exception.InvalidStateForOperationException;

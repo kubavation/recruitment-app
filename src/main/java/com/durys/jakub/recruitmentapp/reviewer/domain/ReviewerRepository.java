@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.reviewer;
+package com.durys.jakub.recruitmentapp.reviewer.domain;
 
 public interface ReviewerRepository {
     Reviewer load(ReviewerId id);

@@ -3,7 +3,7 @@ package com.durys.jakub.recruitmentapp.invitation.domain;
 import com.durys.jakub.recruitmentapp.interview.domain.Interview;
 import com.durys.jakub.recruitmentapp.invitation.domain.event.InvitationEvent;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

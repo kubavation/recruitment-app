@@ -2,7 +2,7 @@ package com.durys.jakub.recruitmentapp.interview.infrastructure.in;
 
 import com.durys.jakub.recruitmentapp.interview.application.InterviewApplicationService;
 import com.durys.jakub.recruitmentapp.interview.domain.command.InterviewCommand;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

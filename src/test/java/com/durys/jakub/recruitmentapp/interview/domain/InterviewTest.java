@@ -4,7 +4,7 @@ import com.durys.jakub.recruitmentapp.commons.exception.ValidationException;
 import com.durys.jakub.recruitmentapp.interview.domain.event.InterviewEvent;
 import com.durys.jakub.recruitmentapp.registration.domain.Registration;
 import com.durys.jakub.recruitmentapp.sharedkernel.AvailableTerm;
-import com.durys.jakub.recruitmentapp.reviewer.ReviewerId;
+import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerId;
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.reviewer.event;
+package com.durys.jakub.recruitmentapp.reviewer.domain.event;
 
 import com.durys.jakub.recruitmentapp.events.DomainEvent;
 
