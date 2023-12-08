@@ -4,6 +4,7 @@ import com.durys.jakub.recruitmentapp.reviewer.domain.Reviewer;
 import com.durys.jakub.recruitmentapp.reviewer.domain.ReviewerRepository;
 import com.durys.jakub.recruitmentapp.reviewer.domain.event.ReviewersChanged;
 import com.durys.jakub.recruitmentapp.reviewer.infastructure.external.ReviewerProvider;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,8 +20,8 @@ class ReviewersChangedEventHandler {
         this.reviewerProvider = reviewerProvider;
     }
 
-
-    void handle(ReviewersChanged event) {
+    @Transactional
+    public void handle(ReviewersChanged event) {
         List<Reviewer> reviewers = reviewerProvider.all();
         repository.update(reviewers);
     }
