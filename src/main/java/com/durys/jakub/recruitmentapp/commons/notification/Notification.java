@@ -1,4 +1,4 @@
-package com.durys.jakub.recruitmentapp.external.notification;
+package com.durys.jakub.recruitmentapp.commons.notification;
 
 import com.durys.jakub.recruitmentapp.sharedkernel.TenantId;
 
