@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryReviewerRepository implements ReviewerRepository {
 
-    private static Map<ReviewerId, Reviewer> DB = new ConcurrentHashMap<>();
+    private static final Map<ReviewerId, Reviewer> DB = new ConcurrentHashMap<>();
 
     @Override
     public Reviewer load(ReviewerId id) {
