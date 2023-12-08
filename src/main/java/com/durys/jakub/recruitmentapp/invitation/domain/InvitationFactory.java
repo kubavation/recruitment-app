@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InvitationFactory {
 
-
     public static Invitation create(UUID interviewId, ReviewerId reviewerId, List<AvailableTerm> availableTerms) {
         return new Invitation(new Interview.Id(interviewId), reviewerId, new AvailableTerms(availableTerms));
     }
